@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Profil Puskesmas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --text: #1f2937;
+      --card: #ffffff;
+      --accent: #00b050;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1f2937;
+        --text: #f9fafb;
+        --card: #374151;
+        --accent: #00e676;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header img {
+      width: 80px;
+      border-radius: 50%;
+    }
+
+    h1 {
+      margin: 10px 0 5px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="FDGD.png" alt="Logo Puskesmas" />
+    <h1>Dashboard Profil Puskesmas Cibatu</h1>
+    <p>Sistem Informasi & Statistik Layanan</p>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Profil Umum</h3>
+      <p><strong>Alamat:</strong> Jl. Raya Cibatu No. 123, Garut</p>
+      <p><strong>Jumlah Pegawai:</strong> 45</p>
+      <p><strong>Wilayah Layanan:</strong> 10 Desa</p>
+      <p><strong>Tipe Puskesmas:</strong> Non-Rawat Inap</p>
+    </div>
+
+    <div class="card">
+      <h3>Jumlah Kunjungan per Bulan</h3>
+      <canvas id="chartKunjungan"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Distribusi Layanan</h3>
+      <canvas id="chartLayanan"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const ctx1 = document.getElementById('chartKunjungan');
+    new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+        datasets: [{
+          label: 'Kunjungan',
+          data: [120, 150, 180, 160, 200, 220],
+          borderColor: '#00b050',
+          backgroundColor: 'rgba(0, 176, 80, 0.2)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    const ctx2 = document.getElementById('chartLayanan');
+    new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['Umum', 'KIA', 'Gigi', 'Lansia', 'Imunisasi'],
+        datasets: [{
+          data: [35, 25, 15, 10, 15],
+          backgroundColor: ['#00b050', '#ff9800', '#2196f3', '#f44336', '#9c27b0'],
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
