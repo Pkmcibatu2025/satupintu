@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard Puskesmas Cibatu</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -16,19 +17,20 @@
 
     .filter-container {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 20px;
     }
 
-    .filter-container select {
+    .filter-container select, .filter-container input[type="file"] {
       padding: 8px;
       font-size: 14px;
     }
 
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 20px;
     }
 
@@ -48,6 +50,10 @@
 <body>
 
   <div class="filter-container">
+    <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" />
+    <select id="desaFilter">
+      <option value="all">Semua Desa</option>
+    </select>
     <select id="yearFilter">
       <option value="2025">2025</option>
       <option value="2024">2024</option>
@@ -55,27 +61,75 @@
     <select id="monthFilter">
       <option value="1">Januari</option>
       <option value="2">Februari</option>
-      <!-- dst -->
     </select>
     <select id="dayFilter">
       <option value="all">Semua Hari</option>
       <option value="1">1</option>
       <option value="2">2</option>
-      <!-- dst -->
     </select>
   </div>
 
   <div class="dashboard">
-    <div class="card">
-      <h3>Luas Daerah</h3>
-      <p id="luasDaerah">110 km²</p>
-    </div>
-    <div class="card">
-      <h3>Jarak Tempuh</h3>
-      <p id="jarakTempuh">12 km rata-rata</p>
-    </div>
-    <!-- Tambahkan kartu lainnya di sini -->
+    <div class="card"><h3>Luas Daerah</h3><p id="luasDaerah">-</p></div>
+    <div class="card"><h3>Jarak Tempuh</h3><p id="jarakTempuh">-</p></div>
+    <div class="card"><h3>Jumlah Penduduk</h3><p id="jumlahPenduduk">-</p></div>
+    <div class="card"><h3>Jumlah Rumah Tangga</h3><p id="rumahTangga">-</p></div>
+    <div class="card"><h3>Jumlah RT</h3><p id="jumlahRT">-</p></div>
+    <div class="card"><h3>Jumlah RW</h3><p id="jumlahRW">-</p></div>
+    <div class="card"><h3>Kunjungan</h3><p id="jumlahKunjungan">-</p></div>
   </div>
+
+  <script>
+    const fileInput = document.getElementById('excelFile');
+    const desaFilter = document.getElementById('desaFilter');
+
+    let excelData = [];
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const data = new Uint8Array(evt.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        excelData = XLSX.utils.sheet_to_json(worksheet);
+
+        updateDropdown();
+        updateDashboard();
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    desaFilter.addEventListener('change', updateDashboard);
+
+    function updateDropdown() {
+      const desaList = [...new Set(excelData.map(d => d.Desa))];
+      desaFilter.innerHTML = `<option value="all">Semua Desa</option>`;
+      desaList.forEach(d => {
+        desaFilter.innerHTML += `<option value="${d}">${d}</option>`;
+      });
+    }
+
+    function updateDashboard() {
+      let data = excelData;
+      const selectedDesa = desaFilter.value;
+      if (selectedDesa !== 'all') {
+        data = data.filter(d => d.Desa === selectedDesa);
+      }
+
+      const sum = (key) => data.reduce((acc, curr) => acc + (Number(curr[key]) || 0), 0);
+      const avg = (key) => data.length ? (sum(key) / data.length).toFixed(2) : '-';
+
+      document.getElementById('luasDaerah').innerText = sum('Luas Daerah (km²)') + ' km²';
+      document.getElementById('jarakTempuh').innerText = avg('Jarak Tempuh (km)') + ' km rata-rata';
+      document.getElementById('jumlahPenduduk').innerText = sum('Jumlah Penduduk');
+      document.getElementById('rumahTangga').innerText = sum('Jumlah Rumah Tangga');
+      document.getElementById('jumlahRT').innerText = sum('Jumlah RT');
+      document.getElementById('jumlahRW').innerText = sum('Jumlah RW');
+      document.getElementById('jumlahKunjungan').innerText = sum('Jumlah Kunjungan');
+    }
+  </script>
 
 </body>
 </html>
