@@ -3,152 +3,194 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Puskesmas</title>
+  <title>Dashboard Profil Puskesmas Cibatu</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0f2d52;
+      background-color: #001f3f;
       color: #fff;
     }
 
-    header {
-      padding: 20px;
-      background-color: #123c69;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .container {
+    .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
       padding: 20px;
     }
 
     .card {
-      background-color: #1e3b70;
+      background: #003366;
+      border-radius: 10px;
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
 
     .card h3 {
       margin-top: 0;
-      color: #a0d2eb;
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #00ffff;
     }
 
     canvas {
-      background: #122c4a;
-      border-radius: 10px;
-      padding: 10px;
+      width: 100% !important;
+      height: auto !important;
     }
   </style>
 </head>
 <body>
 
-<header>📊 Dashboard Puskesmas Cibatu</header>
+  <h1 style="text-align:center; padding: 20px; color: #0ff;">DASHBOARD PROFIL PUSKESMAS CIBATU</h1>
+  
+  <div class="dashboard">
 
-<div class="container">
-  <div class="card">
-    <h3>Grafik Input & Output</h3>
-    <canvas id="lineChart" height="200"></canvas>
+    <div class="card">
+      <h3>Luas Daerah per Kecamatan</h3>
+      <canvas id="luasDaerahChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Jarak Tempuh per Desa</h3>
+      <canvas id="jarakTempuhChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Jumlah RT/RW per Desa</h3>
+      <canvas id="rtrwChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Jumlah Rumah Tangga</h3>
+      <canvas id="rumahTanggaChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Jumlah Penduduk Kelompok Umur</h3>
+      <canvas id="kelompokUmurChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Jumlah Fasilitas Sekolah</h3>
+      <canvas id="fasilitasSekolahChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Jumlah Sarana Kesehatan</h3>
+      <canvas id="saranaKesehatanChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Data Kesehatan Lingkungan</h3>
+      <canvas id="kesehatanLingkunganChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Jumlah Tenaga Pegawai</h3>
+      <canvas id="pegawaiChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>10 Besar Penyakit</h3>
+      <canvas id="penyakitChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Jumlah Pengaduan dan Tindak Lanjut</h3>
+      <canvas id="pengaduanChart"></canvas>
+    </div>
+
   </div>
 
-  <div class="card">
-    <h3>Status Layanan</h3>
-    <canvas id="pieChart" height="200"></canvas>
-  </div>
-
-  <div class="card">
-    <h3>Rata-rata Harian</h3>
-    <canvas id="barChart" height="200"></canvas>
-  </div>
-</div>
-
-<script>
-  // Line Chart
-  const ctxLine = document.getElementById('lineChart').getContext('2d');
-  new Chart(ctxLine, {
-    type: 'line',
-    data: {
-      labels: ['Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu'],
-      datasets: [
-        {
-          label: 'Input',
-          data: [200, 300, 250, 400, 350, 460, 390],
-          borderColor: '#00c9a7',
-          fill: true,
-          backgroundColor: 'rgba(0,201,167,0.2)'
+  <script>
+    const config = (labels, data, color = '#00ffff') => ({
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '',
+          data,
+          backgroundColor: color,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
         },
-        {
-          label: 'Output',
-          data: [180, 260, 270, 300, 320, 370, 400],
-          borderColor: '#ff6b6b',
-          fill: true,
-          backgroundColor: 'rgba(255,107,107,0.2)'
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { labels: { color: '#fff' } }
-      },
-      scales: {
-        x: { ticks: { color: '#fff' }},
-        y: { ticks: { color: '#fff' }}
-      }
-    }
-  });
-
-  // Pie Chart
-  const ctxPie = document.getElementById('pieChart').getContext('2d');
-  new Chart(ctxPie, {
-    type: 'doughnut',
-    data: {
-      labels: ['Sukses', 'Gagal', 'Tertunda'],
-      datasets: [{
-        label: 'Status',
-        data: [60, 25, 15],
-        backgroundColor: ['#00c9a7', '#ff6b6b', '#ffc107'],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          labels: { color: '#fff' }
+        scales: {
+          y: { beginAtZero: true }
         }
       }
-    }
-  });
+    });
 
-  // Bar Chart
-  const ctxBar = document.getElementById('barChart').getContext('2d');
-  new Chart(ctxBar, {
-    type: 'bar',
-    data: {
-      labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-      datasets: [{
-        label: 'Jumlah Kunjungan',
-        data: [120, 150, 100, 130, 90, 160, 110],
-        backgroundColor: '#339af0'
-      }]
-    },
-    options: {
-      scales: {
-        x: { ticks: { color: '#fff' }},
-        y: { ticks: { color: '#fff' }}
-      },
-      plugins: {
-        legend: { labels: { color: '#fff' }}
-      }
-    }
-  });
-</script>
+    // Contoh Data Dummy
+    new Chart(document.getElementById('luasDaerahChart'), config(
+      ['Kec. Cibatu', 'Kec. Kadungora', 'Kec. Leles'],
+      [2500, 1800, 2200],
+      '#ff6384'
+    ));
 
+    new Chart(document.getElementById('jarakTempuhChart'), config(
+      ['Desa A', 'Desa B', 'Desa C'],
+      [5, 7.5, 3],
+      '#36a2eb'
+    ));
+
+    new Chart(document.getElementById('rtrwChart'), config(
+      ['Desa A', 'Desa B', 'Desa C'],
+      [20, 35, 25],
+      '#4bc0c0'
+    ));
+
+    new Chart(document.getElementById('rumahTanggaChart'), config(
+      ['Desa A', 'Desa B', 'Desa C'],
+      [500, 600, 450],
+      '#ffcd56'
+    ));
+
+    new Chart(document.getElementById('kelompokUmurChart'), config(
+      ['0-5', '6-17', '18-59', '60+'],
+      [1200, 3000, 4500, 800],
+      '#9966ff'
+    ));
+
+    new Chart(document.getElementById('fasilitasSekolahChart'), config(
+      ['SD', 'SMP', 'SMA'],
+      [11, 5, 3],
+      '#ff9f40'
+    ));
+
+    new Chart(document.getElementById('saranaKesehatanChart'), config(
+      ['Puskesmas', 'Pustu', 'Posyandu'],
+      [1, 5, 11],
+      '#00c853'
+    ));
+
+    new Chart(document.getElementById('kesehatanLingkunganChart'), config(
+      ['Air Bersih', 'Jamban', 'Drainase'],
+      [3000, 2500, 2000],
+      '#ff7043'
+    ));
+
+    new Chart(document.getElementById('pegawaiChart'), config(
+      ['Dokter', 'Perawat', 'Bidan', 'Admin'],
+      [3, 12, 9, 5],
+      '#29b6f6'
+    ));
+
+    new Chart(document.getElementById('penyakitChart'), config(
+      ['ISPA', 'Diare', 'Hipertensi', 'DM', 'TB', 'Malaria', 'TBC', 'Anemia', 'Demam Berdarah', 'COVID-19'],
+      [100, 90, 85, 80, 70, 60, 55, 50, 40, 30],
+      '#ef5350'
+    ));
+
+    new Chart(document.getElementById('pengaduanChart'), config(
+      ['Masuk', 'Selesai'],
+      [25, 23],
+      '#ab47bc'
+    ));
+  </script>
 </body>
 </html>
