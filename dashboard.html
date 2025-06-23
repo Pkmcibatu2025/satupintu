@@ -17,7 +17,6 @@
 
     .filter-container {
       display: flex;
-      justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 20px;
@@ -51,22 +50,10 @@
 
   <div class="filter-container">
     <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" />
-    <select id="desaFilter">
-      <option value="all">Semua Desa</option>
-    </select>
-    <select id="yearFilter">
-      <option value="2025">2025</option>
-      <option value="2024">2024</option>
-    </select>
-    <select id="monthFilter">
-      <option value="1">Januari</option>
-      <option value="2">Februari</option>
-    </select>
-    <select id="dayFilter">
-      <option value="all">Semua Hari</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-    </select>
+    <select id="desaFilter"><option value="all">Semua Desa</option></select>
+    <select id="yearFilter"><option value="all">Semua Tahun</option></select>
+    <select id="monthFilter"><option value="all">Semua Bulan</option></select>
+    <select id="dayFilter"><option value="all">Semua Hari</option></select>
   </div>
 
   <div class="dashboard">
@@ -82,6 +69,9 @@
   <script>
     const fileInput = document.getElementById('excelFile');
     const desaFilter = document.getElementById('desaFilter');
+    const yearFilter = document.getElementById('yearFilter');
+    const monthFilter = document.getElementById('monthFilter');
+    const dayFilter = document.getElementById('dayFilter');
 
     let excelData = [];
 
@@ -91,32 +81,47 @@
       reader.onload = (evt) => {
         const data = new Uint8Array(evt.target.result);
         const workbook = XLSX.read(data, {type: 'array'});
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
         excelData = XLSX.utils.sheet_to_json(worksheet);
-
-        updateDropdown();
+        updateAllDropdowns();
         updateDashboard();
       };
       reader.readAsArrayBuffer(file);
     });
 
     desaFilter.addEventListener('change', updateDashboard);
+    yearFilter.addEventListener('change', updateDashboard);
+    monthFilter.addEventListener('change', updateDashboard);
+    dayFilter.addEventListener('change', updateDashboard);
 
-    function updateDropdown() {
-      const desaList = [...new Set(excelData.map(d => d.Desa))];
+    function updateAllDropdowns() {
+      const getUnique = (key) => [...new Set(excelData.map(item => item[key]))].sort((a, b) => a - b);
+
       desaFilter.innerHTML = `<option value="all">Semua Desa</option>`;
-      desaList.forEach(d => {
-        desaFilter.innerHTML += `<option value="${d}">${d}</option>`;
-      });
+      getUnique('Desa').forEach(d => desaFilter.innerHTML += `<option value="${d}">${d}</option>`);
+
+      yearFilter.innerHTML = `<option value="all">Semua Tahun</option>`;
+      getUnique('Tahun').forEach(y => yearFilter.innerHTML += `<option value="${y}">${y}</option>`);
+
+      monthFilter.innerHTML = `<option value="all">Semua Bulan</option>`;
+      getUnique('Bulan').forEach(m => monthFilter.innerHTML += `<option value="${m}">${m}</option>`);
+
+      dayFilter.innerHTML = `<option value="all">Semua Hari</option>`;
+      getUnique('Hari').forEach(d => dayFilter.innerHTML += `<option value="${d}">${d}</option>`);
     }
 
     function updateDashboard() {
       let data = excelData;
-      const selectedDesa = desaFilter.value;
-      if (selectedDesa !== 'all') {
-        data = data.filter(d => d.Desa === selectedDesa);
-      }
+
+      const selDesa = desaFilter.value;
+      const selTahun = yearFilter.value;
+      const selBulan = monthFilter.value;
+      const selHari = dayFilter.value;
+
+      if (selDesa !== 'all') data = data.filter(d => d.Desa === selDesa);
+      if (selTahun !== 'all') data = data.filter(d => String(d.Tahun) === selTahun);
+      if (selBulan !== 'all') data = data.filter(d => String(d.Bulan) === selBulan);
+      if (selHari !== 'all') data = data.filter(d => String(d.Hari) === selHari);
 
       const sum = (key) => data.reduce((acc, curr) => acc + (Number(curr[key]) || 0), 0);
       const avg = (key) => data.length ? (sum(key) / data.length).toFixed(2) : '-';
