@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard Puskesmas Cibatu</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -14,32 +13,27 @@
       margin: 0;
       padding: 20px;
     }
-
     .filter-container {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 20px;
     }
-
-    .filter-container select, .filter-container input[type="file"] {
+    .filter-container input[type="file"] {
       padding: 8px;
       font-size: 14px;
     }
-
     .dashboard {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 20px;
     }
-
     .card {
       background: #ffffffcc;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       padding: 20px;
     }
-
     .card h3 {
       margin-top: 0;
       color: #0d6efd;
@@ -49,90 +43,57 @@
 <body>
 
   <div class="filter-container">
-    <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" />
-    <select id="desaFilter"><option value="all">Semua Desa</option></select>
-    <select id="yearFilter"><option value="all">Semua Tahun</option></select>
-    <select id="monthFilter"><option value="all">Semua Bulan</option></select>
-    <select id="dayFilter"><option value="all">Semua Hari</option></select>
+    <input type="file" id="jsonFile" accept=".json" />
   </div>
 
   <div class="dashboard">
-    <div class="card"><h3>Luas Daerah</h3><p id="luasDaerah">-</p></div>
-    <div class="card"><h3>Jarak Tempuh</h3><p id="jarakTempuh">-</p></div>
+    <div class="card"><h3>Jumlah Kepala Keluarga</h3><p id="luasDaerah">-</p></div>
     <div class="card"><h3>Jumlah Penduduk</h3><p id="jumlahPenduduk">-</p></div>
+    <div class="card"><h3>Jumlah Kunjungan</h3><p id="jumlahKunjungan">-</p></div>
+    <div class="card"><h3>Jarak Tempuh</h3><p id="jarakTempuh">-</p></div>
     <div class="card"><h3>Jumlah Rumah Tangga</h3><p id="rumahTangga">-</p></div>
     <div class="card"><h3>Jumlah RT</h3><p id="jumlahRT">-</p></div>
     <div class="card"><h3>Jumlah RW</h3><p id="jumlahRW">-</p></div>
-    <div class="card"><h3>Kunjungan</h3><p id="jumlahKunjungan">-</p></div>
   </div>
 
   <script>
-    const fileInput = document.getElementById('excelFile');
-    const desaFilter = document.getElementById('desaFilter');
-    const yearFilter = document.getElementById('yearFilter');
-    const monthFilter = document.getElementById('monthFilter');
-    const dayFilter = document.getElementById('dayFilter');
+    const jsonInput = document.getElementById('jsonFile');
+    let jsonData = {};
 
-    let excelData = [];
-
-    fileInput.addEventListener('change', (e) => {
+    jsonInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       const reader = new FileReader();
-      reader.onload = (evt) => {
-        const data = new Uint8Array(evt.target.result);
-        const workbook = XLSX.read(data, {type: 'array'});
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        excelData = XLSX.utils.sheet_to_json(worksheet);
-        updateAllDropdowns();
-        updateDashboard();
+      reader.onload = (event) => {
+        jsonData = JSON.parse(event.target.result);
+        updateDashboardFromJson();
       };
-      reader.readAsArrayBuffer(file);
+      reader.readAsText(file);
     });
 
-    desaFilter.addEventListener('change', updateDashboard);
-    yearFilter.addEventListener('change', updateDashboard);
-    monthFilter.addEventListener('change', updateDashboard);
-    dayFilter.addEventListener('change', updateDashboard);
+    function updateDashboardFromJson() {
+      const keluarga = jsonData.data_keluarga;
+      const kunjungan = jsonData.kunjungan;
 
-    function updateAllDropdowns() {
-      const getUnique = (key) => [...new Set(excelData.map(item => item[key]))].sort((a, b) => a - b);
+      const jumlahKK = Object.keys(keluarga).length;
+      let totalAnggota = 0;
+      let totalRT = 0;
+      let totalRW = 0;
 
-      desaFilter.innerHTML = `<option value="all">Semua Desa</option>`;
-      getUnique('Desa').forEach(d => desaFilter.innerHTML += `<option value="${d}">${d}</option>`);
+      for (const kk of Object.values(keluarga)) {
+        totalAnggota += kk.anggotaKeluarga.length;
+        totalRT += parseInt(kk.rt || 0);
+        totalRW += parseInt(kk.rw || 0);
+      }
 
-      yearFilter.innerHTML = `<option value="all">Semua Tahun</option>`;
-      getUnique('Tahun').forEach(y => yearFilter.innerHTML += `<option value="${y}">${y}</option>`);
+      const jumlahKunjungan = Object.keys(kunjungan).length;
 
-      monthFilter.innerHTML = `<option value="all">Semua Bulan</option>`;
-      getUnique('Bulan').forEach(m => monthFilter.innerHTML += `<option value="${m}">${m}</option>`);
-
-      dayFilter.innerHTML = `<option value="all">Semua Hari</option>`;
-      getUnique('Hari').forEach(d => dayFilter.innerHTML += `<option value="${d}">${d}</option>`);
-    }
-
-    function updateDashboard() {
-      let data = excelData;
-
-      const selDesa = desaFilter.value;
-      const selTahun = yearFilter.value;
-      const selBulan = monthFilter.value;
-      const selHari = dayFilter.value;
-
-      if (selDesa !== 'all') data = data.filter(d => d.Desa === selDesa);
-      if (selTahun !== 'all') data = data.filter(d => String(d.Tahun) === selTahun);
-      if (selBulan !== 'all') data = data.filter(d => String(d.Bulan) === selBulan);
-      if (selHari !== 'all') data = data.filter(d => String(d.Hari) === selHari);
-
-      const sum = (key) => data.reduce((acc, curr) => acc + (Number(curr[key]) || 0), 0);
-      const avg = (key) => data.length ? (sum(key) / data.length).toFixed(2) : '-';
-
-      document.getElementById('luasDaerah').innerText = sum('Luas Daerah (km²)') + ' km²';
-      document.getElementById('jarakTempuh').innerText = avg('Jarak Tempuh (km)') + ' km rata-rata';
-      document.getElementById('jumlahPenduduk').innerText = sum('Jumlah Penduduk');
-      document.getElementById('rumahTangga').innerText = sum('Jumlah Rumah Tangga');
-      document.getElementById('jumlahRT').innerText = sum('Jumlah RT');
-      document.getElementById('jumlahRW').innerText = sum('Jumlah RW');
-      document.getElementById('jumlahKunjungan').innerText = sum('Jumlah Kunjungan');
+      document.getElementById('luasDaerah').innerText = jumlahKK + ' KK';
+      document.getElementById('jumlahPenduduk').innerText = totalAnggota + ' jiwa';
+      document.getElementById('jumlahKunjungan').innerText = jumlahKunjungan + ' kunjungan';
+      document.getElementById('jarakTempuh').innerText = '-';
+      document.getElementById('rumahTangga').innerText = '-';
+      document.getElementById('jumlahRT').innerText = totalRT;
+      document.getElementById('jumlahRW').innerText = totalRW;
     }
   </script>
 
