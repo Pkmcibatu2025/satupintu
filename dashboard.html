@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard Puskesmas Cibatu</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -38,6 +39,12 @@
       margin-top: 0;
       color: #0d6efd;
     }
+    .chart-container {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
   </style>
 </head>
 <body>
@@ -59,11 +66,19 @@
     <div class="card"><h3>Jumlah RW</h3><p id="jumlahRW">-</p></div>
   </div>
 
+  <div class="chart-container">
+    <canvas id="usiaChart"></canvas>
+    <canvas id="genderChart"></canvas>
+    <canvas id="skriningChart"></canvas>
+    <canvas id="kategoriChart"></canvas>
+  </div>
+
   <script>
     const jsonInput = document.getElementById('jsonFile');
     const desaFilter = document.getElementById('desaFilter');
     let jsonData = {};
     let keluargaList = {};
+    let usiaChart, genderChart, skriningChart, kategoriChart;
 
     jsonInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -103,10 +118,40 @@
       let totalRT = 0;
       let totalRW = 0;
 
+      let usiaKategori = { '0-5': 0, '6-17': 0, '18-59': 0, '60+': 0 };
+      let jenisKelamin = { 'Laki-laki': 0, 'Perempuan': 0 };
+      let skriningStatus = { 'Sudah': 0, 'Belum': 0 };
+      let kategoriKhusus = { 'Ibu Hamil': 0, 'Bayi': 0, 'Lansia': 0 };
+
       for (const kk of filteredKeluarga) {
-        totalAnggota += kk.anggotaKeluarga.length;
         totalRT += parseInt(kk.rt || 0);
         totalRW += parseInt(kk.rw || 0);
+        for (const anggota of kk.anggotaKeluarga) {
+          totalAnggota++;
+
+          const umur = parseInt(anggota.umur || 0);
+          const jk = anggota.jk || '-';
+          const skr = anggota.statusSkrining || 'Belum';
+          const kategori = (anggota.kategori || '').toLowerCase();
+
+          // Usia
+          if (umur <= 5) usiaKategori['0-5']++;
+          else if (umur <= 17) usiaKategori['6-17']++;
+          else if (umur <= 59) usiaKategori['18-59']++;
+          else usiaKategori['60+']++;
+
+          // Jenis Kelamin
+          if (jk === 'L') jenisKelamin['Laki-laki']++;
+          else if (jk === 'P') jenisKelamin['Perempuan']++;
+
+          // Skrining
+          skriningStatus[skr === 'Sudah' ? 'Sudah' : 'Belum']++;
+
+          // Kategori Khusus
+          if (kategori.includes('hamil')) kategoriKhusus['Ibu Hamil']++;
+          if (kategori.includes('bayi')) kategoriKhusus['Bayi']++;
+          if (kategori.includes('lansia')) kategoriKhusus['Lansia']++;
+        }
       }
 
       const kunjungan = jsonData.kunjungan || {};
@@ -123,6 +168,35 @@
       document.getElementById('rumahTangga').innerText = '-';
       document.getElementById('jumlahRT').innerText = totalRT;
       document.getElementById('jumlahRW').innerText = totalRW;
+
+      renderPieChart('usiaChart', usiaKategori, 'Distribusi Usia', usiaChart, c => usiaChart = c);
+      renderPieChart('genderChart', jenisKelamin, 'Jenis Kelamin', genderChart, c => genderChart = c);
+      renderPieChart('skriningChart', skriningStatus, 'Status Skrining', skriningChart, c => skriningChart = c);
+      renderPieChart('kategoriChart', kategoriKhusus, 'Kategori Khusus', kategoriChart, c => kategoriChart = c);
+    }
+
+    function renderPieChart(id, data, title, chartInstance, setter) {
+      const ctx = document.getElementById(id).getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+      const chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(data),
+          datasets: [{
+            label: title,
+            data: Object.values(data),
+            backgroundColor: ['#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f', '#edc948']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: title }
+          }
+        }
+      });
+      setter(chart);
     }
   </script>
 
