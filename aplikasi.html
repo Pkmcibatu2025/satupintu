@@ -40,6 +40,9 @@
       max-width: 500px; /* batasi lebar total */
       margin: 0 auto;
     }
+    .app-item {
+      text-align: center;
+    }
     .icon {
       background: #ffffff;
       border-radius: 50%;
@@ -60,6 +63,12 @@
       font-size: 0.9rem;
       font-weight: bold;
     }
+    .highlight {
+      background: yellow;
+      color: black;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
     footer {
       background: #028a0f;
       color: white;
@@ -76,82 +85,93 @@
   </header>
 
   <div class="search-box">
-    <input type="text" placeholder="Cari layanan...">
+    <input type="text" id="searchInput" placeholder="Cari layanan...">
   </div>
 
   <div class="grid">
-    <div>
+    <div class="app-item">
       <a href="https://link-aplikasi-1.com" target="_blank">
         <div class="icon"><img src="icons/antrian.png" alt="Antrian"></div>
         <div class="label">Antrian Online</div>
       </a>
     </div>
-    <div>
+    <div class="app-item">
       <a href="https://link-aplikasi-2.com" target="_blank">
         <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
         <div class="label">Rekam Medis</div>
       </a>
     </div>
-      <div>
-      <a href="https://link-aplikasi-2.com" target="_blank">
-        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
-        <div class="label">Rekam Medis</div>
-      </a>
-    </div>
-      <div>
-      <a href="https://link-aplikasi-2.com" target="_blank">
-        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
-        <div class="label">Rekam Medis</div>
-      </a>
-    </div>
-      <div>
-      <a href="https://link-aplikasi-2.com" target="_blank">
-        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
-        <div class="label">Rekam Medis</div>
-      </a>
-    </div>
-      <div>
-      <a href="https://link-aplikasi-2.com" target="_blank">
-        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
-        <div class="label">Rekam Medis</div>
-      </a>
-    </div>
-      <div>
-      <a href="https://link-aplikasi-2.com" target="_blank">
-        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
-        <div class="label">Rekam Medis</div>
-      </a>
-    </div>
-      <div>
-      <a href="https://link-aplikasi-2.com" target="_blank">
-        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
-        <div class="label">Rekam Medis</div>
-      </a>
-    </div>
-      <div>
-      <a href="https://link-aplikasi-2.com" target="_blank">
-        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
-        <div class="label">Rekam Medis</div>
-      </a>
-    </div>
-      <div>
-      <a href="https://link-aplikasi-2.com" target="_blank">
-        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
-        <div class="label">Rekam Medis</div>
-      </a>
-    </div>
-    <div>
+    <div class="app-item">
       <a href="https://link-aplikasi-3.com" target="_blank">
         <div class="icon"><img src="icons/apotek.png" alt="Apotek"></div>
         <div class="label">Apotek</div>
       </a>
     </div>
-    <!-- Tambahkan menu lain di sini -->
+     <div class="app-item">
+      <a href="https://link-aplikasi-3.com" target="_blank">
+        <div class="icon"><img src="icons/apotek.png" alt="Apotek"></div>
+        <div class="label">Apotek</div>
+      </a>
+    </div>
+     <div class="app-item">
+      <a href="https://link-aplikasi-3.com" target="_blank">
+        <div class="icon"><img src="icons/apotek.png" alt="Apotek"></div>
+        <div class="label">Apotek</div>
+      </a>
+    </div>
+     <div class="app-item">
+      <a href="https://link-aplikasi-3.com" target="_blank">
+        <div class="icon"><img src="icons/apotek.png" alt="Apotek"></div>
+        <div class="label">Apotek</div>
+      </a>
+    </div>
+     <div class="app-item">
+      <a href="https://link-aplikasi-3.com" target="_blank">
+        <div class="icon"><img src="icons/apotek.png" alt="Apotek"></div>
+        <div class="label">Apotek</div>
+      </a>
+    </div>
+    <div class="app-item">
+      <a href="https://link-aplikasi-4.com" target="_blank">
+        <div class="icon"><img src="icons/lab.png" alt="Laboratorium"></div>
+        <div class="label">Laboratorium</div>
+      </a>
+    </div>
+    <!-- Tambah menu lain -->
   </div>
 
   <footer>
     &copy; 2025 Portal Layanan Puskesmas | All Rights Reserved
   </footer>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const items = document.querySelectorAll(".app-item");
+
+    searchInput.addEventListener("keyup", function() {
+      let filter = searchInput.value.toLowerCase();
+
+      items.forEach(item => {
+        let label = item.querySelector(".label");
+        let text = label.textContent.toLowerCase();
+
+        if (text.includes(filter)) {
+          item.style.display = "block";
+
+          // reset highlight
+          label.innerHTML = label.textContent;
+
+          if (filter !== "") {
+            let regex = new RegExp("(" + filter + ")", "gi");
+            label.innerHTML = label.textContent.replace(regex, "<span class='highlight'>$1</span>");
+          }
+
+        } else {
+          item.style.display = "none";
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
