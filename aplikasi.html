@@ -16,11 +16,38 @@
       background: #f4f9f4;
       text-align: center;
     }
+      header {
+      position: relative;
+      background: #028a0f;
+      color: white;
+      padding: 20px;
+    }
     header img {
       height: 80px;
     }
     h1 {
       margin: 10px 0 0;
+    }
+     /* Tombol Home */
+    .home-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: white;
+      color: #028a0f;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+     .home-btn:hover {
+      background: #e0e0e0;
     }
     .search-box {
       margin: 20px auto;
@@ -80,6 +107,7 @@
 <body>
 
   <header>
+    <a href="index.html" class="home-btn">🏠</a>
     <img src="FDGD.png" alt="Logo Puskesmas">
     <h1>Portal Aplikasi Layanan UPT Puskesmas Cibatu</h1>
   </header>
