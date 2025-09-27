@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Layanan Puskesmas</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f9f4;
+      text-align: center;
+    }
+    header {
+      background: #028a0f;
+      color: white;
+      padding: 20px;
+    }
+    header img {
+      height: 80px;
+    }
+    h1 {
+      margin: 10px 0 0;
+    }
+    .search-box {
+      margin: 20px auto;
+    }
+    .search-box input {
+      padding: 10px;
+      width: 60%;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .icon {
+      background: #ffffff;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .icon:hover {
+      transform: scale(1.1);
+    }
+    .icon img {
+      width: 60%;
+    }
+    .label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    footer {
+      background: #028a0f;
+      color: white;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="Logo Puskesmas">
+    <h1>Portal Layanan Puskesmas</h1>
+  </header>
+
+  <div class="search-box">
+    <input type="text" placeholder="Cari layanan...">
+  </div>
+
+  <div class="grid">
+    <div>
+      <a href="https://link-aplikasi-1.com" target="_blank">
+        <div class="icon"><img src="icons/antrian.png" alt="Antrian"></div>
+        <div class="label">Antrian Online</div>
+      </a>
+    </div>
+    <div>
+      <a href="https://link-aplikasi-2.com" target="_blank">
+        <div class="icon"><img src="icons/rekam-medis.png" alt="Rekam Medis"></div>
+        <div class="label">Rekam Medis</div>
+      </a>
+    </div>
+    <div>
+      <a href="https://link-aplikasi-3.com" target="_blank">
+        <div class="icon"><img src="icons/apotek.png" alt="Apotek"></div>
+        <div class="label">Apotek</div>
+      </a>
+    </div>
+    <!-- Tambahkan menu lain di sini -->
+  </div>
+
+  <footer>
+    &copy; 2025 Portal Layanan Puskesmas | All Rights Reserved
+  </footer>
+
+</body>
+</html>
