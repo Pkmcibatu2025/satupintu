@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jam Kerja Puskesmas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function toggleSection(id) {
+      const section = document.getElementById(id);
+      section.classList.toggle("hidden");
+    }
+
+    function updateClock() {
+      const now = new Date();
+      let h = now.getHours().toString().padStart(2, "0");
+      let m = now.getMinutes().toString().padStart(2, "0");
+      let s = now.getSeconds().toString().padStart(2, "0");
+
+      const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+      const day = days[now.getDay()];
+
+      document.getElementById("clock").innerText = `${h}:${m}:${s} WIB`;
+      document.getElementById("day").innerText = day;
+
+      highlightSchedule(day);
+      updateNotification(day, now);
+    }
+
+    function highlightSchedule(today) {
+      const rows = document.querySelectorAll(".jadwal");
+      rows.forEach(row => {
+        if (row.dataset.day === today) {
+          row.classList.add("bg-green-100", "font-bold", "text-green-800", "rounded", "p-1");
+        } else {
+          row.classList.remove("bg-green-100","font-bold","text-green-800","rounded","p-1");
+        }
+      });
+    }
+
+    function updateNotification(day, now) {
+      let message = "";
+      let isOpen = false;
+
+      switch(day) {
+        case "Senin":
+        case "Selasa":
+        case "Rabu":
+        case "Kamis":
+          message = "Hari ini " + day + ", pelayanan umum sampai pukul 14:00 WIB.";
+          if (now.getHours() < 14) isOpen = true;
+          break;
+        case "Jumat":
+          message = "Hari ini Jumat, pelayanan umum sampai pukul 14:30 WIB.";
+          if (now.getHours() < 14 || (now.getHours() === 14 && now.getMinutes() <= 30)) isOpen = true;
+          break;
+        case "Sabtu":
+          message = "Hari ini Sabtu, pelayanan umum sampai pukul 14:00 WIB.";
+          if (now.getHours() < 14) isOpen = true;
+          break;
+        case "Minggu":
+          message = "Hari ini Minggu, pelayanan umum libur.";
+          isOpen = false;
+          break;
+      }
+
+      const notif = document.getElementById("notification");
+      if (isOpen) {
+        notif.className = "text-yellow-200 font-semibold";
+        notif.innerText = message;
+      } else {
+        notif.className = "text-red-300 font-bold";
+        notif.innerText = "Pelayanan umum tutup. IGD & Persalinan tetap buka 24 jam.";
+      }
+    }
+
+    setInterval(updateClock, 1000);
+    window.onload = updateClock;
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="bg-green-600 text-white p-6 text-center shadow-lg space-y-3">
+    <h1 class="text-2xl font-bold">Jam Kerja UPT Puskesmas</h1>
+    <p class="text-sm">Informasi Jam Kerja, IGD & Persalinan 24 Jam</p>
+    <!-- Jam Digital -->
+    <div class="bg-black text-green-400 inline-block px-4 py-2 rounded-lg shadow-md font-mono text-xl">
+      <span id="day"></span>, <span id="clock"></span>
+    </div>
+    <!-- Notifikasi -->
+    <p id="notification" class="text-yellow-200 font-semibold"></p>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-6">
+
+    <!-- Jam Kerja Umum -->
+    <section class="bg-white shadow rounded-lg p-5">
+      <button onclick="toggleSection('umum')" class="w-full text-left font-bold text-lg text-green-700 flex justify-between items-center">
+        Jam Kerja Umum <span>▼</span>
+      </button>
+      <div id="umum" class="mt-3 space-y-2">
+        <p class="jadwal" data-day="Senin">Senin - Kamis: <b>07:30 - 14:00 WIB</b></p>
+        <p class="jadwal" data-day="Jumat">Jumat: <b>07:30 - 14:30 WIB</b></p>
+        <p class="jadwal" data-day="Sabtu">Sabtu: <b>07:30 - 14:00 WIB</b></p>
+      </div>
+    </section>
+
+    <!-- Jam Pelayanan 24 Jam -->
+    <section class="bg-white shadow rounded-lg p-5">
+      <button onclick="toggleSection('pelayanan')" class="w-full text-left font-bold text-lg text-green-700 flex justify-between items-center">
+        Jam Pelayanan 24 Jam <span>▼</span>
+      </button>
+      <div id="pelayanan" class="mt-3 space-y-2 hidden">
+        <p>Pagi: <b>07:30 - 14:00 WIB</b></p>
+        <p>Siang: <b>14:00 - 21:00 WIB</b></p>
+        <p>Malam: <b>21:00 - 07:30 WIB</b></p>
+        <p><b>IGD: 24 Jam</b></p>
+        <p><b>Persalinan: 24 Jam</b></p>
+        <p class="text-sm text-gray-600">Catatan: Berlaku Senin s.d Minggu, jadwal libur disesuaikan</p>
+      </div>
+    </section>
+
+    <!-- Apel Pagi -->
+    <section class="bg-white shadow rounded-lg p-5">
+      <button onclick="toggleSection('apel')" class="w-full text-left font-bold text-lg text-green-700 flex justify-between items-center">
+        Apel Pagi <span>▼</span>
+      </button>
+      <div id="apel" class="mt-3 hidden">
+        <p>Jam Apel Pagi: <b>07:30 - 07:45 WIB</b></p>
+        <p class="text-sm text-gray-600">Khusus untuk dinas Pagi dan Malam</p>
+      </div>
+    </section>
+
+    <!-- Jam Istirahat -->
+    <section class="bg-white shadow rounded-lg p-5">
+      <button onclick="toggleSection('istirahat')" class="w-full text-left font-bold text-lg text-green-700 flex justify-between items-center">
+        Jam Istirahat <span>▼</span>
+      </button>
+      <div id="istirahat" class="mt-3 hidden">
+        <p class="jadwal" data-day="Senin">Senin - Kamis: <b>12:00 - 13:00 WIB</b></p>
+        <p class="jadwal" data-day="Jumat">Jumat: <b>11:30 - 13:00 WIB</b></p>
+        <p class="jadwal" data-day="Sabtu">Sabtu: <b>12:00 - 13:00 WIB</b></p>
+        <p class="text-sm text-gray-600">Untuk menghindari antrean lama, jam istirahat dilakukan bergantian (30 menit per petugas).</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-green-600 text-white text-center p-4 mt-6">
+    <p class="text-sm">© 2025 UPT Puskesmas Cibatu</p>
+  </footer>
+
+</body>
+</html>
