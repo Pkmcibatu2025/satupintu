@@ -5,16 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jadwal Pelayanan Puskesmas</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Fungsi untuk update jam & tanggal
+    function updateClock() {
+      const now = new Date();
+      const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+      const day = days[now.getDay()];
+      const date = now.toLocaleDateString("id-ID", { day:"numeric", month:"long", year:"numeric" });
+      const time = now.toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit", second:"2-digit" });
+
+      document.getElementById("day").innerText = day;
+      document.getElementById("date").innerText = date;
+      document.getElementById("time").innerText = time;
+
+      // highlight baris tabel sesuai hari ini
+      document.querySelectorAll("tr[data-day]").forEach(row => {
+        const daysAttr = row.getAttribute("data-day").split(",");
+        if (daysAttr.includes(day)) {
+          row.classList.add("bg-green-100");
+        } else {
+          row.classList.remove("bg-green-100");
+        }
+      });
+    }
+
+    setInterval(updateClock, 1000); // update tiap detik
+    window.onload = updateClock;
+  </script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
 
+  <!-- Header dengan Jam -->
   <header class="bg-green-600 text-white p-6 text-center shadow-lg space-y-2">
     <h1 class="text-2xl font-bold">Jadwal Pelayanan UPT Puskesmas Cibatu</h1>
     <p class="text-sm">Informasi Jam & Hari Pelayanan</p>
+    <div class="mt-4">
+      <p class="text-lg">Hari: <span id="day" class="font-bold"></span></p>
+      <p class="text-lg">Tanggal: <span id="date" class="font-bold"></span></p>
+      <p class="text-xl mt-2">⏰ <span id="time" class="font-mono font-bold"></span></p>
+    </div>
   </header>
 
+  <!-- Pemberitahuan -->
+  <section class="max-w-4xl mx-auto mt-6">
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded shadow">
+      <h2 class="font-bold text-yellow-700">📢 Pemberitahuan:</h2>
+      <ul class="list-disc ml-5 text-sm mt-2 space-y-1 text-yellow-800">
+        <li>UGD, Pendaftaran, Rekam Medis, dan PONED tersedia <b>24 Jam</b>.</li>
+        <li>Pelayanan lain mengikuti jam kerja 07:30 – 14:00 WIB.</li>
+        <li>Hari ini layanan yang tersedia akan ditandai otomatis.</li>
+      </ul>
+    </div>
+  </section>
+
   <main class="max-w-6xl mx-auto p-6">
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <!-- Tabel -->
+    <div class="overflow-x-auto bg-white rounded-lg shadow mt-6">
       <table class="w-full border-collapse text-sm">
         <thead class="bg-green-600 text-white">
           <tr>
@@ -24,40 +70,52 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="border-b"><td class="p-3">Pendaftaran, Adm & Rekam Medis</td><td class="p-3">Setiap Hari</td><td class="p-3">24 Jam</td></tr>
-          <tr class="border-b"><td class="p-3">Unit Gawat Darurat</td><td class="p-3">Setiap Hari</td><td class="p-3">24 Jam</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Pemeriksaan Umum</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Klinik TB Paru</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pemeriksaan Gigi & Mulut</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Kesehatan Keluarga</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Pemeriksaan Ibu Hamil</td><td class="p-3">Senin, Rabu, Jumat, Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Pemeriksaan USG</td><td class="p-3">Selasa, Kamis</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan KIA</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Gizi</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Imunisasi</td><td class="p-3">Rabu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan KB</td><td class="p-3">Rabu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan MTBS</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan MTBM</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Anak Terpadu</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan PONED</td><td class="p-3">Setiap Hari</td><td class="p-3">24 Jam</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Laboratorium</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Kefarmasian</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
-          <tr class="border-b"><td class="p-3">Pelayanan Konseling</td><td class="p-3">Senin - Sabtu</td><td class="p-3">07:30 - 14:00 WIB</td></tr>
+          <tr class="border-b" data-day="Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu">
+            <td class="p-3 font-semibold text-green-700">Pendaftaran, Adm & Rekam Medis</td>
+            <td class="p-3">Setiap Hari</td>
+            <td class="p-3 font-bold text-green-700">24 Jam</td>
+          </tr>
+          <tr class="border-b" data-day="Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu">
+            <td class="p-3 font-semibold text-green-700">Unit Gawat Darurat</td>
+            <td class="p-3">Setiap Hari</td>
+            <td class="p-3 font-bold text-green-700">24 Jam</td>
+          </tr>
+          <tr class="border-b" data-day="Senin,Selasa,Rabu,Kamis,Jumat,Sabtu">
+            <td class="p-3">Pelayanan Pemeriksaan Umum</td>
+            <td class="p-3">Senin - Sabtu</td>
+            <td class="p-3">07:30 - 14:00 WIB</td>
+          </tr>
+          <tr class="border-b" data-day="Rabu">
+            <td class="p-3">Pelayanan Imunisasi</td>
+            <td class="p-3">Rabu</td>
+            <td class="p-3">07:30 - 14:00 WIB</td>
+          </tr>
+          <tr class="border-b" data-day="Rabu">
+            <td class="p-3">Pelayanan KB</td>
+            <td class="p-3">Rabu</td>
+            <td class="p-3">07:30 - 14:00 WIB</td>
+          </tr>
+          <tr class="border-b" data-day="Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu">
+            <td class="p-3 font-semibold text-green-700">Pelayanan PONED</td>
+            <td class="p-3">Setiap Hari</td>
+            <td class="p-3 font-bold text-green-700">24 Jam</td>
+          </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Tombol kembali -->
-    <div class="text-center mt-6">
+    <!-- Navigasi -->
+    <div class="text-center mt-6 space-x-3">
       <a href="jadwalpkm.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700 transition">
-        🔙 Kembali ke Jam Kerja
+        💼 Jadwal Kerja
       </a>
-          <a href="index.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700 transition">
-        🏠 Kembali ke Halaman Awal
-             </a>
+      <a href="index.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700 transition">
+        🏠 Halaman Utama
+      </a>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="bg-green-600 text-white text-center p-4 mt-6">
     <p class="text-sm">© 2025 UPT Puskesmas Cibatu</p>
   </footer>
