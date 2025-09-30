@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Posyandu Balita",
+    "date": "2024-10-05",
+    "category": "kesehatan",
+    "body": "Posyandu balita dilaksanakan di Desa Sukamurni pukul 08.00 WIB."
+  },
+  {
+    "id": 2,
+    "title": "Layanan KIA Keliling",
+    "date": "2024-10-12",
+    "category": "layanan",
+    "body": "Pelayanan KIA keliling untuk warga Desa Keresek."
+  }
+]
