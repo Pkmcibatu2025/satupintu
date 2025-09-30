@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Info Terkini & Pengumuman — UPT Puskesmas Cibatu</title>
+  <meta name="description" content="Website pengumuman, kalender kegiatan, dan info terkini interaktif untuk UPT Puskesmas Cibatu" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine@3/tsparticles.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.286.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    :root{--puskesmas-green:#059669; --puskesmas-blue:#06b6d4; --puskesmas-white:#ffffff;}
+    html,body,#app{height:100%;}
+    body{background:linear-gradient(180deg,#042f2e 0%, #061b2a 100%); color:var(--puskesmas-white); font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+    .glass{background: rgba(255,255,255,0.03); backdrop-filter: blur(6px);}
+    .accent{background: linear-gradient(90deg,var(--puskesmas-green),var(--puskesmas-blue));}
+    .card-hover:hover{transform:translateY(-6px)}
+    .truncate-2{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+    a.button { background: linear-gradient(90deg,var(--puskesmas-green),var(--puskesmas-blue)); color: #062022; padding: 8px 12px; border-radius: 8px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div id="app" class="min-h-screen flex flex-col">
+    <div id="tsparticles" class="absolute inset-0 -z-10"></div>
+
+    <header class="w-full border-b border-slate-800/40">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <img src="FDGD.png" alt="Logo" class="w-14 h-14 object-contain rounded">
+          <div>
+            <h1 class="text-lg font-bold">Info Terkini & Pengumuman</h1>
+            <p class="text-slate-300 text-sm">UPT Puskesmas Cibatu — Info layanan, jadwal, & pengumuman</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="hidden md:flex items-center gap-3 bg-slate-800/40 px-3 py-2 rounded-lg glass">
+            <i data-lucide="phone"></i>
+            <div id="topTicker" class="text-sm text-slate-200">WA Informasi & Pengaduan: 0881082062498</div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <a href="index.html" class="button" title="Kembali ke Beranda">← Kembali</a>
+            <button id="themeToggle" class="px-3 py-2 rounded-lg bg-slate-700/40">Mode</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8 w-full flex-1">
+      <div class="grid grid-cols-12 gap-6">
+        <section class="col-span-12 lg:col-span-7 space-y-6">
+          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-up">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h2 class="text-2xl font-bold">Pengumuman Terbaru</h2>
+                <p class="text-slate-300 text-sm mt-1">Informasi penting UPT Puskesmas Cibatu</p>
+              </div>
+              <div class="text-sm text-slate-300">({ <span id="announceCount">0</span> }) Pengumuman</div>
+            </div>
+            <div id="announceSlider" class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+            <div class="mt-4 flex gap-2">
+              <button id="btnPrev" class="px-3 py-2 rounded-lg bg-slate-700/40">Prev</button>
+              <button id="btnNext" class="px-3 py-2 rounded-lg bg-slate-700/40">Next</button>
+              <button id="btnShowAll" class="ml-auto px-3 py-2 rounded-lg bg-amber-500 text-slate-900 font-semibold">Lihat Semua</button>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-up" data-aos-delay="100">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-semibold">Info Terkini</h3>
+              <div class="text-sm text-slate-300">Filter:
+                <select id="filterCategory" class="bg-transparent border border-slate-700 rounded px-2 py-1 ml-2 text-sm">
+                  <option value="all">Semua</option>
+                  <option value="layanan">Layanan</option>
+                  <option value="kegiatan">Kegiatan</option>
+                  <option value="kesehatan">Kesehatan</option>
+                </select>
+              </div>
+            </div>
+            <div id="newsGrid" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <div class="mt-4 text-center">
+              <button id="btnLoadMore" class="px-4 py-2 rounded-lg bg-slate-700/40">Muat Lebih</button>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-up" data-aos-delay="150">
+            <h3 class="text-lg font-semibold">Tambahkan Pengumuman (Demo)</h3>
+            <form id="formAdd" class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
+              <input id="inpTitle" placeholder="Judul pengumuman" class="col-span-2 px-3 py-2 rounded-lg bg-slate-800/40" required />
+              <select id="inpCategory" class="px-3 py-2 rounded-lg bg-slate-800/40">
+                <option value="kegiatan">Kegiatan</option>
+                <option value="layanan">Layanan</option>
+                <option value="kesehatan">Kesehatan</option>
+              </select>
+              <textarea id="inpBody" placeholder="Ringkasan..." class="col-span-3 px-3 py-2 rounded-lg bg-slate-800/40"></textarea>
+              <div class="col-span-3 flex gap-2">
+                <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-500 text-slate-900 font-semibold">Simpan</button>
+                <button type="button" id="btnClearForm" class="px-4 py-2 rounded-lg bg-slate-700/40">Bersihkan</button>
+                <button type="button" id="btnBroadcast" class="ml-auto px-4 py-2 rounded-lg bg-blue-400 text-slate-900 font-semibold">Kirim WA Broadcast (Demo)</button>
+              </div>
+              <div class="col-span-3 text-sm text-slate-400">WA Informasi & Pengaduan: <strong>0881082062498</strong></div>
+            </form>
+          </div>
+        </section>
+
+        <aside class="col-span-12 lg:col-span-5 space-y-6">
+          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-left">
+            <h3 class="text-lg font-semibold">Kalender Kegiatan</h3>
+            <div id="calendar" class="mt-4 bg-transparent"></div>
+          </div>
+
+          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-left" data-aos-delay="100">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">Statistik Mingguan</h3>
+              <div class="text-sm text-slate-300">(Contoh data)</div>
+            </div>
+            <canvas id="statChart" class="mt-4" height="140"></canvas>
+            <div class="mt-3 grid grid-cols-2 gap-2 text-sm text-slate-300">
+              <div class="p-2 bg-slate-800/40 rounded">Total Kunjungan: <strong class="float-right">1,230</strong></div>
+              <div class="p-2 bg-slate-800/40 rounded">Imunisasi: <strong class="float-right">310</strong></div>
+              <div class="p-2 bg-slate-800/40 rounded">Screening: <strong class="float-right">420</strong></div>
+              <div class="p-2 bg-slate-800/40 rounded">Konsultasi: <strong class="float-right">500</strong></div>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-left" data-aos-delay="200">
+            <h3 class="text-lg font-semibold">Tautan Cepat</h3>
+            <div class="mt-3 grid grid-cols-1 gap-2">
+              <a class="block px-3 py-2 rounded-lg bg-slate-700/40" href="https://wa.me/628881082062498?text=Halo%20UPT%20Puskesmas%20Cibatu%2C%20saya%20ingin%20mengadu%20%2F%20bertanya.">Form Pengaduan (WA)</a>
+              <a class="block px-3 py-2 rounded-lg bg-slate-700/40" href="#">Jadwal Jemput Bola</a>
+              <a class="block px-3 py-2 rounded-lg bg-slate-700/40" href="#">Panduan Layanan Gratis</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="border-t border-slate-800/60 py-4">
+      <div class="max-w-7xl mx-auto px-6 text-slate-400 text-sm">© 2024 UPT Puskesmas Cibatu — Website demo interaktif. Data demo disimpan di localStorage.</div>
+    </footer>
+  </div>
+
+  <script>
+    AOS.init({duration:600, once:true});
+    document.addEventListener('DOMContentLoaded', ()=>{ lucide.replace(); });
+
+    tsParticles.load('tsparticles', {
+      background: { color: { value: 'transparent' } },
+      fpsLimit: 60,
+      particles: {
+        number: { value: 40, density: { enable: true, area: 800 } },
+        color: { value: ['#06b6d4','#059669','#ffffff'] },
+        shape: { type: 'circle' },
+        opacity: { value: 0.06 },
+        size: { value: { min: 2, max: 5 } },
+        move: { enable: true, speed: 0.6 }
+      }
+    });
+
+    const demoAnnouncements = [
+      {id:1, title:'Layanan KIA Keliling — Desa Sukamurni', category:'kegiatan', body:'Layanan KIA & imunisasi di Desa Sukamurni pada 5 Oktober 2024. Bawa KTP/KK.' , date:'2024-10-05'},
+      {id:2, title:'Jadwal Jemput Bola Bulan Oktober', category:'layanan', body:'Jemput bola difokuskan pada 3 kecamatan — daftar lengkap di kalender.' , date:'2024-10-01'},
+      {id:3, title:'Peningkatan Pelayanan KTP-el', category:'layanan', body:'Perbaikan sistem antrian online, pelayanan KTP-el diperkirakan lebih cepat.' , date:'2024-09-20'},
+      {id:4, title:'Kampanye Vaksinasi Anak', category:'kesehatan', body:'Vaksin MR gratis untuk anak usia 9 bulan - 15 tahun pada 12 Oktober 2024.' , date:'2024-10-12'}
+    ];
+
+    function loadAnnouncements(){
+      const raw = localStorage.getItem('announcements_v1');
+      if(raw) return JSON.parse(raw);
+      localStorage.setItem('announcements_v1', JSON.stringify(demoAnnouncements));
+      return demoAnnouncements;
+    }
+    function saveAnnouncements(list){ localStorage.setItem('announcements_v1', JSON.stringify(list)); }
+
+    function renderAnnouncements(){
+      const list = loadAnnouncements();
+      const container = document.getElementById('announceSlider');
+      container.innerHTML = '';
+      document.getElementById('announceCount').textContent = list.length;
+      list.slice().reverse().forEach(a=>{
+        const card = document.createElement('article');
+        card.className = 'p-4 rounded-lg glass shadow card-hover';
+        card.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="w-12 h-12 rounded-xl accent flex items-center justify-center text-white font-bold">${a.title.charAt(0).toUpperCase()}</div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between gap-2">
+                <h4 class="font-semibold text-sm">${a.title}</h4>
+                <span class="text-xs text-slate-400">${a.date}</span>
+              </div>
+              <p class="text-slate-300 text-sm mt-1 truncate-2">${a.body}</p>
+              <div class="mt-3 flex gap-2">
+                <button class="btnRead px-3 py-1 rounded bg-slate-700/40 text-sm">Baca</button>
+                <button data-id="${a.id}" class="btnDel px-3 py-1 rounded bg-red-600/80 text-sm">Hapus</button>
+                <span class="ml-auto text-xs text-slate-400">${a.category}</span>
+              </div>
+            </div>
+          </div>`;
+        container.appendChild(card);
+      });
+
+      const top = list[list.length-1];
+      document.getElementById('topTicker').textContent = top ? `${top.title} — ${top.date}` : 'WA Informasi & Pengaduan: 0881082062498';
+
+      document.querySelectorAll('.btnDel').forEach(btn=> btn.addEventListener('click', (e)=>{
+        const id = Number(e.target.dataset.id);
+        const newList = loadAnnouncements().filter(x=>x.id!==id);
+        saveAnnouncements(newList); renderAnnouncements(); renderNews();
+      }));
+      document.querySelectorAll('.btnRead').forEach(btn=> btn.addEventListener('click', (e)=>{
+        const idx = Array.from(document.querySelectorAll('.btnRead')).indexOf(e.target);
+        const a = loadAnnouncements().slice().reverse()[idx];
+        alert(a.title + '\n\n' + a.body + '\n\nTanggal: ' + a.date);
+      }));
+    }
+
+    function renderNews(limit=4){
+      const list = loadAnnouncements().slice().reverse();
+      const container = document.getElementById('newsGrid');
+      container.innerHTML = '';
+      list.slice(0, limit).forEach(item=>{
+        const el = document.createElement('article'); el.className = 'p-4 rounded-lg glass shadow';
+        el.innerHTML = `
+          <div class="flex flex-col h-full">
+            <div class="h-36 bg-gradient-to-br from-slate-700 to-slate-600 rounded mb-3 flex items-end p-3 text-sm text-slate-200">${item.category.toUpperCase()}</div>
+            <h4 class="font-semibold">${item.title}</h4>
+            <p class="text-slate-300 text-sm mt-2 truncate-2">${item.body}</p>
+            <div class="mt-auto flex items-center justify-between pt-3">
+              <span class="text-xs text-slate-400">${item.date}</span>
+              <button class="px-3 py-1 rounded bg-emerald-500 text-slate-900 text-sm btnReadNews">Baca</button>
+            </div>
+          </div>`;
+        container.appendChild(el);
+      });
+      document.querySelectorAll('.btnReadNews').forEach((b,i)=> b.addEventListener('click', ()=>{ const item = loadAnnouncements().slice().reverse()[i]; alert(item.title + '\n\n' + item.body); }));
+    }
+
+    document.getElementById('formAdd').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const title = document.getElementById('inpTitle').value.trim();
+      const body = document.getElementById('inpBody').value.trim();
+      const category = document.getElementById('inpCategory').value;
+      if(!title) return alert('Isi judul terlebih dahulu');
+      const list = loadAnnouncements();
+      const id = list.length ? Math.max(...list.map(x=>x.id))+1 : 1;
+      list.push({id, title, body, category, date: new Date().toISOString().slice(0,10)});
+      saveAnnouncements(list);
+      renderAnnouncements(); renderNews();
+      document.getElementById('formAdd').reset();
+    });
+    document.getElementById('btnClearForm').addEventListener('click', ()=> document.getElementById('formAdd').reset());
+
+    document.getElementById('btnPrev').addEventListener('click', ()=>{ document.getElementById('announceSlider').scrollBy({left:-300, behavior:'smooth'}) });
+    document.getElementById('btnNext').addEventListener('click', ()=>{ document.getElementById('announceSlider').scrollBy({left:300, behavior:'smooth'}) });
+    document.getElementById('btnShowAll').addEventListener('click', ()=>{ window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'}) });
+
+    document.getElementById('filterCategory').addEventListener('change', ()=>{
+      const v = document.getElementById('filterCategory').value;
+      const all = loadAnnouncements().slice().reverse();
+      const filtered = v==='all' ? all : all.filter(x=>x.category===v);
+      const container = document.getElementById('newsGrid'); container.innerHTML = '';
+      filtered.slice(0,8).forEach(item=>{
+        const el = document.createElement('article'); el.className = 'p-4 rounded-lg glass shadow';
+        el.innerHTML = `<h4 class="font-semibold">${item.title}</h4><p class="text-slate-300 text-sm mt-2 truncate-2">${item.body}</p><div class="mt-3 flex items-center justify-between"><span class="text-xs text-slate-400">${item.date}</span><button class="px-3 py-1 rounded bg-emerald-500 text-slate-900 text-sm">Baca</button></div>`;
+        container.appendChild(el);
+      });
+    });
+
+    let newsLimit = 4;
+    document.getElementById('btnLoadMore').addEventListener('click', ()=>{ newsLimit += 4; renderNews(newsLimit); });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 450,
+        selectable: true,
+        events: [
+          { title: 'Jemput Bola - Desa Sukamurni', start: '2024-10-05' },
+          { title: 'Vaksinasi Anak', start: '2024-10-12' },
+          { title: 'Sosialisasi Layanan Gratis', start: '2024-11-03' }
+        ],
+        dateClick: function(info) {
+          const txt = prompt('Tambahkan kegiatan untuk ' + info.dateStr + ' (kosongkan untuk batal)');
+          if(txt && txt.trim()){ calendar.addEvent({ title: txt, start: info.dateStr }); alert('Kegiatan ditambahkan (demo)'); }
+        }
+      });
+      calendar.render();
+    });
+
+    const statCtx = document.getElementById('statChart').getContext('2d');
+    const statChart = new Chart(statCtx, {
+      type: 'line',
+      data: { labels:['Sen','Sel','Rab','Kam','Jum','Sab','Min'], datasets:[{ label:'Kunjungan', data:[120,150,180,200,190,220,170], tension:0.35, fill:true }] },
+      options:{ plugins:{ legend:{ display:false } }, scales:{ x:{ ticks:{ color:'#cbd5e1' } }, y:{ ticks:{ color:'#cbd5e1' }, beginAtZero:true } } }
+    });
+
+    // Simple Notification demo (local Notification API)
+    async function requestNotifyPermission(){
+      if(!('Notification' in window)) return alert('Browser Anda tidak mendukung notifikasi.');
+      const p = await Notification.requestPermission();
+      return p;
+    }
+
+    document.getElementById('btnBroadcast').addEventListener('click', async ()=>{
+      // This is a *client-side demo* to prepare a WA broadcast message.
+      // For real broadcast to many employees you need WhatsApp Business API or third-party (Twilio, Wablas, etc).
+      const list = loadAnnouncements().slice().reverse();
+      const latest = list[0];
+      const message = latest ? `INFO: ${latest.title} - ${latest.body} (UPT Puskesmas Cibatu)` : 'Info dari UPT Puskesmas Cibatu';
+      // Prefill WA chat to the info number (user can forward to broadcast list from their WA business)
+      const waNumber = '628881082062498'; // international format: replace leading 0 with 62
+      const waUrl = `https://wa.me/${waNumber}?text=` + encodeURIComponent(message + '\n\nCatatan: Ini pengiriman manual; gunakan WhatsApp Business API untuk siaran otomatis.`);
+      // Also show a local notification as reminder (demo)
+      const perm = await requestNotifyPermission();
+      if(perm === 'granted'){
+        new Notification('Pengumuman Siap Dikirim', { body: 'Klik untuk buka WhatsApp dan kirim pesan broadcast (manual).', tag: 'broadcast-ready' }).onclick = ()=>{ window.open(waUrl, '_blank'); };
+      } else {
+        window.open(waUrl, '_blank');
+      }
+    });
+
+    // Theme toggle simple
+    const themeBtn = document.getElementById('themeToggle');
+    let dark = true; themeBtn.addEventListener('click', ()=>{ dark = !dark; if(!dark){ document.body.style.background = 'linear-gradient(180deg,#f8fafc,#eef2ff)'; document.body.style.color = '#062022'; themeBtn.textContent = 'Mode Terang'; } else { document.body.style.background = 'linear-gradient(180deg,#042f2e 0%, #061b2a 100%)'; document.body.style.color = '#ffffff'; themeBtn.textContent = 'Mode Gelap'; } });
+
+    // register service worker (for PWA / future push) — optional, demo only
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('service-worker.js').then(()=> console.log('SW registered')).catch(()=>{});
+    }
+
+    renderAnnouncements(); renderNews();
+  </script>
+</body>
+</html>
