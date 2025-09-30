@@ -1,136 +1,322 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jadwal Pelayanan Puskesmas</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rekomendasi ZI 2024 — UPT Puskesmas Cibatu</title>
+  <meta name="description" content="Versi interaktif Rekomendasi Zona Integritas 2024 untuk UPT Puskesmas Cibatu" />
+
+  <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- AOS for scroll animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Lucide icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.286.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    html,body,#app{height:100%;}
+    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    .glass{backdrop-filter: blur(6px); background: rgba(255,255,255,0.06);}
+    .accent{background: linear-gradient(90deg,#047857,#06b6d4);} /* green-blue */
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 text-slate-100">
+  <div id="app" class="min-h-screen p-6">
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto flex items-center justify-between gap-4 mb-6">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-xl accent flex items-center justify-center shadow-lg">
+          <svg class="w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" d="M12 2v10"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" d="M5 10a7 7 0 0 0 14 0"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold">Rekomendasi Zona Integritas 2024</h1>
+          <p class="text-slate-300 text-sm">UPT Puskesmas Cibatu — Transformasi Layanan Jemput Bola & Administrasi Kependudukan</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <div id="currentDate" class="text-sm text-slate-300"></div>
+          <div id="currentTime" class="font-mono font-semibold text-lg"></div>
+        </div>
+        <button id="btnHome" class="flex items-center gap-2 bg-slate-700/30 hover:bg-slate-700/60 px-3 py-2 rounded-lg glass">
+          <i data-lucide="home"></i>
+          <span class="text-sm">Kembali</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main grid -->
+    <main class="max-w-6xl mx-auto grid grid-cols-12 gap-6">
+      <!-- Left column: summary + timeline -->
+      <section class="col-span-12 lg:col-span-5 space-y-6">
+        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-right">
+          <h2 class="text-xl font-semibold mb-2">Ringkasan Rekomendasi</h2>
+          <p class="text-slate-300 leading-relaxed">Dokumen yang diubah menjadi tampilan interaktif ini berisi rekomendasi Zona Integritas, pelaporan kegiatan jemput bola layanan administrasi kependudukan, serta penanganan anomali data. Seluruh nama instansi dan contoh data telah disesuaikan untuk <strong>UPT Puskesmas Cibatu</strong>.</p>
+
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            <div class="p-3 rounded-lg bg-slate-800/60">
+              <h3 class="text-sm text-slate-300">Unit Pengendalian Gratifikasi</h3>
+              <p class="text-xs text-slate-400">Sudah dibentuk, tersedia kanal pelaporan.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-800/60">
+              <h3 class="text-sm text-slate-300">Transparansi Layanan</h3>
+              <p class="text-xs text-slate-400">SOP & SIAK terintegrasi untuk meminimalkan pungli.</p>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <button id="showMoreText" class="mt-2 px-4 py-2 rounded-lg bg-emerald-500 text-white font-semibold hover:brightness-95">Baca Rekomendasi Lengkap</button>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-right" data-aos-delay="100">
+          <h2 class="text-xl font-semibold mb-3">Timeline Kegiatan Jemput Bola 2024</h2>
+          <ol class="relative border-l border-slate-700 pl-4 space-y-4 text-slate-300">
+            <li>
+              <span class="absolute -left-3 top-0 w-6 h-6 rounded-full accent flex items-center justify-center text-white font-bold">Jan</span>
+              <div class="ml-4">Peluncuran program jemput bola & sosialisasi layanan gratis.</div>
+            </li>
+            <li>
+              <span class="absolute -left-3 w-6 h-6 rounded-full accent flex items-center justify-center text-white font-bold">Mar</span>
+              <div class="ml-4">Penguatan supervisi dan monitoring menggunakan SIAK terpusat.</div>
+            </li>
+            <li>
+              <span class="absolute -left-3 w-6 h-6 rounded-full accent flex items-center justify-center text-white font-bold">Jun</span>
+              <div class="ml-4">Evaluasi antar-unit & pembentukan UPG (Unit Pengendalian Gratifikasi).</div>
+            </li>
+            <li>
+              <span class="absolute -left-3 w-6 h-6 rounded-full accent flex items-center justify-center text-white font-bold">Sep</span>
+              <div class="ml-4">Sinkronisasi data kematian dengan KPU untuk perbaikan DPT.</div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-right" data-aos-delay="200">
+          <h2 class="text-xl font-semibold mb-3">Kontak & Pelaporan</h2>
+          <p class="text-slate-300 text-sm">Saluran pengaduan masyarakat:</p>
+          <ul class="text-slate-400 text-sm mt-2 space-y-2">
+            <li>WhatsApp Pengaduan: <strong>0811-2053-205</strong></li>
+            <li>WhatsApp Informasi: <strong>0851-8303-3205</strong></li>
+            <li>Instagram: <strong>@uptpuskescibatu</strong></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Right column: charts + details -->
+      <section class="col-span-12 lg:col-span-7 space-y-6">
+        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="zoom-in">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold">Grafik Laporan Jemput Bola 2024</h2>
+            <div class="text-sm text-slate-300">Interaktif — hover untuk nilai</div>
+          </div>
+          <canvas id="jemputBolaChart" class="mt-4" height="120"></canvas>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-up">
+            <h3 class="text-lg font-semibold">Distribusi Pelayanan</h3>
+            <canvas id="servicesChart" class="mt-3" height="200"></canvas>
+            <div id="servicesLegend" class="mt-3 text-sm text-slate-300"></div>
+          </div>
+
+          <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="text-lg font-semibold">Data Ringkasan</h3>
+            <table class="w-full mt-3 text-sm text-left text-slate-300">
+              <tbody>
+                <tr class="border-b border-slate-700/40">
+                  <td class="py-2 font-medium">Total Laporan Jemput Bola (Jan–Okt)</td>
+                  <td class="py-2 text-right">25,841</td>
+                </tr>
+                <tr class="border-b border-slate-700/40">
+                  <td class="py-2 font-medium">Total Pelayanan KTP-el</td>
+                  <td class="py-2 text-right">9,261</td>
+                </tr>
+                <tr class="border-b border-slate-700/40">
+                  <td class="py-2 font-medium">Total Pelayanan KK</td>
+                  <td class="py-2 text-right">1,852</td>
+                </tr>
+                <tr class="border-b border-slate-700/40">
+                  <td class="py-2 font-medium">Total KIA</td>
+                  <td class="py-2 text-right">1,979</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium">Total Akta Kelahiran</td>
+                  <td class="py-2 text-right">2,386</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="mt-4 flex gap-2">
+              <button id="btnExportPNG" class="px-3 py-2 rounded-lg bg-emerald-500 hover:brightness-95 text-white text-sm">Export Grafik</button>
+              <button id="btnOpenPDF" class="px-3 py-2 rounded-lg bg-slate-700/60 text-sm">Buka PDF Sumber</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-up" data-aos-delay="200">
+          <h3 class="text-lg font-semibold">Filter & Eksplorasi Data</h3>
+          <div class="mt-3 flex flex-wrap gap-3">
+            <select id="selectMonth" class="bg-slate-800/50 rounded-lg px-3 py-2 text-slate-200">
+              <option value="all">Semua Bulan</option>
+            </select>
+            <button id="btnHighlight" class="px-3 py-2 rounded-lg bg-amber-500 text-slate-900 font-semibold">Sorot Bulan Tertinggi</button>
+            <button id="btnReset" class="px-3 py-2 rounded-lg bg-slate-700/50">Reset</button>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <footer class="max-w-6xl mx-auto text-center text-slate-400 text-sm mt-10">© 2024 UPT Puskesmas Cibatu — Dibuat otomatis dari sumber Rekomendasi ZI</footer>
+  </div>
+
   <script>
-    // Fungsi untuk update jam & tanggal
-    function updateClock() {
-      const now = new Date();
-      const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-      const day = days[now.getDay()];
-      const date = now.toLocaleDateString("id-ID", { day:"numeric", month:"long", year:"numeric" });
-      const time = now.toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit", second:"2-digit" });
+    // Initialize AOS
+    AOS.init({duration:700, once:true});
+    // lucide icons
+    document.addEventListener('DOMContentLoaded', ()=>{ lucide.replace(); });
 
-      document.getElementById("day").innerText = day;
-      document.getElementById("date").innerText = date;
-      document.getElementById("time").innerText = time;
+    // --- Clock & date ---
+    function updateClock(){
+      const dt = new Date();
+      const optDate = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+      document.getElementById('currentDate').textContent = dt.toLocaleDateString('id-ID', optDate);
+      document.getElementById('currentTime').textContent = dt.toLocaleTimeString('id-ID');
+    }
+    setInterval(updateClock,1000); updateClock();
 
-      // highlight baris tabel sesuai hari ini
-      document.querySelectorAll("tr[data-day]").forEach(row => {
-        const daysAttr = row.getAttribute("data-day").split(",");
-        if (daysAttr.includes(day)) {
-          row.classList.add("bg-green-100");
-        } else {
-          row.classList.remove("bg-green-100");
+    // Example data (diambil dan disesuaikan dari PDF sumber)
+    const jemputData = {
+      labels: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt'],
+      values: [4551,2815,642,992,1862,2734,2344,2416,2041,1944]
+    };
+
+    const servicesData = {
+      labels: ['KTP-el','KK','KIA','Akta Kelahiran','Akta Kematian'],
+      values: [9261,1852,1979,2386,130]
+    };
+
+    // Create Jemput Bola chart (bar)
+    const ctx = document.getElementById('jemputBolaChart').getContext('2d');
+    const jemputChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: jemputData.labels,
+        datasets: [{
+          label: 'Jumlah Layanan',
+          data: jemputData.values,
+          borderRadius: 6,
+          barThickness: 22,
+        }]
+      },
+      options: {
+        responsive:true,
+        plugins: { legend:{ display:false }, tooltip:{mode:'index'} },
+        scales: {
+          x: { grid:{display:false}, ticks:{color:'#cbd5e1'} },
+          y: { ticks:{color:'#cbd5e1'}, beginAtZero:true }
         }
+      }
+    });
+
+    // Services doughnut chart
+    const ctx2 = document.getElementById('servicesChart').getContext('2d');
+    const servicesChart = new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: servicesData.labels,
+        datasets: [{ data: servicesData.values, hoverOffset:6 }]
+      },
+      options: { responsive:true, plugins:{ legend:{ position:'bottom', labels:{ color:'#cbd5e1' } } } }
+    });
+
+    // Legend generation
+    function renderLegend(){
+      const container = document.getElementById('servicesLegend');
+      container.innerHTML = '';
+      servicesData.labels.forEach((label,i)=>{
+        const val = servicesData.values[i];
+        const el = document.createElement('div');
+        el.className = 'flex justify-between text-sm text-slate-300';
+        el.innerHTML = `<span>${label}</span><span>${val.toLocaleString()}</span>`;
+        container.appendChild(el);
       });
     }
+    renderLegend();
 
-    setInterval(updateClock, 1000); // update tiap detik
-    window.onload = updateClock;
+    // Fill month select
+    const select = document.getElementById('selectMonth');
+    jemputData.labels.forEach((m,i)=>{
+      const opt = document.createElement('option'); opt.value=i; opt.textContent = m + ' — ' + jemputData.values[i];
+      select.appendChild(opt);
+    });
+
+    select.addEventListener('change', ()=>{
+      const v = select.value;
+      if(v==='all'){
+        jemputChart.data.datasets[0].data = jemputData.values.slice();
+      } else {
+        const idx = Number(v);
+        const arr = jemputData.values.map(()=>0);
+        arr[idx] = jemputData.values[idx];
+        jemputChart.data.datasets[0].data = arr;
+      }
+      jemputChart.update();
+    });
+
+    // Highlight highest month
+    document.getElementById('btnHighlight').addEventListener('click', ()=>{
+      const max = Math.max(...jemputData.values);
+      const idx = jemputData.values.indexOf(max);
+      const bg = jemputChart.data.datasets[0].backgroundColor || jemputChart.data.datasets[0].data.map(()=>undefined);
+      jemputChart.data.datasets[0].backgroundColor = jemputData.values.map((v,i)=> i===idx ? 'rgba(6,182,212,0.95)' : 'rgba(148,163,184,0.2)');
+      jemputChart.update();
+      // flash card effect
+      const month = jemputData.labels[idx];
+      alert('Bulan tertinggi: ' + month + ' — ' + max.toLocaleString() + ' layanan');
+    });
+
+    // Reset colors
+    document.getElementById('btnReset').addEventListener('click', ()=>{
+      jemputChart.data.datasets[0].backgroundColor = undefined;
+      jemputChart.data.datasets[0].data = jemputData.values.slice();
+      jemputChart.update();
+      select.value = 'all';
+    });
+
+    // Export chart as PNG
+    document.getElementById('btnExportPNG').addEventListener('click', ()=>{
+      const url = jemputChart.toBase64Image();
+      const a = document.createElement('a'); a.href = url; a.download = 'jemput_bola_chart.png'; a.click();
+    });
+
+    // Show full recommendation modal (simple)
+    document.getElementById('showMoreText').addEventListener('click', ()=>{
+      const text = `Rekomendasi lengkap (disesuaikan untuk UPT Puskesmas Cibatu):\n\n1) Terapkan SOP jemput bola yang transparan, larangan pungli, bukti digital layanan.\n2) Bentuk Unit Pengendalian Gratifikasi (UPG) dan jalur pengaduan.\n3) Sinkronisasi data kematian untuk dukung pemutakhiran pemilih.\n4) Pelatihan rutin integritas pegawai.`;
+      alert(text);
+    });
+
+    // Btn open PDF - try to open local file if available (browser-dependent)
+    document.getElementById('btnOpenPDF').addEventListener('click', ()=>{
+      const pdfPath = './Rekomendasi ZI 2024.pdf';
+      window.open(pdfPath, '_blank');
+    });
+
+    // Home button
+    document.getElementById('btnHome').addEventListener('click', ()=>{
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    // Small accessibility: keyboard shortcut H to scroll home
+    document.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='h') window.scrollTo({top:0,behavior:'smooth'}); });
+
   </script>
-</head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-
-  <!-- Header dengan Jam -->
-  <header class="bg-green-600 text-white p-6 text-center shadow-lg space-y-2">
-    <h1 class="text-2xl font-bold">Jadwal Pelayanan UPT Puskesmas Cibatu</h1>
-    <p class="text-sm">Informasi Jam & Hari Pelayanan</p>
-    <div class="mt-4">
-      <p class="text-lg">Hari: <span id="day" class="font-bold"></span></p>
-      <p class="text-lg">Tanggal: <span id="date" class="font-bold"></span></p>
-      <p class="text-xl mt-2">⏰ <span id="time" class="font-mono font-bold"></span></p>
-    </div>
-  </header>
-
-  <!-- Pemberitahuan -->
-  <section class="max-w-4xl mx-auto mt-6">
-    <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded shadow">
-      <h2 class="font-bold text-yellow-700">📢 Pemberitahuan:</h2>
-      <ul class="list-disc ml-5 text-sm mt-2 space-y-1 text-yellow-800">
-        <li>UGD, Pendaftaran, Rekam Medis, dan PONED tersedia <b>24 Jam</b>.</li>
-        <li>Pelayanan lain mengikuti jam kerja 07:30 – 14:00 WIB.</li>
-        <li>Hari ini layanan yang tersedia akan ditandai otomatis.</li>
-      </ul>
-    </div>
-  </section>
-
-  <main class="max-w-6xl mx-auto p-6">
-    <!-- Tabel -->
-    <div class="overflow-x-auto bg-white rounded-lg shadow mt-6">
-      <table class="w-full border-collapse text-sm">
-        <thead class="bg-green-600 text-white">
-          <tr>
-            <th class="p-3 text-left">Jenis Pelayanan</th>
-            <th class="p-3 text-left">Hari</th>
-            <th class="p-3 text-left">Jam</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border-b" data-day="Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu">
-            <td class="p-3 font-semibold text-green-700">Pendaftaran, Adm & Rekam Medis</td>
-            <td class="p-3">Setiap Hari</td>
-            <td class="p-3 font-bold text-green-700">24 Jam</td>
-          </tr>
-          <tr class="border-b" data-day="Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu">
-            <td class="p-3 font-semibold text-green-700">Unit Gawat Darurat</td>
-            <td class="p-3">Setiap Hari</td>
-            <td class="p-3 font-bold text-green-700">24 Jam</td>
-          </tr>
-          <tr class="border-b" data-day="Senin,Selasa,Rabu,Kamis,Jumat,Sabtu">
-            <td class="p-3">Pelayanan Pemeriksaan Umum</td>
-            <td class="p-3">Senin - Sabtu</td>
-            <td class="p-3">07:30 - 14:00 WIB</td>
-          </tr>
-          <tr class="border-b" data-day="Senin">
-            <td class="p-3">Pelayanan Imunisasi Bayi</td>
-            <td class="p-3">Senin</td>
-            <td class="p-3">07:30 - 14:00 WIB</td>
-          </tr>
-             <tr class="border-b" data-day="Senin,Rabu,Jumat,Sabtu">
-            <td class="p-3">Pelayanan Pemeriksaan Ibu Hamil</td>
-            <td class="p-3">Senin, Rabu, Jumat, Sabtu</td>
-            <td class="p-3">07:30 - 14:00 WIB</td>
-          </tr>
-           <tr class="border-b" data-day="Rabu,Jumat">
-            <td class="p-3">Pelayanan Pemeriksaan USG</td>
-            <td class="p-3">Rabu & Jumat</td>
-            <td class="p-3">07:30 - 14:00 WIB</td>
-          </tr>
-          <tr class="border-b" data-day="Selasa,Kamis">
-            <td class="p-3">Pelayanan KB</td>
-            <td class="p-3">Selasa & Kamis</td>
-            <td class="p-3">07:30 - 14:00 WIB</td>
-          </tr>
-          <tr class="border-b" data-day="Senin,Rabu,Jumat">
-            <td class="p-3">Pelayanan Pemeriksaan CATIN</td>
-            <td class="p-3">Senin, Rabu, Jumat</td>
-            <td class="p-3">07:30 - 14:00 WIB</td>
-          </tr>
-          <tr class="border-b" data-day="Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu">
-            <td class="p-3 font-semibold text-green-700">Pelayanan PONED</td>
-            <td class="p-3">Setiap Hari</td>
-            <td class="p-3 font-bold text-green-700">24 Jam</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Navigasi -->
-    <div class="text-center mt-6 space-x-3">
-      <a href="index.html" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700 transition">
-        🏠 Halaman Utama
-      </a>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-green-600 text-white text-center p-4 mt-6">
-    <p class="text-sm">© 2025 UPT Puskesmas Cibatu</p>
-  </footer>
-
 </body>
 </html>
