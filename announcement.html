@@ -317,7 +317,7 @@
       const message = latest ? `INFO: ${latest.title} - ${latest.body} (UPT Puskesmas Cibatu)` : 'Info dari UPT Puskesmas Cibatu';
       // Prefill WA chat to the info number (user can forward to broadcast list from their WA business)
       const waNumber = '628881082062498'; // international format: replace leading 0 with 62
-      const waUrl = `https://wa.me/${waNumber}?text=` + encodeURIComponent(message + '\n\nCatatan: Ini pengiriman manual; gunakan WhatsApp Business API untuk siaran otomatis.`);
+      const waUrl = `https://wa.me/${waNumber}?text=` + encodeURIComponent(message + '\n\nCatatan: Ini pengiriman manual; gunakan WhatsApp Business API untuk siaran otomatis.');
       // Also show a local notification as reminder (demo)
       const perm = await requestNotifyPermission();
       if(perm === 'granted'){
