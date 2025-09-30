@@ -5,8 +5,8 @@ const app = express();
 app.use(express.json());
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // simpan di .env
-const REPO_OWNER = "username"; // ganti dengan akun GitHub kamu
-const REPO_NAME = "repo-name"; // ganti dengan nama repo kamu
+const REPO_OWNER = "Pkmcibatu2025"; // ganti dengan akun GitHub kamu
+const REPO_NAME = "satupintu"; // ganti dengan nama repo kamu
 const FILE_PATH = "data/pengumuman.json"; // path file JSON
 
 // API endpoint untuk tambah pengumuman
