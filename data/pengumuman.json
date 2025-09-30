@@ -1,16 +1,23 @@
 [
   {
     "id": 1,
-    "title": "Posyandu Balita",
+    "title": "Posyandu Balita Desa Sukamurni",
     "date": "2024-10-05",
     "category": "kesehatan",
-    "body": "Posyandu balita dilaksanakan di Desa Sukamurni pukul 08.00 WIB."
+    "body": "Posyandu balita akan dilaksanakan di Balai Desa Sukamurni mulai pukul 08.00 WIB. Mohon orang tua membawa KMS balita."
   },
   {
     "id": 2,
-    "title": "Layanan KIA Keliling",
-    "date": "2024-10-12",
+    "title": "Jadwal Layanan KIA Keliling",
+    "date": "2024-10-10",
     "category": "layanan",
-    "body": "Pelayanan KIA keliling untuk warga Desa Keresek."
+    "body": "Layanan Kesehatan Ibu dan Anak (KIA) keliling akan dilaksanakan di Desa Keresek. Peserta diharapkan membawa buku KIA."
+  },
+  {
+    "id": 3,
+    "title": "Penyuluhan Gizi Seimbang",
+    "date": "2024-10-12",
+    "category": "kegiatan",
+    "body": "Penyuluhan gizi seimbang untuk masyarakat umum di Aula Puskesmas Cibatu pukul 09.00 WIB. Terbuka untuk umum."
   }
 ]
