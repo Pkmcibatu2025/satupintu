@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Pengumuman — UPT Puskesmas Cibatu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="max-w-3xl mx-auto p-6">
+    <header class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold">Admin — Tambah Pengumuman</h1>
+      <a href="announcement.html" class="px-3 py-2 rounded bg-green-600 text-white">← Kembali</a>
+    </header>
+
+    <!-- Form -->
+    <form id="formAdd" class="space-y-4 bg-white p-6 rounded shadow">
+      <div>
+        <label class="block font-semibold mb-1">Judul Pengumuman</label>
+        <input id="inpTitle" class="w-full border px-3 py-2 rounded" placeholder="Judul..." required />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Tanggal</label>
+        <input type="date" id="inpDate" class="w-full border px-3 py-2 rounded" required />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Kategori</label>
+        <select id="inpCategory" class="w-full border px-3 py-2 rounded">
+          <option value="layanan">Layanan</option>
+          <option value="kegiatan">Kegiatan</option>
+          <option value="kesehatan">Kesehatan</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1">Isi/Ringkasan</label>
+        <textarea id="inpBody" rows="4" class="w-full border px-3 py-2 rounded" placeholder="Isi pengumuman..." required></textarea>
+      </div>
+
+      <div class="flex gap-3">
+        <button type="submit" class="px-4 py-2 rounded bg-green-600 text-white">Simpan</button>
+        <button type="button" id="btnClear" class="px-4 py-2 rounded bg-gray-400">Bersihkan</button>
+      </div>
+    </form>
+
+    <!-- List -->
+    <section class="mt-8">
+      <h2 class="text-xl font-semibold mb-4">Daftar Pengumuman (localStorage)</h2>
+      <div id="announceList" class="space-y-3"></div>
+    </section>
+  </div>
+
+  <script>
+    function loadAnnouncements(){
+      const raw = localStorage.getItem('announcements_v1');
+      return raw ? JSON.parse(raw) : [];
+    }
+    function saveAnnouncements(list){
+      localStorage.setItem('announcements_v1', JSON.stringify(list));
+    }
+
+    function renderAnnouncements(){
+      const list = loadAnnouncements();
+      const c = document.getElementById('announceList');
+      c.innerHTML = '';
+      if(list.length === 0){
+        c.innerHTML = '<p class="text-gray-500">Belum ada pengumuman.</p>';
+        return;
+      }
+      list.slice().reverse().forEach((a, i)=>{
+        const el = document.createElement('div');
+        el.className = 'p-4 bg-white rounded shadow';
+        el.innerHTML = `
+          <h3 class="font-semibold">${a.title}</h3>
+          <p class="text-sm text-gray-700">${a.body}</p>
+          <div class="text-xs text-gray-500 mt-1">Tanggal: ${a.date} — Kategori: ${a.category}</div>
+          <button data-id="${a.id}" class="btnDel mt-2 text-red-600 text-sm">Hapus</button>
+        `;
+        c.appendChild(el);
+      });
+      document.querySelectorAll('.btnDel').forEach(btn=>{
+        btn.addEventListener('click', e=>{
+          const id = Number(e.target.dataset.id);
+          const newList = loadAnnouncements().filter(x=>x.id !== id);
+          saveAnnouncements(newList);
+          renderAnnouncements();
+        });
+      });
+    }
+
+    document.getElementById('formAdd').addEventListener('submit', e=>{
+      e.preventDefault();
+      const title = document.getElementById('inpTitle').value;
+      const body = document.getElementById('inpBody').value;
+      const date = document.getElementById('inpDate').value;
+      const category = document.getElementById('inpCategory').value;
+
+      const list = loadAnnouncements();
+      const id = list.length ? Math.max(...list.map(x=>x.id))+1 : 1;
+      list.push({id, title, body, date, category});
+      saveAnnouncements(list);
+
+      renderAnnouncements();
+      e.target.reset();
+    });
+
+    document.getElementById('btnClear').addEventListener('click', ()=>{
+      document.getElementById('formAdd').reset();
+    });
+
+    renderAnnouncements();
+  </script>
+</body>
+</html>
