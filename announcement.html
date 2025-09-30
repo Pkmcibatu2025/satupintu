@@ -100,7 +100,7 @@
     <!-- Footer -->
     <footer class="border-t border-slate-800/60 py-4">
       <div class="max-w-7xl mx-auto px-6 text-slate-400 text-sm">
-        © 2024 UPT Puskesmas Cibatu — Website demo interaktif. Data demo hanya untuk tampilan.
+        © 2024 UPT Puskesmas Cibatu — Website interaktif. Data pengumuman disimpan di GitHub JSON.
       </div>
     </footer>
   </div>
@@ -109,58 +109,60 @@
   <script>
     AOS.init({duration:600, once:true});
 
-    // Dummy data
-    const announcements = [
-      {title:'Layanan KIA Keliling — Desa Sukamurni', date:'2024-10-05', body:'Layanan KIA & imunisasi di Desa Sukamurni pada 5 Oktober 2024. Bawa KTP/KK.'},
-      {title:'Jadwal Jemput Bola Bulan Oktober', date:'2024-10-01', body:'Jemput bola difokuskan pada 3 kecamatan — daftar lengkap di kalender.'},
-      {title:'Peningkatan Pelayanan KTP-el', date:'2024-09-20', body:'Perbaikan sistem antrian online, pelayanan KTP-el diperkirakan lebih cepat.'},
-      {title:'Kampanye Vaksinasi Anak', date:'2024-10-12', body:'Vaksin MR gratis untuk anak usia 9 bulan - 15 tahun pada 12 Oktober 2024.'}
-    ];
+    async function loadAnnouncements(){
+      try {
+        const res = await fetch("https://raw.githubusercontent.com/Pkmcibatu2025/satupintu/main/data/pengumuman.json");
+        if(!res.ok) throw new Error("Gagal ambil data");
+        return await res.json();
+      } catch(e){
+        console.error(e);
+        return [];
+      }
+    }
 
-    function renderAnnouncements() {
+    async function render(){
+      const announcements = await loadAnnouncements();
+
+      // Render Pengumuman Terbaru
       const container = document.getElementById('announceList');
       container.innerHTML = '';
-      announcements.forEach(a=>{
+      announcements.slice().reverse().forEach(a=>{
         const card = document.createElement('article');
         card.className = 'p-4 rounded-lg glass shadow card-hover';
         card.innerHTML = `
           <h4 class="font-semibold">${a.title}</h4>
           <p class="text-slate-300 text-sm mt-2 truncate-2">${a.body}</p>
-          <div class="mt-2 text-xs text-slate-400">Tanggal: ${a.date}</div>
+          <div class="mt-2 text-xs text-slate-400">Tanggal: ${new Date(a.date).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div>
         `;
         container.appendChild(card);
       });
-    }
 
-    function renderNews() {
-      const container = document.getElementById('newsGrid');
-      container.innerHTML = '';
+      // Render Info Terkini
+      const newsGrid = document.getElementById('newsGrid');
+      newsGrid.innerHTML = '';
       announcements.forEach(a=>{
         const el = document.createElement('article');
         el.className = 'p-4 rounded-lg glass shadow';
         el.innerHTML = `
           <h4 class="font-semibold">${a.title}</h4>
           <p class="text-slate-300 text-sm mt-2 truncate-2">${a.body}</p>
-          <div class="mt-2 text-xs text-slate-400">${a.date}</div>
+          <div class="mt-2 text-xs text-slate-400">${new Date(a.date).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div>
         `;
-        container.appendChild(el);
+        newsGrid.appendChild(el);
       });
-    }
 
-    // Calendar
-    document.addEventListener('DOMContentLoaded', function() {
+      // Kalender otomatis dari pengumuman
       const calendarEl = document.getElementById('calendar');
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 450,
-        events: [
-          { title: 'Jemput Bola - Desa Sukamurni', start: '2024-10-05' },
-          { title: 'Vaksinasi Anak', start: '2024-10-12' },
-          { title: 'Sosialisasi Layanan Gratis', start: '2024-11-03' }
-        ]
+        events: announcements.map(a=>({
+          title: a.title,
+          start: a.date
+        }))
       });
       calendar.render();
-    });
+    }
 
     // Statistik chart
     const statCtx = document.getElementById('statChart').getContext('2d');
@@ -195,8 +197,7 @@
       }
     });
 
-    renderAnnouncements();
-    renderNews();
+    render();
   </script>
 </body>
 </html>
