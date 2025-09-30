@@ -17,28 +17,69 @@
       <option value="kegiatan">Kegiatan</option>
       <option value="kesehatan">Kesehatan</option>
     </select>
+
+    <!-- Tambah input token -->
+    <input id="token" type="password" placeholder="GitHub Token (hanya admin)" class="w-full border px-3 py-2 rounded" required>
+
     <button class="px-4 py-2 bg-green-600 text-white rounded" type="submit">Simpan</button>
   </form>
 
   <script>
+    // Ganti dengan repo kamu
+    const REPO_OWNER = "username";   // <-- isi username GitHub kamu
+    const REPO_NAME  = "repo-name";  // <-- isi nama repo kamu
+    const FILE_PATH  = "data/pengumuman.json";
+
     document.getElementById("formAdd").addEventListener("submit", async e=>{
       e.preventDefault();
-      const data = {
-        title: document.getElementById("title").value,
-        body: document.getElementById("body").value,
-        date: document.getElementById("date").value,
-        category: document.getElementById("category").value
-      };
-      const res = await fetch("http://localhost:3000/add-pengumuman", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(data)
-      });
-      const result = await res.json();
-      if(result.success){
-        alert("Pengumuman berhasil ditambahkan!");
-      } else {
-        alert("Gagal: " + result.error);
+
+      const token = document.getElementById("token").value;
+      const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
+
+      try {
+        // 1. Ambil file JSON lama
+        const fileRes = await fetch(url, {
+          headers: { Authorization: `token ${token}` }
+        });
+        if (!fileRes.ok) throw new Error("Gagal ambil file: " + fileRes.status);
+        const fileData = await fileRes.json();
+        const content = atob(fileData.content);
+        let pengumuman = JSON.parse(content);
+
+        // 2. Tambah item baru
+        const newItem = {
+          id: pengumuman.length ? Math.max(...pengumuman.map(p=>p.id))+1 : 1,
+          title: document.getElementById("title").value,
+          body: document.getElementById("body").value,
+          date: document.getElementById("date").value,
+          category: document.getElementById("category").value
+        };
+        pengumuman.push(newItem);
+
+        // 3. Encode ke base64
+        const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(pengumuman, null, 2))));
+
+        // 4. Commit update ke GitHub
+        const updateRes = await fetch(url, {
+          method: "PUT",
+          headers: {
+            Authorization: `token ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: `Tambah pengumuman: ${newItem.title}`,
+            content: updatedContent,
+            sha: fileData.sha
+          })
+        });
+
+        if (!updateRes.ok) throw new Error("Gagal update file: " + updateRes.status);
+        alert("✅ Pengumuman berhasil ditambahkan!");
+        e.target.reset();
+
+      } catch (err) {
+        console.error(err);
+        alert("❌ Error: " + err.message);
       }
     });
   </script>
