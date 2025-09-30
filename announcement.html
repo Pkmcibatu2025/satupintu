@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Info Terkini & Pengumuman — UPT Puskesmas Cibatu</title>
-  <meta name="description" content="Website pengumuman, kalender kegiatan, dan info terkini interaktif untuk UPT Puskesmas Cibatu" />
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,249 +14,271 @@
   <!-- FullCalendar -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-
-  <!-- AOS Animation -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-  <style>
-    :root {
-      --puskesmas-green: #059669;
-      --puskesmas-blue: #06b6d4;
-      --puskesmas-white: #ffffff;
-    }
-    body {
-      background: linear-gradient(180deg, #042f2e 0%, #061b2a 100%);
-      color: var(--puskesmas-white);
-      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-    }
-    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(6px); }
-    .accent { background: linear-gradient(90deg,var(--puskesmas-green),var(--puskesmas-blue)); }
-    .card-hover:hover { transform: translateY(-6px); cursor: pointer; }
-    .truncate-2 {
-      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-    }
-    a.button {
-      background: linear-gradient(90deg,var(--puskesmas-green),var(--puskesmas-blue));
-      color: #062022; padding: 8px 12px; border-radius: 8px; font-weight:600;
-    }
-    /* Modal */
-    .modal-bg { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
-    .modal { background:#fff; color:#062022; max-width:600px; width:90%; border-radius:12px; padding:20px; }
-    .modal h4 { font-size:1.25rem; font-weight:bold; }
-  </style>
 </head>
-<body>
+<body class="bg-slate-900 text-white">
   <div class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="w-full border-b border-slate-800/40">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-          <img src="FDGD.png" alt="Logo" class="w-14 h-14 object-contain rounded">
-          <div>
-            <h1 class="text-lg font-bold">Info Terkini & Pengumuman</h1>
-            <p class="text-slate-300 text-sm">UPT Puskesmas Cibatu — Info layanan, jadwal, & pengumuman</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <a href="index.html" class="button">← Kembali</a>
-          <button id="themeToggle" class="px-3 py-2 rounded-lg bg-slate-700/40">Mode</button>
-        </div>
+    <header class="w-full border-b border-slate-700">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-xl font-bold">Info Terkini & Pengumuman</h1>
+        <a href="index.html" class="px-4 py-2 bg-teal-500 rounded">← Kembali</a>
       </div>
     </header>
 
     <!-- Main -->
-    <main class="max-w-7xl mx-auto px-6 py-8 w-full flex-1">
-      <div class="grid grid-cols-12 gap-6">
-        <!-- Pengumuman -->
-        <section class="col-span-12 lg:col-span-7 space-y-6">
-          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-up">
-            <div class="flex items-center justify-between">
-              <div>
-                <h2 class="text-2xl font-bold">Pengumuman Terbaru</h2>
-                <p class="text-slate-300 text-sm mt-1">Informasi penting UPT Puskesmas Cibatu</p>
-              </div>
-              <!-- Filter -->
-              <select id="filterKategori" class="bg-slate-700 text-white px-2 py-1 rounded">
+    <main class="max-w-7xl mx-auto px-6 py-8 flex-1 grid grid-cols-12 gap-6">
+      <!-- Pengumuman -->
+      <section class="col-span-12 lg:col-span-7 space-y-6">
+        <div class="p-6 rounded-xl bg-slate-800 shadow">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+            <h2 class="text-2xl font-bold">Pengumuman</h2>
+            <div class="flex gap-2">
+              <select id="filterKategori" class="bg-slate-700 text-white rounded px-2 py-1">
                 <option value="semua">Semua</option>
                 <option value="layanan">Layanan</option>
                 <option value="kegiatan">Kegiatan</option>
                 <option value="kesehatan">Kesehatan</option>
               </select>
+              <input id="searchBox" type="text" placeholder="Cari..." 
+                     class="bg-slate-700 text-white rounded px-2 py-1 w-40 md:w-60"/>
+              <select id="perPageSelect" class="bg-slate-700 text-white rounded px-2 py-1">
+                <option value="5">5 / halaman</option>
+                <option value="10">10 / halaman</option>
+                <option value="20">20 / halaman</option>
+              </select>
             </div>
-            <div id="announceList" class="mt-6 grid grid-cols-1 gap-4"></div>
           </div>
+          <div id="announceList" class="grid gap-4"></div>
+          <div id="pagination" class="flex justify-center mt-4 gap-2"></div>
+        </div>
 
-          <!-- Info Terkini -->
-          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="text-xl font-semibold">Info Terkini</h3>
-            <div id="newsGrid" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        <!-- Info Terkini -->
+        <div class="p-6 rounded-xl bg-slate-800 shadow">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Info Terkini</h2>
+            <select id="modeInfo" class="bg-slate-700 text-white rounded px-2 py-1">
+              <option value="bulan">Bulan Ini</option>
+              <option value="minggu">7 Hari Terakhir</option>
+            </select>
           </div>
-        </section>
+          <div id="newsGrid" class="grid gap-4"></div>
+        </div>
+      </section>
 
-        <!-- Sidebar -->
-        <aside class="col-span-12 lg:col-span-5 space-y-6">
-          <!-- Kalender -->
-          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-left">
-            <h3 class="text-lg font-semibold">Kalender Kegiatan</h3>
-            <div id="calendar" class="mt-4 bg-transparent"></div>
-          </div>
+      <!-- Sidebar -->
+      <aside class="col-span-12 lg:col-span-5 space-y-6">
+        <!-- Kalender -->
+        <div class="p-6 rounded-xl bg-slate-800 shadow">
+          <h3 class="text-lg font-semibold">Kalender Kegiatan</h3>
+          <div id="calendar" class="mt-4"></div>
+        </div>
 
-          <!-- Statistik -->
-          <div class="p-6 rounded-2xl glass shadow-lg" data-aos="fade-left" data-aos-delay="100">
-            <h3 class="text-lg font-semibold">Statistik Mingguan</h3>
-            <canvas id="statChart" class="mt-4" height="140"></canvas>
-          </div>
-        </aside>
-      </div>
+        <!-- Statistik -->
+        <div class="p-6 rounded-xl bg-slate-800 shadow">
+          <h3 class="text-lg font-semibold">Statistik Mingguan</h3>
+          <canvas id="statChart" class="mt-4" height="140"></canvas>
+        </div>
+      </aside>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800/60 py-4">
-      <div class="max-w-7xl mx-auto px-6 text-slate-400 text-sm">
-        © 2024 UPT Puskesmas Cibatu — Website interaktif. Data pengumuman disimpan di GitHub JSON.
-      </div>
-    </footer>
-  </div>
-
-  <!-- Modal Popup -->
-  <div id="modalBg" class="modal-bg flex">
-    <div class="modal">
-      <h4 id="modalTitle"></h4>
-      <p id="modalBody" class="mt-3"></p>
-      <p id="modalDate" class="text-sm text-gray-600 mt-2"></p>
-      <div class="mt-4 text-right">
-        <button onclick="closeModal()" class="px-3 py-1 bg-red-500 text-white rounded">Tutup</button>
+    <!-- Modal -->
+    <div id="modalPengumuman" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50">
+      <div class="bg-white text-black p-6 rounded-lg shadow max-w-lg w-full">
+        <div id="modalContent"></div>
+        <button id="btnCloseModal" class="mt-4 px-4 py-2 bg-red-600 text-white rounded">Tutup</button>
       </div>
     </div>
   </div>
 
   <!-- Script -->
   <script>
-    AOS.init({duration:600, once:true});
+    let announcements = [];
+    let currentPage = 1;
+    let perPage = 5; // default
+
+    // Modal handler
+    const modal = document.getElementById("modalPengumuman");
+    const modalContent = document.getElementById("modalContent");
+    const btnClose = document.getElementById("btnCloseModal");
+    btnClose.addEventListener("click", () => modal.classList.add("hidden"));
 
     function formatBody(text){
       const urlRegex = /(https?:\/\/[^\s]+)/g;
       return text.replace(urlRegex, `<a href="$1" target="_blank" class="text-blue-500 underline">Lihat di sini lebih lengkap</a>`);
     }
 
-    async function loadAnnouncements(){
-      try {
-        const url = "https://raw.githubusercontent.com/Pkmcibatu2025/satupintu/main/data/pengumuman.json?t=" + Date.now();
-        const res = await fetch(url);
-        if(!res.ok) throw new Error("Gagal ambil data");
-        return await res.json();
-      } catch(e){
-        console.error(e);
-        return [];
+    function openModal(item) {
+      modalContent.innerHTML = `
+        <h2 class="font-bold text-lg mb-2">${item.title}</h2>
+        <p class="text-sm mb-4">${formatBody(item.body)}</p>
+        <div class="text-xs text-gray-600">Tanggal: ${new Date(item.date).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div>
+      `;
+      modal.classList.remove("hidden");
+    }
+
+    // Render Pengumuman (kategori + search + pagination)
+    function renderAnnouncements() {
+      const kategori = document.getElementById("filterKategori").value;
+      const keyword = document.getElementById("searchBox").value.toLowerCase();
+      const container = document.getElementById("announceList");
+      container.innerHTML = "";
+
+      let data = [...announcements];
+      if(kategori !== "semua"){
+        data = data.filter(a=>a.category === kategori);
       }
-    }
-
-    let announcements = [];
-
-    function openModal(item){
-      document.getElementById("modalTitle").innerText = item.title;
-      document.getElementById("modalBody").innerHTML = formatBody(item.body);
-      document.getElementById("modalDate").innerText = "Tanggal: " + new Date(item.date).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-      document.getElementById("modalBg").style.display = "flex";
-    }
-    function closeModal(){
-      document.getElementById("modalBg").style.display = "none";
-    }
-
-    async function render(){
-      announcements = await loadAnnouncements();
-      announcements.sort((a,b)=> new Date(b.date) - new Date(a.date));
-
-      const filter = document.getElementById("filterKategori").value;
-      let filtered = announcements;
-      if(filter !== "semua"){
-        filtered = announcements.filter(a=>a.category === filter);
+      if(keyword){
+        data = data.filter(a=>
+          a.title.toLowerCase().includes(keyword) ||
+          a.body.toLowerCase().includes(keyword)
+        );
       }
 
-      // Render Pengumuman
-      const container = document.getElementById('announceList');
-      container.innerHTML = '';
-      filtered.forEach(a=>{
-        const card = document.createElement('article');
-        card.className = 'p-4 rounded-lg glass shadow card-hover';
+      // sort by tanggal terbaru
+      data.sort((a,b)=> new Date(b.date)-new Date(a.date));
+
+      // pagination
+      const totalPages = Math.ceil(data.length / perPage);
+      if(currentPage > totalPages) currentPage = totalPages || 1;
+      const start = (currentPage-1)*perPage;
+      const pageData = data.slice(start, start+perPage);
+
+      pageData.forEach(a=>{
+        const card = document.createElement("div");
+        card.className = "p-4 rounded bg-slate-700 cursor-pointer hover:bg-slate-600";
         card.innerHTML = `
           <h4 class="font-semibold">${a.title}</h4>
-          <p class="text-slate-300 text-sm mt-2 truncate-2">${formatBody(a.body)}</p>
-          <div class="mt-2 text-xs text-slate-400">Tanggal: ${new Date(a.date).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div>
+          <p class="text-slate-300 text-sm mt-1 truncate">${a.body}</p>
+          <div class="text-xs text-slate-400 mt-1">Tanggal: ${new Date(a.date).toLocaleDateString('id-ID')}</div>
         `;
-        card.addEventListener("click", ()=> openModal(a));
+        card.onclick = ()=>openModal(a);
         container.appendChild(card);
       });
 
-      // Render Info Terkini
-      const newsGrid = document.getElementById('newsGrid');
-      newsGrid.innerHTML = '';
+      if(data.length === 0){
+        container.innerHTML = `<p class="text-slate-400 text-sm">Tidak ada pengumuman ditemukan.</p>`;
+      }
+
+      renderPagination(totalPages);
+    }
+
+    // Render pagination (Prev/Next + nomor halaman)
+    function renderPagination(totalPages){
+      const pagination = document.getElementById("pagination");
+      pagination.innerHTML = "";
+      if(totalPages <= 1) return;
+
+      // Prev
+      const prevBtn = document.createElement("button");
+      prevBtn.textContent = "Prev";
+      prevBtn.className = `px-3 py-1 rounded ${currentPage===1?"bg-slate-600 text-gray-400 cursor-not-allowed":"bg-slate-700 hover:bg-slate-600"}`;
+      if(currentPage > 1) prevBtn.onclick = ()=>{ currentPage--; renderAnnouncements(); };
+      pagination.appendChild(prevBtn);
+
+      // Numbered pages
+      for(let i=1;i<=totalPages;i++){
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.className = `px-3 py-1 rounded ${i===currentPage?"bg-teal-500 text-white":"bg-slate-700 hover:bg-slate-600"}`;
+        btn.onclick = ()=>{ currentPage=i; renderAnnouncements(); };
+        pagination.appendChild(btn);
+      }
+
+      // Next
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "Next";
+      nextBtn.className = `px-3 py-1 rounded ${currentPage===totalPages?"bg-slate-600 text-gray-400 cursor-not-allowed":"bg-slate-700 hover:bg-slate-600"}`;
+      if(currentPage < totalPages) nextBtn.onclick = ()=>{ currentPage++; renderAnnouncements(); };
+      pagination.appendChild(nextBtn);
+    }
+
+    // Render Info Terkini (bulan ini / minggu ini)
+    function renderNews() {
+      const mode = document.getElementById("modeInfo").value;
+      const container = document.getElementById("newsGrid");
+      container.innerHTML = "";
+      const now = new Date();
+
+      let filtered = [];
+      if(mode === "bulan"){
+        const m = now.getMonth();
+        const y = now.getFullYear();
+        filtered = announcements.filter(a=>{
+          const d = new Date(a.date);
+          return d.getMonth()===m && d.getFullYear()===y;
+        });
+      } else if(mode === "minggu"){
+        filtered = announcements.filter(a=>{
+          const d = new Date(a.date);
+          const diff = (now - d) / (1000*60*60*24);
+          return diff <= 7 && diff >= 0;
+        });
+      }
+
+      if(filtered.length===0){
+        container.innerHTML = `<p class="text-slate-400 text-sm">Belum ada info terkini ${mode==="bulan"?"bulan ini":"7 hari terakhir"}.</p>`;
+        return;
+      }
+
       filtered.forEach(a=>{
-        const el = document.createElement('article');
-        el.className = 'p-4 rounded-lg glass shadow card-hover';
+        const el = document.createElement("div");
+        el.className = "p-4 rounded bg-slate-700 cursor-pointer hover:bg-slate-600";
         el.innerHTML = `
           <h4 class="font-semibold">${a.title}</h4>
-          <p class="text-slate-300 text-sm mt-2 truncate-2">${formatBody(a.body)}</p>
-          <div class="mt-2 text-xs text-slate-400">${new Date(a.date).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div>
+          <p class="text-slate-300 text-sm mt-1 truncate">${a.body}</p>
+          <div class="text-xs text-slate-400 mt-1">${new Date(a.date).toLocaleDateString('id-ID')}</div>
         `;
-        el.addEventListener("click", ()=> openModal(a));
-        newsGrid.appendChild(el);
+        el.onclick = ()=>openModal(a);
+        container.appendChild(el);
       });
+    }
 
-      // Kalender
-      const calendarEl = document.getElementById('calendar');
+    // Load data JSON
+    async function loadData() {
+      const res = await fetch("data/pengumuman.json?t="+Date.now());
+      announcements = await res.json();
+      renderAnnouncements();
+      renderNews();
+
+      // Calendar
+      const calendarEl = document.getElementById("calendar");
       const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
+        initialView: "dayGridMonth",
         height: 450,
-        events: announcements.map(a=>({
-          title: a.title,
-          start: a.date,
-          extendedProps: { item: a }
-        })),
-        eventClick: function(info){
-          openModal(info.event.extendedProps.item);
-        }
+        events: announcements.map(a=>({ title:a.title, start:a.date, extendedProps:a })),
+        eventClick: info => { openModal(info.event.extendedProps); }
       });
       calendar.render();
     }
 
-    document.getElementById("filterKategori").addEventListener("change", render);
+    // Event listeners
+    document.getElementById("modeInfo").addEventListener("change", renderNews);
+    document.getElementById("filterKategori").addEventListener("change", ()=>{currentPage=1;renderAnnouncements();});
+    document.getElementById("searchBox").addEventListener("input", ()=>{currentPage=1;renderAnnouncements();});
+    document.getElementById("perPageSelect").addEventListener("change", (e)=>{
+      perPage = parseInt(e.target.value);
+      currentPage = 1;
+      renderAnnouncements();
+    });
 
-    // Statistik chart (dummy data)
-    const statCtx = document.getElementById('statChart').getContext('2d');
+    // Statistik Chart (dummy)
+    const statCtx = document.getElementById("statChart").getContext("2d");
     new Chart(statCtx, {
-      type: 'line',
-      data: {
-        labels:['Sen','Sel','Rab','Kam','Jum','Sab','Min'],
-        datasets:[{ label:'Kunjungan', data:[120,150,180,200,190,220,170], tension:0.35, fill:true }]
+      type:"line",
+      data:{
+        labels:["Sen","Sel","Rab","Kam","Jum","Sab","Min"],
+        datasets:[{label:"Kunjungan", data:[120,150,180,200,190,220,170], tension:0.35, fill:true}]
       },
       options:{
-        plugins:{ legend:{ display:false }},
+        plugins:{legend:{display:false}},
         scales:{
-          x:{ ticks:{ color:'#cbd5e1' }},
-          y:{ ticks:{ color:'#cbd5e1' }, beginAtZero:true }
+          x:{ticks:{color:"#cbd5e1"}},
+          y:{ticks:{color:"#cbd5e1"},beginAtZero:true}
         }
       }
     });
 
-    // Theme toggle
-    const themeBtn = document.getElementById('themeToggle');
-    let dark = true;
-    themeBtn.addEventListener('click', ()=>{
-      dark = !dark;
-      if(!dark){
-        document.body.style.background = 'linear-gradient(180deg,#f8fafc,#eef2ff)';
-        document.body.style.color = '#062022';
-        themeBtn.textContent = 'Mode Terang';
-      } else {
-        document.body.style.background = 'linear-gradient(180deg,#042f2e 0%, #061b2a 100%)';
-        document.body.style.color = '#ffffff';
-        themeBtn.textContent = 'Mode Gelap';
-      }
-    });
-
-    render();
+    loadData();
   </script>
 </body>
 </html>
