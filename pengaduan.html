@@ -16,16 +16,12 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .form-container {
-      animation: slideUp 0.9s ease-in-out;
-    }
+    .form-container { animation: slideUp 0.9s ease-in-out; }
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(40px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    label {
-      font-weight: 600;
-    }
+    label { font-weight: 600; }
   </style>
 </head>
 
@@ -88,8 +84,11 @@
   </div>
 
   <script>
-    // 🔧 Ganti URL di bawah ini dengan URL Web App dari Google Apps Script kamu
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyM9fFeI-IVrlCdwJrZDwSBhaEZe4oSnLdgcDCunPCPQDb0Y_fHvKwYzKrSUrV7fYkI/exec";
+    // URL Google Apps Script kamu
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbz3NiPNZhIc_lQIiZXxw0MD3kPe_6GvqZqCs0b3w2TNJUKo-5ofr_pF9BTwTdkmjcNABw/exec";
+
+    // Proxy publik untuk bypass CORS (tidak perlu ubah)
+    const PROXY_URL = "https://corsproxy.io/?";
 
     document.getElementById("formPengaduan").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -101,7 +100,6 @@
       let filename = "";
       let mimeType = "";
 
-      // Jika ada file, ubah jadi base64 dulu
       if (file) {
         const reader = new FileReader();
         reader.onload = async () => {
@@ -120,7 +118,7 @@
           title: "Mengirim...",
           text: "Mohon tunggu sebentar.",
           allowOutsideClick: false,
-          didOpen: () => { Swal.showLoading(); },
+          didOpen: () => Swal.showLoading(),
         });
 
         const data = {
@@ -134,7 +132,7 @@
         };
 
         try {
-          const res = await fetch(scriptURL, {
+          const res = await fetch(PROXY_URL + GAS_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
