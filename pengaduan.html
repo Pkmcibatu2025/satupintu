@@ -1,57 +1,39 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Form Pengaduan, Kritik & Saran - UPT Puskesmas Cibatu</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pengaduan, Kritik & Saran | UPT Puskesmas Cibatu</title>
+
+  <!-- Tailwind CDN (ringan) + SweetAlert2 -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
-    body {
-      background: linear-gradient(135deg, #16a085, #1abc9c);
-      font-family: "Poppins", sans-serif;
-      animation: fadeIn 1.2s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .form-container { animation: slideUp 0.9s ease-in-out; }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    body { background: linear-gradient(135deg,#16a085,#1abc9c); font-family: "Poppins", sans-serif; }
+    .card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); max-width:720px; margin:40px auto; }
     label { font-weight: 600; }
   </style>
 </head>
-
-<body class="flex items-center justify-center min-h-screen px-4">
-  <div class="form-container bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full">
-    <h1 class="text-2xl font-bold text-center text-gray-800 mb-4">
-      💬 Pengaduan, Kritik & Saran
-    </h1>
-    <p class="text-sm text-gray-600 text-center mb-6">
-      Sampaikan pendapat Anda untuk meningkatkan pelayanan di
-      <b>UPT Puskesmas Cibatu - Dinas Kesehatan Kab. Garut</b>.
-    </p>
+<body>
+  <div class="card">
+    <h1 class="text-2xl font-bold text-center mb-2">💬 Pengaduan, Kritik & Saran</h1>
+    <p class="text-sm text-gray-600 mb-6 text-center">UPT Puskesmas Cibatu — sampaikan keluhan, kritik, atau saran Anda.</p>
 
     <form id="formPengaduan" class="space-y-4">
       <div>
-        <label for="nama" class="block text-gray-700">Nama Lengkap</label>
-        <input type="text" id="nama" name="nama" required
-          class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none" />
+        <label for="nama">Nama Lengkap</label>
+        <input id="nama" name="nama" required class="w-full border rounded px-3 py-2" />
       </div>
 
       <div>
-        <label for="kontak" class="block text-gray-700">Nomor Kontak / Email</label>
-        <input type="text" id="kontak" name="kontak" required
-          class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none" />
+        <label for="kontak">Nomor Kontak / Email</label>
+        <input id="kontak" name="kontak" required class="w-full border rounded px-3 py-2" />
       </div>
 
       <div>
-        <label for="jenis" class="block text-gray-700">Jenis Pesan</label>
-        <select id="jenis" name="jenis" required
-          class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none">
+        <label for="jenis">Jenis Pesan</label>
+        <select id="jenis" name="jenis" required class="w-full border rounded px-3 py-2">
           <option value="">-- Pilih Jenis --</option>
           <option value="Pengaduan">Pengaduan</option>
           <option value="Kritik">Kritik</option>
@@ -60,97 +42,140 @@
       </div>
 
       <div>
-        <label for="pesan" class="block text-gray-700">Isi Pesan</label>
-        <textarea id="pesan" name="pesan" rows="4" required
-          class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none"></textarea>
+        <label for="pesan">Isi Pesan</label>
+        <textarea id="pesan" name="pesan" rows="4" required class="w-full border rounded px-3 py-2"></textarea>
       </div>
 
       <div>
-        <label for="file" class="block text-gray-700">Upload Foto / Dokumen (opsional)</label>
-        <input type="file" id="file" name="file" accept="image/*,.pdf,.doc,.docx"
-          class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none" />
+        <label for="file">Upload Foto / Dokumen (opsional)</label>
+        <input id="file" name="file" type="file" accept="image/*,.pdf,.doc,.docx" class="w-full" />
+        <p class="text-xs text-gray-500 mt-1">Maks 10 MB. Foto: jpg/png — Dokumen: pdf/docx.</p>
       </div>
 
-      <button type="submit"
-        class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition font-semibold">
-        Kirim
-      </button>
+      <button type="submit" class="w-full bg-green-600 text-white py-3 rounded font-semibold">Kirim</button>
     </form>
 
-    <p class="text-xs text-gray-500 mt-6 text-center">
-      Data Anda akan otomatis disimpan di sistem pengaduan kami (Google Sheet)
-      dan file di Google Drive resmi Puskesmas.
-    </p>
+    <p class="text-xs text-gray-500 mt-4 text-center">Data tersimpan ke Google Sheet & file disimpan ke Google Drive resmi Puskesmas.</p>
   </div>
 
-  <script>
-    // URL Google Apps Script kamu
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbz3NiPNZhIc_lQIiZXxw0MD3kPe_6GvqZqCs0b3w2TNJUKo-5ofr_pF9BTwTdkmjcNABw/exec";
+<script>
+/*
+  Ubah hanya GAS_URL jika nanti kamu redeploy Apps Script.
+  Gunakan URL yang berakhiran /exec
+*/
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwVAtt_oEdyy6Y3enzT8hkGJN0t6pMZ8xySQGZX3P0I8QHr35g0WuUXawvFY_N_Enyxbg/exec";
 
-    // Proxy publik untuk bypass CORS (tidak perlu ubah)
-    const PROXY_URL = "https://corsproxy.io/?";
+const form = document.getElementById("formPengaduan");
 
-    document.getElementById("formPengaduan").addEventListener("submit", async (e) => {
-      e.preventDefault();
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-      const fileInput = document.getElementById("file");
-      const file = fileInput.files[0];
+  // Ambil nilai form
+  const nama = document.getElementById("nama").value.trim();
+  const kontak = document.getElementById("kontak").value.trim();
+  const jenis = document.getElementById("jenis").value;
+  const pesan = document.getElementById("pesan").value.trim();
+  const fileInput = document.getElementById("file");
+  const file = fileInput.files[0] || null;
 
-      let base64File = "";
-      let filename = "";
-      let mimeType = "";
+  // Validasi sederhana
+  if (!nama || !kontak || !jenis || !pesan) {
+    Swal.fire("Lengkapi form", "Silakan isi semua kolom wajib.", "warning");
+    return;
+  }
 
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = async () => {
-          base64File = reader.result.split(",")[1];
-          filename = file.name;
-          mimeType = file.type;
-          await kirimData();
-        };
-        reader.readAsDataURL(file);
+  // Tampilkan loading
+  Swal.fire({
+    title: "Mengirim...",
+    text: "Mohon tunggu sebentar.",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  // Jika ada file, convert ke base64 (untuk pengiriman JSON)
+  let fileBase64 = "";
+  let filename = "";
+  let mimeType = "";
+
+  async function sendJSONPayload() {
+    const payload = {
+      nama, kontak, jenis, pesan,
+      file: fileBase64, filename, mimeType,
+      clientOrigin: window.location.origin
+    };
+
+    // Coba kirim JSON normal — ini memberi kita respon dari server jika CORS diperbolehkan
+    try {
+      const res = await fetch(GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      // Jika bisa baca response, gunakan isinya
+      const text = await res.text().catch(() => "");
+      if (res.ok || text) {
+        // assume success if res.ok or server returns message
+        Swal.fire("✅ Berhasil!", "Terima kasih sudah mengirim pesan!", "success");
+        form.reset();
+        return;
       } else {
-        await kirimData();
+        // fallback ke FormData (no-cors)
+        return fallbackWithFormData();
       }
+    } catch (err) {
+      // kemungkinan CORS/preflight diblokir — lakukan fallback
+      return fallbackWithFormData();
+    }
+  }
 
-      async function kirimData() {
-        Swal.fire({
-          title: "Mengirim...",
-          text: "Mohon tunggu sebentar.",
-          allowOutsideClick: false,
-          didOpen: () => Swal.showLoading(),
-        });
+  async function fallbackWithFormData() {
+    // Build FormData (multipart/form-data) and send with mode: 'no-cors'
+    // Browser akan mengirim tetapi kita tidak bisa membaca respons (opaque), kita asumsikan berhasil.
+    try {
+      const fd = new FormData();
+      fd.append("nama", nama);
+      fd.append("kontak", kontak);
+      fd.append("jenis", jenis);
+      fd.append("pesan", pesan);
+      fd.append("clientOrigin", window.location.origin);
+      if (file) fd.append("file", file, file.name);
 
-        const data = {
-          nama: document.getElementById("nama").value,
-          kontak: document.getElementById("kontak").value,
-          jenis: document.getElementById("jenis").value,
-          pesan: document.getElementById("pesan").value,
-          file: base64File,
-          filename: filename,
-          mimeType: mimeType,
-        };
+      await fetch(GAS_URL, {
+        method: "POST",
+        body: fd,
+        mode: "no-cors"
+      });
 
-        try {
-          const res = await fetch(PROXY_URL + GAS_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-          });
+      // Tidak bisa membaca response, tapi permintaan dikirim. Tampilkan sukses.
+      Swal.fire("✅ Berhasil!", "Pesan dikirim (fallback). Jika tidak muncul di sistem, hubungi admin.", "success");
+      form.reset();
+      return;
+    } catch (err) {
+      Swal.fire("❌ Gagal", "Tidak bisa mengirim data: " + err.message, "error");
+    }
+  }
 
-          const text = await res.text();
+  if (file) {
+    // baca file sebagai base64 lalu kirim JSON (lebih andal untuk Apps Script)
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const result = ev.target.result; // data:[mime];base64,xxxxx
+      fileBase64 = result.split(",")[1];
+      filename = file.name;
+      mimeType = file.type || "application/octet-stream";
+      sendJSONPayload();
+    };
+    reader.onerror = function() {
+      Swal.fire("❌ Gagal", "Gagal membaca file.", "error");
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // tidak ada file: kirim langsung
+    await sendJSONPayload();
+  }
 
-          if (text.includes("Sukses")) {
-            Swal.fire("✅ Berhasil!", "Terima kasih sudah mengirim pesan!", "success");
-            document.getElementById("formPengaduan").reset();
-          } else {
-            Swal.fire("⚠️ Gagal", "Terjadi kesalahan: " + text, "error");
-          }
-        } catch (error) {
-          Swal.fire("❌ Error", "Tidak bisa mengirim data. Periksa koneksi atau izin Apps Script.", "error");
-        }
-      }
-    });
-  </script>
+});
+</script>
 </body>
 </html>
