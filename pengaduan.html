@@ -1,154 +1,72 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pengaduan, Kritik & Saran | UPT Puskesmas Cibatu</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    body {
-      background: linear-gradient(135deg, #0f766e, #14b8a6);
-      font-family: 'Poppins', sans-serif;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease;
-    }
-    body.loaded {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .card {
-      backdrop-filter: blur(10px);
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .popup {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.4s ease;
-    }
-    .popup.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    body { background: linear-gradient(135deg, #0f766e, #14b8a6); font-family: 'Poppins', sans-serif; color: white; }
+    .card { backdrop-filter: blur(10px); background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); }
+    .popup { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s; }
+    .popup.active { opacity: 1; pointer-events: auto; }
   </style>
 </head>
-<body class="text-white min-h-screen flex flex-col items-center p-6">
+<body class="min-h-screen flex flex-col items-center p-6">
 
-  <!-- Header -->
-  <header class="text-center mb-10">
-    <h1 class="text-4xl font-bold mb-2">💬 Pengaduan, Kritik & Saran</h1>
-    <p class="text-lg text-white/80">UPT Puskesmas Cibatu - Dinas Kesehatan Kab. Garut</p>
-  </header>
+  <h1 class="text-4xl font-bold mb-2 text-center">💬 Pengaduan, Kritik & Saran</h1>
+  <p class="text-white/80 mb-8 text-center">UPT Puskesmas Cibatu - Dinas Kesehatan Kab. Garut</p>
 
-  <!-- Tata Cara Pengaduan -->
-  <section class="card p-6 rounded-2xl max-w-3xl w-full mb-10 shadow-xl">
-    <h2 class="text-2xl font-semibold mb-4 text-teal-100">📝 Tata Cara Pengaduan / Saran</h2>
-    <ol class="list-decimal list-inside space-y-2 text-white/90">
-      <li>Tulis nama lengkap dan kontak yang bisa dihubungi.</li>
-      <li>Pilih jenis pesan: Pengaduan, Kritik, atau Saran.</li>
-      <li>Isi pesan secara jelas dan sopan, sertakan bukti bila perlu.</li>
-      <li>Kirim melalui formulir di bawah ini.</li>
-      <li>Tim kami akan menindaklanjuti dan memberikan umpan balik secepatnya.</li>
-    </ol>
-  </section>
-
-  <!-- Form Pengaduan -->
   <section class="card p-6 rounded-2xl max-w-3xl w-full shadow-xl">
     <h2 class="text-2xl font-semibold mb-4 text-teal-100">📨 Formulir Pengaduan / Kritik / Saran</h2>
-
-    <form id="formPengaduan" class="space-y-4">
+    <form id="formPengaduan" enctype="multipart/form-data" class="space-y-4">
+      <input type="text" name="nama" placeholder="Nama Lengkap" required class="w-full p-3 rounded-lg bg-white/20 text-white border border-white/30">
+      <input type="text" name="kontak" placeholder="Nomor HP / Email" required class="w-full p-3 rounded-lg bg-white/20 text-white border border-white/30">
+      <select name="jenis" required class="w-full p-3 rounded-lg bg-white/20 text-black border border-white/30">
+        <option value="">-- Pilih Jenis --</option>
+        <option>Pengaduan</option>
+        <option>Kritik</option>
+        <option>Saran</option>
+      </select>
+      <textarea name="pesan" placeholder="Isi pesan Anda..." required rows="4" class="w-full p-3 rounded-lg bg-white/20 text-white border border-white/30"></textarea>
       <div>
-        <label class="block text-sm mb-1">Nama Lengkap</label>
-        <input type="text" name="nama" required class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30">
+        <label class="block mb-1">Upload Foto / Dokumen (opsional)</label>
+        <input type="file" name="file" accept="image/*,.pdf,.doc,.docx" class="w-full p-3 rounded-lg bg-white/20 text-white border border-white/30">
       </div>
-
-      <div>
-        <label class="block text-sm mb-1">Nomor HP / Email</label>
-        <input type="text" name="kontak" required class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30">
-      </div>
-
-      <div>
-        <label class="block text-sm mb-1">Jenis Pesan</label>
-        <select name="jenis" required class="w-full p-3 rounded-lg bg-white/20 text-white border border-white/30">
-          <option value="">-- Pilih Jenis --</option>
-          <option>Pengaduan</option>
-          <option>Kritik</option>
-          <option>Saran</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-sm mb-1">Isi Pesan</label>
-        <textarea name="pesan" required rows="4" class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30"></textarea>
-      </div>
-
-      <div class="flex justify-between flex-wrap gap-3">
-        <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg">
-          <i class="ph ph-paper-plane-right"></i> Kirim Sekarang
-        </button>
-        <div class="flex gap-2">
-          <a href="mailto:puskesmascibatudtp@gmail.com" class="bg-red-500 hover:bg-red-600 px-4 py-3 rounded-lg flex items-center gap-2">
-            <i class="ph ph-envelope-simple"></i> Email
-          </a>
-          <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-500 hover:bg-green-600 px-4 py-3 rounded-lg flex items-center gap-2">
-            <i class="ph ph-whatsapp-logo"></i> WhatsApp
-          </a>
-          <a href="https://www.instagram.com/puskesmascibatu" target="_blank" class="bg-pink-500 hover:bg-pink-600 px-4 py-3 rounded-lg flex items-center gap-2">
-            <i class="ph ph-instagram-logo"></i> Instagram
-          </a>
-        </div>
-      </div>
+      <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg">
+        Kirim Sekarang
+      </button>
     </form>
   </section>
 
-  <!-- Popup sukses -->
   <div id="popupSukses" class="popup">
     <div class="bg-white rounded-2xl p-8 text-center text-gray-800 shadow-lg max-w-sm w-full">
-      <i class="ph ph-check-circle text-green-500 text-5xl mb-3"></i>
       <h3 class="text-xl font-semibold mb-2">Terima Kasih!</h3>
-      <p>Pesan Anda telah terkirim. Kami akan segera menindaklanjutinya.</p>
-      <button onclick="tutupPopup()" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-lg">
-        Tutup
-      </button>
+      <p>Pesan Anda telah terkirim beserta lampiran (jika ada).</p>
+      <button onclick="tutupPopup()" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-lg">Tutup</button>
     </div>
   </div>
 
-  <footer class="mt-10 text-sm text-white/80 text-center">
-    © 2025 UPT Puskesmas Cibatu | Dinas Kesehatan Kab. Garut
-  </footer>
-
   <script>
-    // Animasi masuk halaman
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-    });
-
-    // Kirim data ke Google Sheet
-    const scriptURL = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbzip-Bl2_nOIABgCryngJlsyPeJ6UFRTq9VthXHtbs1L1K_zcC9O0xaBKGcGDt5MABr0w/exec/exec";
     const form = document.getElementById("formPengaduan");
     const popup = document.getElementById("popupSukses");
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzY4RiaqOrF9pVCls3ZasZ4tFu0UICIjf0NZZ1Hnh3HO-JyiONNgzLupSeNufeaa74spw/exec"; // dari Google Apps Script
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      fetch(scriptURL, { method: "POST", body: new FormData(form) })
-        .then((response) => {
-          popup.classList.add("active");
-          form.reset();
+      const data = new FormData(form);
+      fetch(scriptURL, { method: "POST", body: data })
+        .then(res => res.text())
+        .then(txt => {
+          if (txt.includes("Sukses")) {
+            popup.classList.add("active");
+            form.reset();
+          } else alert("Gagal mengirim: " + txt);
         })
-        .catch((error) => alert("Gagal mengirim! Silakan coba lagi."));
+        .catch(err => alert("Gagal mengirim: " + err.message));
     });
 
-    function tutupPopup() {
-      popup.classList.remove("active");
-    }
+    function tutupPopup() { popup.classList.remove("active"); }
   </script>
 
 </body>
