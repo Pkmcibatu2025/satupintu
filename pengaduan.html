@@ -1,322 +1,155 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Rekomendasi ZI 2024 — UPT Puskesmas Cibatu</title>
-  <meta name="description" content="Versi interaktif Rekomendasi Zona Integritas 2024 untuk UPT Puskesmas Cibatu" />
-
-  <!-- Tailwind (CDN) -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengaduan, Kritik & Saran | UPT Puskesmas Cibatu</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <!-- AOS for scroll animations -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <!-- Lucide icons -->
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.286.0/dist/umd/lucide.min.js"></script>
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    html,body,#app{height:100%;}
-    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
-    .glass{backdrop-filter: blur(6px); background: rgba(255,255,255,0.06);}
-    .accent{background: linear-gradient(90deg,#047857,#06b6d4);} /* green-blue */
+    body {
+      background: linear-gradient(135deg, #0f766e, #14b8a6);
+      font-family: 'Poppins', sans-serif;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    body.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s ease;
+    }
+    .popup.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 text-slate-100">
-  <div id="app" class="min-h-screen p-6">
-    <!-- Header -->
-    <header class="max-w-6xl mx-auto flex items-center justify-between gap-4 mb-6">
-      <div class="flex items-center gap-4">
-        <div class="w-14 h-14 rounded-xl accent flex items-center justify-center shadow-lg">
-          <svg class="w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" d="M12 2v10"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" d="M5 10a7 7 0 0 0 14 0"></path>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold">Rekomendasi Zona Integritas 2024</h1>
-          <p class="text-slate-300 text-sm">UPT Puskesmas Cibatu — Transformasi Layanan Jemput Bola & Administrasi Kependudukan</p>
-        </div>
+<body class="text-white min-h-screen flex flex-col items-center p-6">
+
+  <!-- Header -->
+  <header class="text-center mb-10">
+    <h1 class="text-4xl font-bold mb-2">💬 Pengaduan, Kritik & Saran</h1>
+    <p class="text-lg text-white/80">UPT Puskesmas Cibatu - Dinas Kesehatan Kab. Garut</p>
+  </header>
+
+  <!-- Tata Cara Pengaduan -->
+  <section class="card p-6 rounded-2xl max-w-3xl w-full mb-10 shadow-xl">
+    <h2 class="text-2xl font-semibold mb-4 text-teal-100">📝 Tata Cara Pengaduan / Saran</h2>
+    <ol class="list-decimal list-inside space-y-2 text-white/90">
+      <li>Tulis nama lengkap dan kontak yang bisa dihubungi.</li>
+      <li>Pilih jenis pesan: Pengaduan, Kritik, atau Saran.</li>
+      <li>Isi pesan secara jelas dan sopan, sertakan bukti bila perlu.</li>
+      <li>Kirim melalui formulir di bawah ini.</li>
+      <li>Tim kami akan menindaklanjuti dan memberikan umpan balik secepatnya.</li>
+    </ol>
+  </section>
+
+  <!-- Form Pengaduan -->
+  <section class="card p-6 rounded-2xl max-w-3xl w-full shadow-xl">
+    <h2 class="text-2xl font-semibold mb-4 text-teal-100">📨 Formulir Pengaduan / Kritik / Saran</h2>
+
+    <form id="formPengaduan" class="space-y-4">
+      <div>
+        <label class="block text-sm mb-1">Nama Lengkap</label>
+        <input type="text" name="nama" required class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30">
       </div>
 
-      <div class="flex items-center gap-3">
-        <div class="text-right">
-          <div id="currentDate" class="text-sm text-slate-300"></div>
-          <div id="currentTime" class="font-mono font-semibold text-lg"></div>
-        </div>
-        <button id="btnHome" class="flex items-center gap-2 bg-slate-700/30 hover:bg-slate-700/60 px-3 py-2 rounded-lg glass">
-          <i data-lucide="home"></i>
-          <span class="text-sm">Kembali</span>
+      <div>
+        <label class="block text-sm mb-1">Nomor HP / Email</label>
+        <input type="text" name="kontak" required class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30">
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1">Jenis Pesan</label>
+        <select name="jenis" required class="w-full p-3 rounded-lg bg-white/20 text-white border border-white/30">
+          <option value="">-- Pilih Jenis --</option>
+          <option>Pengaduan</option>
+          <option>Kritik</option>
+          <option>Saran</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1">Isi Pesan</label>
+        <textarea name="pesan" required rows="4" class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30"></textarea>
+      </div>
+
+      <div class="flex justify-between flex-wrap gap-3">
+        <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg">
+          <i class="ph ph-paper-plane-right"></i> Kirim Sekarang
         </button>
+        <div class="flex gap-2">
+          <a href="mailto:puskesmascibatudtp@gmail.com" class="bg-red-500 hover:bg-red-600 px-4 py-3 rounded-lg flex items-center gap-2">
+            <i class="ph ph-envelope-simple"></i> Email
+          </a>
+          <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-500 hover:bg-green-600 px-4 py-3 rounded-lg flex items-center gap-2">
+            <i class="ph ph-whatsapp-logo"></i> WhatsApp
+          </a>
+          <a href="https://www.instagram.com/puskesmascibatu" target="_blank" class="bg-pink-500 hover:bg-pink-600 px-4 py-3 rounded-lg flex items-center gap-2">
+            <i class="ph ph-instagram-logo"></i> Instagram
+          </a>
+        </div>
       </div>
-    </header>
+    </form>
+  </section>
 
-    <!-- Main grid -->
-    <main class="max-w-6xl mx-auto grid grid-cols-12 gap-6">
-      <!-- Left column: summary + timeline -->
-      <section class="col-span-12 lg:col-span-5 space-y-6">
-        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-right">
-          <h2 class="text-xl font-semibold mb-2">Ringkasan Rekomendasi</h2>
-          <p class="text-slate-300 leading-relaxed">Dokumen yang diubah menjadi tampilan interaktif ini berisi rekomendasi Zona Integritas, pelaporan kegiatan jemput bola layanan administrasi kependudukan, serta penanganan anomali data. Seluruh nama instansi dan contoh data telah disesuaikan untuk <strong>UPT Puskesmas Cibatu</strong>.</p>
-
-          <div class="mt-4 grid grid-cols-2 gap-3">
-            <div class="p-3 rounded-lg bg-slate-800/60">
-              <h3 class="text-sm text-slate-300">Unit Pengendalian Gratifikasi</h3>
-              <p class="text-xs text-slate-400">Sudah dibentuk, tersedia kanal pelaporan.</p>
-            </div>
-            <div class="p-3 rounded-lg bg-slate-800/60">
-              <h3 class="text-sm text-slate-300">Transparansi Layanan</h3>
-              <p class="text-xs text-slate-400">SOP & SIAK terintegrasi untuk meminimalkan pungli.</p>
-            </div>
-          </div>
-
-          <div class="mt-4">
-            <button id="showMoreText" class="mt-2 px-4 py-2 rounded-lg bg-emerald-500 text-white font-semibold hover:brightness-95">Baca Rekomendasi Lengkap</button>
-          </div>
-        </div>
-
-        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-right" data-aos-delay="100">
-          <h2 class="text-xl font-semibold mb-3">Timeline Kegiatan Jemput Bola 2024</h2>
-          <ol class="relative border-l border-slate-700 pl-4 space-y-4 text-slate-300">
-            <li>
-              <span class="absolute -left-3 top-0 w-6 h-6 rounded-full accent flex items-center justify-center text-white font-bold">Jan</span>
-              <div class="ml-4">Peluncuran program jemput bola & sosialisasi layanan gratis.</div>
-            </li>
-            <li>
-              <span class="absolute -left-3 w-6 h-6 rounded-full accent flex items-center justify-center text-white font-bold">Mar</span>
-              <div class="ml-4">Penguatan supervisi dan monitoring menggunakan SIAK terpusat.</div>
-            </li>
-            <li>
-              <span class="absolute -left-3 w-6 h-6 rounded-full accent flex items-center justify-center text-white font-bold">Jun</span>
-              <div class="ml-4">Evaluasi antar-unit & pembentukan UPG (Unit Pengendalian Gratifikasi).</div>
-            </li>
-            <li>
-              <span class="absolute -left-3 w-6 h-6 rounded-full accent flex items-center justify-center text-white font-bold">Sep</span>
-              <div class="ml-4">Sinkronisasi data kematian dengan KPU untuk perbaikan DPT.</div>
-            </li>
-          </ol>
-        </div>
-
-        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-right" data-aos-delay="200">
-          <h2 class="text-xl font-semibold mb-3">Kontak & Pelaporan</h2>
-          <p class="text-slate-300 text-sm">Saluran pengaduan masyarakat:</p>
-          <ul class="text-slate-400 text-sm mt-2 space-y-2">
-            <li>WhatsApp Pengaduan: <strong>0811-2053-205</strong></li>
-            <li>WhatsApp Informasi: <strong>0851-8303-3205</strong></li>
-            <li>Instagram: <strong>@uptpuskescibatu</strong></li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- Right column: charts + details -->
-      <section class="col-span-12 lg:col-span-7 space-y-6">
-        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="zoom-in">
-          <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold">Grafik Laporan Jemput Bola 2024</h2>
-            <div class="text-sm text-slate-300">Interaktif — hover untuk nilai</div>
-          </div>
-          <canvas id="jemputBolaChart" class="mt-4" height="120"></canvas>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-up">
-            <h3 class="text-lg font-semibold">Distribusi Pelayanan</h3>
-            <canvas id="servicesChart" class="mt-3" height="200"></canvas>
-            <div id="servicesLegend" class="mt-3 text-sm text-slate-300"></div>
-          </div>
-
-          <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="text-lg font-semibold">Data Ringkasan</h3>
-            <table class="w-full mt-3 text-sm text-left text-slate-300">
-              <tbody>
-                <tr class="border-b border-slate-700/40">
-                  <td class="py-2 font-medium">Total Laporan Jemput Bola (Jan–Okt)</td>
-                  <td class="py-2 text-right">25,841</td>
-                </tr>
-                <tr class="border-b border-slate-700/40">
-                  <td class="py-2 font-medium">Total Pelayanan KTP-el</td>
-                  <td class="py-2 text-right">9,261</td>
-                </tr>
-                <tr class="border-b border-slate-700/40">
-                  <td class="py-2 font-medium">Total Pelayanan KK</td>
-                  <td class="py-2 text-right">1,852</td>
-                </tr>
-                <tr class="border-b border-slate-700/40">
-                  <td class="py-2 font-medium">Total KIA</td>
-                  <td class="py-2 text-right">1,979</td>
-                </tr>
-                <tr>
-                  <td class="py-2 font-medium">Total Akta Kelahiran</td>
-                  <td class="py-2 text-right">2,386</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="mt-4 flex gap-2">
-              <button id="btnExportPNG" class="px-3 py-2 rounded-lg bg-emerald-500 hover:brightness-95 text-white text-sm">Export Grafik</button>
-              <button id="btnOpenPDF" class="px-3 py-2 rounded-lg bg-slate-700/60 text-sm">Buka PDF Sumber</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-5 rounded-2xl glass shadow-lg" data-aos="fade-up" data-aos-delay="200">
-          <h3 class="text-lg font-semibold">Filter & Eksplorasi Data</h3>
-          <div class="mt-3 flex flex-wrap gap-3">
-            <select id="selectMonth" class="bg-slate-800/50 rounded-lg px-3 py-2 text-slate-200">
-              <option value="all">Semua Bulan</option>
-            </select>
-            <button id="btnHighlight" class="px-3 py-2 rounded-lg bg-amber-500 text-slate-900 font-semibold">Sorot Bulan Tertinggi</button>
-            <button id="btnReset" class="px-3 py-2 rounded-lg bg-slate-700/50">Reset</button>
-          </div>
-        </div>
-
-      </section>
-    </main>
-
-    <footer class="max-w-6xl mx-auto text-center text-slate-400 text-sm mt-10">© 2024 UPT Puskesmas Cibatu — Dibuat otomatis dari sumber Rekomendasi ZI</footer>
+  <!-- Popup sukses -->
+  <div id="popupSukses" class="popup">
+    <div class="bg-white rounded-2xl p-8 text-center text-gray-800 shadow-lg max-w-sm w-full">
+      <i class="ph ph-check-circle text-green-500 text-5xl mb-3"></i>
+      <h3 class="text-xl font-semibold mb-2">Terima Kasih!</h3>
+      <p>Pesan Anda telah terkirim. Kami akan segera menindaklanjutinya.</p>
+      <button onclick="tutupPopup()" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-lg">
+        Tutup
+      </button>
+    </div>
   </div>
 
+  <footer class="mt-10 text-sm text-white/80 text-center">
+    © 2025 UPT Puskesmas Cibatu | Dinas Kesehatan Kab. Garut
+  </footer>
+
   <script>
-    // Initialize AOS
-    AOS.init({duration:700, once:true});
-    // lucide icons
-    document.addEventListener('DOMContentLoaded', ()=>{ lucide.replace(); });
+    // Animasi masuk halaman
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+    });
 
-    // --- Clock & date ---
-    function updateClock(){
-      const dt = new Date();
-      const optDate = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
-      document.getElementById('currentDate').textContent = dt.toLocaleDateString('id-ID', optDate);
-      document.getElementById('currentTime').textContent = dt.toLocaleTimeString('id-ID');
+    // Kirim data ke Google Sheet
+    const scriptURL = "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbzip-Bl2_nOIABgCryngJlsyPeJ6UFRTq9VthXHtbs1L1K_zcC9O0xaBKGcGDt5MABr0w/exec/exec";
+    const form = document.getElementById("formPengaduan");
+    const popup = document.getElementById("popupSukses");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      fetch(scriptURL, { method: "POST", body: new FormData(form) })
+        .then((response) => {
+          popup.classList.add("active");
+          form.reset();
+        })
+        .catch((error) => alert("Gagal mengirim! Silakan coba lagi."));
+    });
+
+    function tutupPopup() {
+      popup.classList.remove("active");
     }
-    setInterval(updateClock,1000); updateClock();
-
-    // Example data (diambil dan disesuaikan dari PDF sumber)
-    const jemputData = {
-      labels: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt'],
-      values: [4551,2815,642,992,1862,2734,2344,2416,2041,1944]
-    };
-
-    const servicesData = {
-      labels: ['KTP-el','KK','KIA','Akta Kelahiran','Akta Kematian'],
-      values: [9261,1852,1979,2386,130]
-    };
-
-    // Create Jemput Bola chart (bar)
-    const ctx = document.getElementById('jemputBolaChart').getContext('2d');
-    const jemputChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: jemputData.labels,
-        datasets: [{
-          label: 'Jumlah Layanan',
-          data: jemputData.values,
-          borderRadius: 6,
-          barThickness: 22,
-        }]
-      },
-      options: {
-        responsive:true,
-        plugins: { legend:{ display:false }, tooltip:{mode:'index'} },
-        scales: {
-          x: { grid:{display:false}, ticks:{color:'#cbd5e1'} },
-          y: { ticks:{color:'#cbd5e1'}, beginAtZero:true }
-        }
-      }
-    });
-
-    // Services doughnut chart
-    const ctx2 = document.getElementById('servicesChart').getContext('2d');
-    const servicesChart = new Chart(ctx2, {
-      type: 'doughnut',
-      data: {
-        labels: servicesData.labels,
-        datasets: [{ data: servicesData.values, hoverOffset:6 }]
-      },
-      options: { responsive:true, plugins:{ legend:{ position:'bottom', labels:{ color:'#cbd5e1' } } } }
-    });
-
-    // Legend generation
-    function renderLegend(){
-      const container = document.getElementById('servicesLegend');
-      container.innerHTML = '';
-      servicesData.labels.forEach((label,i)=>{
-        const val = servicesData.values[i];
-        const el = document.createElement('div');
-        el.className = 'flex justify-between text-sm text-slate-300';
-        el.innerHTML = `<span>${label}</span><span>${val.toLocaleString()}</span>`;
-        container.appendChild(el);
-      });
-    }
-    renderLegend();
-
-    // Fill month select
-    const select = document.getElementById('selectMonth');
-    jemputData.labels.forEach((m,i)=>{
-      const opt = document.createElement('option'); opt.value=i; opt.textContent = m + ' — ' + jemputData.values[i];
-      select.appendChild(opt);
-    });
-
-    select.addEventListener('change', ()=>{
-      const v = select.value;
-      if(v==='all'){
-        jemputChart.data.datasets[0].data = jemputData.values.slice();
-      } else {
-        const idx = Number(v);
-        const arr = jemputData.values.map(()=>0);
-        arr[idx] = jemputData.values[idx];
-        jemputChart.data.datasets[0].data = arr;
-      }
-      jemputChart.update();
-    });
-
-    // Highlight highest month
-    document.getElementById('btnHighlight').addEventListener('click', ()=>{
-      const max = Math.max(...jemputData.values);
-      const idx = jemputData.values.indexOf(max);
-      const bg = jemputChart.data.datasets[0].backgroundColor || jemputChart.data.datasets[0].data.map(()=>undefined);
-      jemputChart.data.datasets[0].backgroundColor = jemputData.values.map((v,i)=> i===idx ? 'rgba(6,182,212,0.95)' : 'rgba(148,163,184,0.2)');
-      jemputChart.update();
-      // flash card effect
-      const month = jemputData.labels[idx];
-      alert('Bulan tertinggi: ' + month + ' — ' + max.toLocaleString() + ' layanan');
-    });
-
-    // Reset colors
-    document.getElementById('btnReset').addEventListener('click', ()=>{
-      jemputChart.data.datasets[0].backgroundColor = undefined;
-      jemputChart.data.datasets[0].data = jemputData.values.slice();
-      jemputChart.update();
-      select.value = 'all';
-    });
-
-    // Export chart as PNG
-    document.getElementById('btnExportPNG').addEventListener('click', ()=>{
-      const url = jemputChart.toBase64Image();
-      const a = document.createElement('a'); a.href = url; a.download = 'jemput_bola_chart.png'; a.click();
-    });
-
-    // Show full recommendation modal (simple)
-    document.getElementById('showMoreText').addEventListener('click', ()=>{
-      const text = `Rekomendasi lengkap (disesuaikan untuk UPT Puskesmas Cibatu):\n\n1) Terapkan SOP jemput bola yang transparan, larangan pungli, bukti digital layanan.\n2) Bentuk Unit Pengendalian Gratifikasi (UPG) dan jalur pengaduan.\n3) Sinkronisasi data kematian untuk dukung pemutakhiran pemilih.\n4) Pelatihan rutin integritas pegawai.`;
-      alert(text);
-    });
-
-    // Btn open PDF - try to open local file if available (browser-dependent)
-    document.getElementById('btnOpenPDF').addEventListener('click', ()=>{
-      const pdfPath = './Rekomendasi ZI 2024.pdf';
-      window.open(pdfPath, '_blank');
-    });
-
-    // Home button
-    document.getElementById('btnHome').addEventListener('click', ()=>{
-      window.scrollTo({top:0, behavior:'smooth'});
-    });
-
-    // Small accessibility: keyboard shortcut H to scroll home
-    document.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='h') window.scrollTo({top:0,behavior:'smooth'}); });
-
   </script>
+
 </body>
 </html>
