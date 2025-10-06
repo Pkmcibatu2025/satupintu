@@ -3,71 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pengaduan, Kritik & Saran | UPT Puskesmas Cibatu</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Form Pengaduan, Kritik & Saran - UPT Puskesmas Cibatu</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    body { background: linear-gradient(135deg, #0f766e, #14b8a6); font-family: 'Poppins', sans-serif; color: white; }
-    .card { backdrop-filter: blur(10px); background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); }
-    .popup { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s; }
-    .popup.active { opacity: 1; pointer-events: auto; }
+    body {
+      background: linear-gradient(135deg, #16a085, #1abc9c);
+      font-family: 'Poppins', sans-serif;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .form-container {
+      animation: slideUp 0.9s ease-in-out;
+    }
+
+    @keyframes slideUp {
+      from {opacity: 0; transform: translateY(40px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    label {
+      font-weight: 600;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-6">
 
-  <h1 class="text-4xl font-bold mb-2 text-center">💬 Pengaduan, Kritik & Saran</h1>
-  <p class="text-white/80 mb-8 text-center">UPT Puskesmas Cibatu - Dinas Kesehatan Kab. Garut</p>
+<body class="flex items-center justify-center min-h-screen px-4">
+  <div class="form-container bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full">
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-4">💬 Pengaduan, Kritik & Saran</h1>
+    <p class="text-sm text-gray-600 text-center mb-6">Sampaikan pendapat Anda untuk meningkatkan pelayanan di <b>UPT Puskesmas Cibatu</b>.</p>
 
-  <section class="card p-6 rounded-2xl max-w-3xl w-full shadow-xl">
-    <h2 class="text-2xl font-semibold mb-4 text-teal-100">📨 Formulir Pengaduan / Kritik / Saran</h2>
-    <form id="formPengaduan" enctype="multipart/form-data" class="space-y-4">
-      <input type="text" name="nama" placeholder="Nama Lengkap" required class="w-full p-3 rounded-lg bg-white/20 text-black border border-white/30">
-      <input type="text" name="kontak" placeholder="Nomor HP / Email" required class="w-full p-3 rounded-lg bg-white/20 text-black border border-white/30">
-      <select name="jenis" required class="w-full p-3 rounded-lg bg-white/20 text-black border border-white/30">
-        <option value="">-- Pilih Jenis --</option>
-        <option>Pengaduan</option>
-        <option>Kritik</option>
-        <option>Saran</option>
-      </select>
-      <textarea name="pesan" placeholder="Isi pesan Anda..." required rows="4" class="w-full p-3 rounded-lg bg-white/20 text-black border border-white/30"></textarea>
+    <form id="formPengaduan" class="space-y-4">
       <div>
-        <label class="block mb-1">Upload Foto / Dokumen (opsional)</label>
-        <input type="file" name="file" accept="image/*,.pdf,.doc,.docx" class="w-full p-3 rounded-lg bg-white/20 text-white border border-white/30">
+        <label for="nama" class="block text-gray-700">Nama Lengkap</label>
+        <input type="text" id="nama" name="nama" required class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none">
       </div>
-      <button type="submit" class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg">
-        Kirim Sekarang
-      </button>
-    </form>
-  </section>
 
-  <div id="popupSukses" class="popup">
-    <div class="bg-white rounded-2xl p-8 text-center text-gray-800 shadow-lg max-w-sm w-full">
-      <h3 class="text-xl font-semibold mb-2">Terima Kasih!</h3>
-      <p>Pesan Anda telah terkirim beserta lampiran (jika ada).</p>
-      <button onclick="tutupPopup()" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-lg">Tutup</button>
-    </div>
+      <div>
+        <label for="kontak" class="block text-gray-700">Nomor Kontak / Email</label>
+        <input type="text" id="kontak" name="kontak" required class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none">
+      </div>
+
+      <div>
+        <label for="jenis" class="block text-gray-700">Jenis Pesan</label>
+        <select id="jenis" name="jenis" required class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none">
+          <option value="">-- Pilih Jenis --</option>
+          <option value="Pengaduan">Pengaduan</option>
+          <option value="Kritik">Kritik</option>
+          <option value="Saran">Saran</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="pesan" class="block text-gray-700">Isi Pesan</label>
+        <textarea id="pesan" name="pesan" rows="4" required class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none"></textarea>
+      </div>
+
+      <div>
+        <label for="file" class="block text-gray-700">Upload Foto / Dokumen (opsional)</label>
+        <input type="file" id="file" name="file" accept="image/*,.pdf,.doc,.docx" class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300 outline-none">
+      </div>
+
+      <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition font-semibold">Kirim</button>
+    </form>
+
+    <p class="text-xs text-gray-500 mt-6 text-center">
+      Data Anda akan otomatis disimpan di sistem pengaduan kami (Google Sheet) dan file di Google Drive resmi Puskesmas.
+    </p>
   </div>
 
   <script>
-    const form = document.getElementById("formPengaduan");
-    const popup = document.getElementById("popupSukses");
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzY4RiaqOrF9pVCls3ZasZ4tFu0UICIjf0NZZ1Hnh3HO-JyiONNgzLupSeNufeaa74spw/exec"; // dari Google Apps Script
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzY4RiaqOrF9pVCls3ZasZ4tFu0UICIjf0NZZ1Hnh3HO-JyiONNgzLupSeNufeaa74spw/exec";
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const data = new FormData(form);
-      fetch(scriptURL, { method: "POST", body: data })
-        .then(res => res.text())
-        .then(txt => {
-          if (txt.includes("Sukses")) {
-            popup.classList.add("active");
-            form.reset();
-          } else alert("Gagal mengirim: " + txt);
-        })
-        .catch(err => alert("Gagal mengirim: " + err.message));
-    });
+  document.getElementById("formPengaduan").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    function tutupPopup() { popup.classList.remove("active"); }
+    const fileInput = document.getElementById("file");
+    const file = fileInput.files[0];
+
+    let base64File = "";
+    let filename = "";
+    let mimeType = "";
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result.split(",")[1];
+        base64File = base64;
+        filename = file.name;
+        mimeType = file.type;
+        await kirimData();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      await kirimData();
+    }
+
+    async function kirimData() {
+      Swal.fire({
+        title: "Mengirim...",
+        text: "Mohon tunggu sebentar.",
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+      });
+
+      const data = {
+        nama: document.getElementById("nama").value,
+        kontak: document.getElementById("kontak").value,
+        jenis: document.getElementById("jenis").value,
+        pesan: document.getElementById("pesan").value,
+        file: base64File,
+        filename: filename,
+        mimeType: mimeType
+      };
+
+      try {
+        const res = await fetch(scriptURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const text = await res.text();
+        if (text.includes("Sukses")) {
+          Swal.fire("✅ Berhasil!", "Terima kasih sudah mengirim pesan!", "success");
+          document.getElementById("formPengaduan").reset();
+        } else {
+          Swal.fire("⚠️ Gagal", "Terjadi kesalahan: " + text, "error");
+        }
+      } catch (error) {
+        Swal.fire("❌ Error", "Tidak bisa mengirim data. Periksa koneksi atau izin Apps Script.", "error");
+      }
+    }
+  });
   </script>
-
 </body>
 </html>
