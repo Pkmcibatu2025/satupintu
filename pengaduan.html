@@ -59,7 +59,7 @@
 
     /* SLIDER */
     .slider-container {
-      margin: 40px auto;
+      margin: 30px auto;
       width: 95%;
       border-radius: 20px;
       overflow: hidden;
@@ -71,20 +71,20 @@
     .slider {
       position: relative;
       width: 100%;
-      height: 400px;
+      height: 55vh;
       overflow: hidden;
-      border-radius: 20px;
+      touch-action: pan-y;
     }
 
     .slides {
       display: flex;
       transition: transform 1s ease;
       width: 300%;
-      height: 100%;
     }
 
     .slide {
       flex: 0 0 100%;
+      height: 55vh;
       background-size: cover;
       background-position: center;
       position: relative;
@@ -96,8 +96,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.35);
-      z-index: 1;
+      background-color: rgba(0, 0, 0, 0.4);
     }
 
     .text-box {
@@ -107,23 +106,14 @@
       transform: translate(-50%, -50%);
       color: white;
       text-align: center;
-      z-index: 2;
-      padding: 0 20px;
+      padding: 0 15px;
     }
-
-    .carousel-item img {
-  width: 100%;
-  height: 450px; /* bisa kamu ubah sesuai tinggi yang diinginkan */
-  object-fit: cover; /* atau contain kalau mau seluruh gambar kelihatan */
-  border-radius: 15px;
-}
 
     .text-box h2 {
       font-size: 26px;
       font-weight: 700;
       margin-bottom: 15px;
       line-height: 1.4;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
     }
 
     .text-box button {
@@ -158,23 +148,28 @@
       align-items: center;
       justify-content: center;
       transition: 0.3s;
-      z-index: 3;
+      z-index: 5;
     }
 
     .nav-btn:hover {
       background-color: rgba(0, 0, 0, 0.8);
     }
 
-    .prev { left: 10px; }
-    .next { right: 10px; }
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
 
     /* SERVICES */
     .services {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 20px;
       max-width: 1200px;
-      margin: 50px auto;
+      margin: 60px auto;
       padding: 0 20px;
     }
 
@@ -240,8 +235,9 @@
         margin-top: 10px;
       }
 
-      .slider {
-        height: 300px;
+      .slider,
+      .slide {
+        height: 40vh;
       }
 
       .text-box h2 {
@@ -256,8 +252,13 @@
     }
 
     @media (max-width: 480px) {
-      .slider {
-        height: 230px;
+      .slider-container {
+        width: 92%;
+        margin: 20px auto;
+      }
+
+      .service-card {
+        padding: 15px;
       }
 
       .text-box h2 {
@@ -271,6 +272,7 @@
     }
   </style>
 </head>
+
 <body>
   <!-- HEADER -->
   <header>
@@ -283,7 +285,7 @@
     </nav>
   </header>
 
-  <!-- SLIDER -->
+  <!-- SLIDER WRAPPER -->
   <div class="slider-container">
     <div class="slider" id="slider">
       <button class="nav-btn prev" id="prev">&#10094;</button>
@@ -358,8 +360,13 @@
       slides.style.transform = `translateX(-${index * 100}%)`;
     }
 
-    function nextSlide() { showSlide(index + 1); }
-    function prevSlide() { showSlide(index - 1); }
+    function nextSlide() {
+      showSlide(index + 1);
+    }
+
+    function prevSlide() {
+      showSlide(index - 1);
+    }
 
     next.addEventListener("click", () => {
       clearInterval(interval);
@@ -376,7 +383,24 @@
     function startAuto() {
       interval = setInterval(nextSlide, 6000);
     }
+
     startAuto();
+
+    // Swipe gesture support
+    let startX = 0, endX = 0;
+    const slider = document.getElementById("slider");
+
+    slider.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+    slider.addEventListener("touchmove", e => endX = e.touches[0].clientX);
+    slider.addEventListener("touchend", () => {
+      const diff = startX - endX;
+      if (Math.abs(diff) > 50) {
+        clearInterval(interval);
+        if (diff > 0) nextSlide();
+        else prevSlide();
+        startAuto();
+      }
+    });
   </script>
 </body>
 </html>
