@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pengaduan, Kritik & Saran | UPT Puskesmas Cibatu</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    body { background: linear-gradient(135deg,#16a085,#1abc9c); font-family: "Poppins", sans-serif; }
+    .card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); max-width:720px; margin:40px auto; }
+    label { font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 class="text-2xl font-bold text-center mb-2">💬 Pengaduan, Kritik & Saran</h1>
+    <p class="text-sm text-gray-600 mb-6 text-center">UPT Puskesmas Cibatu — sampaikan keluhan, kritik, atau saran Anda.</p>
+
+    <form id="formPengaduan" class="space-y-4" enctype="multipart/form-data">
+      <div>
+        <label for="nama">Nama Lengkap</label>
+        <input id="nama" name="nama" required class="w-full border rounded px-3 py-2" />
+      </div>
+
+      <div>
+        <label for="kontak">Nomor Kontak / Email</label>
+        <input id="kontak" name="kontak" required class="w-full border rounded px-3 py-2" />
+      </div>
+
+      <div>
+        <label for="jenis">Jenis Pesan</label>
+        <select id="jenis" name="jenis" required class="w-full border rounded px-3 py-2">
+          <option value="">-- Pilih Jenis --</option>
+          <option value="Pengaduan">Pengaduan</option>
+          <option value="Kritik">Kritik</option>
+          <option value="Saran">Saran</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="pesan">Isi Pesan</label>
+        <textarea id="pesan" name="pesan" rows="4" required class="w-full border rounded px-3 py-2"></textarea>
+      </div>
+
+      <div>
+        <label for="file">Upload Foto / Dokumen (opsional)</label>
+        <input id="file" name="file" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" class="w-full" />
+        <p class="text-xs text-gray-500 mt-1">Maks 10 MB. File apapun diterima.</p>
+      </div>
+
+      <button type="submit" class="w-full bg-green-600 text-white py-3 rounded font-semibold">Kirim</button>
+    </form>
+
+    <p class="text-xs text-gray-500 mt-4 text-center">Data tersimpan ke Google Sheet & file ke Google Drive resmi Puskesmas.</p>
+  </div>
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyPBxoDmWKiL7caKu_cGg5slwpdft4caXNM-i1h9iyzHeGMdPRybQUchbpb3SsNGf6NsQ/exec";
+
+const form = document.getElementById("formPengaduan");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const nama = document.getElementById("nama").value.trim();
+  const kontak = document.getElementById("kontak").value.trim();
+  const jenis = document.getElementById("jenis").value;
+  const pesan = document.getElementById("pesan").value.trim();
+  const fileInput = document.getElementById("file");
+  const file = fileInput.files[0] || null;
+
+  if (!nama || !kontak || !jenis || !pesan) {
+    Swal.fire("Lengkapi form", "Silakan isi semua kolom wajib.", "warning");
+    return;
+  }
+
+  Swal.fire({
+    title: "Mengirim...",
+    text: "Mohon tunggu sebentar.",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  const fd = new FormData();
+  fd.append("nama", nama);
+  fd.append("kontak", kontak);
+  fd.append("jenis", jenis);
+  fd.append("pesan", pesan);
+  if (file) fd.append("file", file, file.name);
+
+  try {
+    await fetch(GAS_URL, { method: "POST", body: fd });
+    Swal.fire("✅ Berhasil!", "Terima kasih sudah mengirim pesan!", "success");
+    form.reset();
+  } catch (err) {
+    Swal.fire("❌ Gagal", "Kesalahan: " + err.message, "error");
+  }
+});
+</script>
+</body>
+</html>
 
