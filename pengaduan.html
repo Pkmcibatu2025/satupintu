@@ -1,337 +1,352 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UPT Puskesmas Cibatu | Dinas Kesehatan Kab. Garut</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPT Puskesmas Cibatu | Dinas Kesehatan Kab. Garut</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-    body {
-      background-color: #f5f8fa;
-      color: #333;
-      overflow-x: hidden;
-    }
+    body {
+      background-color: #f5f8fa;
+      color: #333;
+      overflow-x: hidden;
+    }
 
-    /* HEADER */
-    header {
-      background-color: #004d80;
-      color: white;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+    /* HEADER */
+    header {
+      background-color: #004d80;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
 
-    header .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    header .logo img {
-      height: 45px;
-      width: auto;
-    }
+    header .logo img {
+      height: 45px;
+      width: auto;
+    }
 
-    header .logo h1 {
-      font-size: 18px;
-      font-weight: 600;
-    }
+    header .logo h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 15px;
-      font-weight: 500;
-      transition: 5s;
-    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      font-weight: 500;
+      /* PERBAIKAN: Transisi Hover yang realistis */
+      transition: 0.3s; 
+    }
 
-    nav a:hover {
-      color: #ffd23f;
-    }
+    nav a:hover {
+      color: #ffd23f;
+    }
 
-    /* SLIDER */
-    .slider-container {
-      margin: 30px auto;
-      width: 95%;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-      max-width: 1200px;
-    }
+    /* SLIDER */
+    .slider-container {
+      margin: 30px auto;
+      width: 95%;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      max-width: 1200px;
+    }
 
-    .slider {
-      position: relative;
-      width: 100%;
-      height: 55vh;
-      overflow: hidden;
-      touch-action: pan-y;
-    }
+    .slider {
+      position: relative;
+      width: 100%;
+      /* PERBAIKAN PENTING: Mengurangi tinggi (height) agar rasio gambar lebih baik */
+      height: 45vh; 
+      overflow: hidden;
+      touch-action: pan-y;
+    }
 
-    .slides {
-      display: flex;
-      transition: transform 1s ease;
-      width: 300%;
-    }
+    .slides {
+      display: flex;
+      /* PERBAIKAN 1: Transisi gerakan slide diatur menjadi 1 detik */
+      transition: transform 1s ease-in-out; 
+      /* Lebar total 300% untuk 3 slide */
+      width: 300%; 
+    }
 
-    .slide {
-      flex: 0 0 100%;
-      height: 55vh;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
+    .slide {
+      flex: 0 0 100%;
+      /* Menyesuaikan tinggi slide dengan slider container */
+      height: 45vh; 
+      /* background-size: cover; memastikan gambar mengisi penuh. 
+      Jika ini masih terpotong, coba: background-size: contain; (akan menyisakan ruang kosong jika rasio beda)
+      atau background-size: 100% 100%; (akan memaksa gambar fit, mungkin distorsi) */
+      background-size: cover; 
+      background-position: center;
+      position: relative;
+    }
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
-    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
 
-    .text-box {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      text-align: center;
-      padding: 0 15px;
-    }
+    .text-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+      padding: 0 15px;
+    }
 
-    .text-box h2 {
-      font-size: 26px;
-      font-weight: 700;
-      margin-bottom: 15px;
-    }
+    .text-box h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
 
-    .text-box button {
-      padding: 10px 22px;
-      background-color: #ff9900;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 5s;
-    }
+    .text-box button {
+      padding: 10px 22px;
+      background-color: #ff9900;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 15px;
+      cursor: pointer;
+      /* PERBAIKAN: Transisi Hover yang realistis */
+      transition: 0.3s; 
+    }
 
-    .text-box button:hover {
-      background-color: #ffaa33;
-    }
+    .text-box button:hover {
+      background-color: #ffaa33;
+    }
 
-    /* SERVICES */
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: 60px auto;
-      padding: 0 20px;
-    }
+    /* SERVICES */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
 
-    .service-card {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: 5s;
-    }
+    .service-card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      /* PERBAIKAN: Transisi Hover yang realistis */
+      transition: 0.3s; 
+    }
 
-    .service-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
 
-    .service-card h3 {
-      color: #004d80;
-      margin-bottom: 10px;
-      font-size: 17px;
-    }
+    .service-card h3 {
+      color: #004d80;
+      margin-bottom: 10px;
+      font-size: 17px;
+    }
 
-    .service-card p {
-      font-size: 14px;
-      margin-bottom: 15px;
-      color: #555;
-    }
+    .service-card p {
+      font-size: 14px;
+      margin-bottom: 15px;
+      color: #555;
+    }
 
-    .service-card a {
-      display: inline-block;
-      background-color: #ff9900;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-size: 14px;
-      transition: 5s;
-    }
+    .service-card a {
+      display: inline-block;
+      background-color: #ff9900;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 14px;
+      /* PERBAIKAN: Transisi Hover yang realistis */
+      transition: 0.3s; 
+    }
 
-    .service-card a:hover {
-      background-color: #ffaa33;
-    }
+    .service-card a:hover {
+      background-color: #ffaa33;
+    }
 
-    /* FOOTER */
-    footer {
-      background-color: #004d80;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 13px;
-      margin-top: 40px;
-    }
+    /* FOOTER */
+    footer {
+      background-color: #004d80;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 13px;
+      margin-top: 40px;
+    }
 
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        text-align: center;
-      }
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
 
-      nav {
-        margin-top: 10px;
-      }
+      nav {
+        margin-top: 10px;
+      }
 
-      .slider,
-      .slide {
-        height: 40vh;
-      }
+      .slider,
+      .slide {
+        /* Menyesuaikan tinggi slider responsif */
+        height: 35vh; 
+      }
 
-      .text-box h2 {
-        font-size: 20px;
-      }
-    }
+      .text-box h2 {
+        font-size: 20px;
+      }
+    }
 
-    @media (max-width: 480px) {
-      .slider-container {
-        width: 92%;
-        margin: 20px auto;
-      }
+    @media (max-width: 480px) {
+      .slider-container {
+        width: 92%;
+        margin: 20px auto;
+      }
 
-      .service-card {
-        padding: 15px;
-      }
+      .service-card {
+        padding: 15px;
+      }
 
-      .text-box h2 {
-        font-size: 18px;
-      }
+      .text-box h2 {
+        font-size: 18px;
+      }
 
-      .text-box button {
-        font-size: 13px;
-        padding: 8px 16px;
-      }
-    }
-  </style>
+      .text-box button {
+        font-size: 13px;
+        padding: 8px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo">
-      <img src="FDGD.png" alt="Logo">
-      <h1>UPT Puskesmas Cibatu</h1>
-    </div>
-    <nav>
-      <a href="index.html">🏠 Halaman Utama</a>
-    </nav>
-  </header>
+    <header>
+    <div class="logo">
+      <img src="FDGD.png" alt="Logo">
+      <h1>UPT Puskesmas Cibatu</h1>
+    </div>
+    <nav>
+      <a href="index.html">🏠 Halaman Utama</a>
+    </nav>
+  </header>
 
-  <!-- SLIDER WRAPPER -->
-  <div class="slider-container">
-    <div class="slider" id="slider">
-      <div class="slides" id="slides">
-        <div class="slide" style="background-image: url('photo/1.jpg');">
-          <div class="overlay"></div>
-          <div class="text-box">
-            <h2>Solusi Pelayanan Kesehatan Anda</h2>
-            <button>Pelajari Lebih Lanjut</button>
-          </div>
-        </div>
-        <div class="slide" style="background-image: url('photo/3.jpg');">
-          <div class="overlay"></div>
-          <div class="text-box">
-            <h2>Pelayanan Cepat dan Profesional</h2>
-            <button>Hubungi Kami</button>
-          </div>
-        </div>
-        <div class="slide" style="background-image: url('photo/2.jpg');">
-          <div class="overlay"></div>
-          <div class="text-box">
-            <h2>Bersama Membangun Kesehatan Masyarakat</h2>
-            <button>Kunjungi Sekarang</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="slider-container">
+    <div class="slider" id="slider">
+      <div class="slides" id="slides">
+        <div class="slide" style="background-image: url('photo/1.jpg');">
+          <div class="overlay"></div>
+          <div class="text-box">
+            <h2>Solusi Pelayanan Kesehatan Anda</h2>
+            <button>Pelajari Lebih Lanjut</button>
+          </div>
+        </div>
+        <div class="slide" style="background-image: url('photo/3.jpg');">
+          <div class="overlay"></div>
+          <div class="text-box">
+            <h2>Pelayanan Cepat dan Profesional</h2>
+            <button>Hubungi Kami</button>
+          </div>
+        </div>
+        <div class="slide" style="background-image: url('photo/2.jpg');">
+          <div class="overlay"></div>
+          <div class="text-box">
+            <h2>Bersama Membangun Kesehatan Masyarakat</h2>
+            <button>Kunjungi Sekarang</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!-- SERVICES -->
-  <div class="services">
-    <div class="service-card">
-      <h3>Pengaduan Masyarakat</h3>
-      <p>Sampaikan aspirasi dan keluhan Anda dengan mudah.</p>
-      <a href="LayananMasyarakat/pengaduan_kritik.html">Sampaikan Sekarang</a>
-    </div>
-    <div class="service-card">
-      <h3>Index Kepuasan Masyarakat</h3>
-      <p>Ikuti survei untuk menilai pelayanan kami.</p>
-      <a href="LayananMasyarakat/ikm.html">Isi Survei</a>
-    </div>
-    <div class="service-card">
-      <h3>Indeks Persepsi Korupsi</h3>
-      <p>Evaluasi integritas dan transparansi layanan publik.</p>
-      <a href="LayananMasyarakat/spk.html">Mulai Survei</a>
-    </div>
-    <div class="service-card">
-      <h3>Survei Kepuasan Pelayanan</h3>
-      <p>Bantu kami meningkatkan kualitas pelayanan kesehatan.</p>
-      <a href="LayananMasyarakat/spp.html">Mulai Survei</a>
-    </div>
-  </div>
+    <div class="services">
+    <div class="service-card">
+      <h3>Pengaduan Masyarakat</h3>
+      <p>Sampaikan aspirasi dan keluhan Anda dengan mudah.</p>
+      <a href="LayananMasyarakat/pengaduan_kritik.html">Sampaikan Sekarang</a>
+    </div>
+    <div class="service-card">
+      <h3>Index Kepuasan Masyarakat</h3>
+      <p>Ikuti survei untuk menilai pelayanan kami.</p>
+      <a href="LayananMasyarakat/ikm.html">Isi Survei</a>
+      </div>
+    <div class="service-card">
+      <h3>Indeks Persepsi Korupsi</h3>
+      <p>Evaluasi integritas dan transparansi layanan publik.</p>
+      <a href="LayananMasyarakat/spk.html">Mulai Survei</a>
+    </div>
+    <div class="service-card">
+      <h3>Survei Kepuasan Pelayanan</h3>
+      <p>Bantu kami meningkatkan kualitas pelayanan kesehatan.</p>
+      <a href="LayananMasyarakat/spp.html">Mulai Survei</a>
+    </div>
+  </div>
 
-  <!-- FOOTER -->
-  <footer>
-    © 2025 UPT Puskesmas Cibatu | Dinas Kesehatan Kab. Garut
-  </footer>
+    <footer>
+    © 2025 UPT Puskesmas Cibatu | Dinas Kesehatan Kab. Garut
+  </footer>
 
-  <!-- SCRIPT -->
-  <script>
-    const slides = document.getElementById("slides");
-    const total = document.querySelectorAll(".slide").length;
-    let index = 0;
+    <script>
+    const slides = document.getElementById("slides");
+    const total = document.querySelectorAll(".slide").length;
+    let index = 0;
 
-    function showNext() {
-      index = (index + 1) % total;
-      slides.style.transform = `translateX(-${index * 100}%)`;
-    }
+    function showNext() {
+      index = (index + 1) % total;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    }
 
-    let interval = setInterval(showNext, 6000);
+    /* Mengubah interval menjadi 5 detik. Atur nilai ini sesuai kebutuhan (misalnya 4000ms untuk 4 detik) */
+    let interval = setInterval(showNext, 5000); 
 
-    // Swipe gesture support
-    let startX = 0, endX = 0;
-    const slider = document.getElementById("slider");
+    // Swipe gesture support
+    let startX = 0, endX = 0;
+    const slider = document.getElementById("slider");
 
-    slider.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-    slider.addEventListener("touchmove", e => endX = e.touches[0].clientX);
-    slider.addEventListener("touchend", () => {
-      const diff = startX - endX;
-      if (Math.abs(diff) > 50) {
-        clearInterval(interval);
-        if (diff > 0) index = (index + 1) % total;
-        else index = (index - 1 + total) % total;
-        slides.style.transform = `translateX(-${index * 100}%)`;
-        interval = setInterval(showNext, 6000);
-      }
-    });
-  </script>
+    slider.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+      // Hentikan auto-play saat user mulai menyentuh
+      clearInterval(interval); 
+    });
+    
+    slider.addEventListener("touchmove", e => endX = e.touches[0].clientX);
+    
+    slider.addEventListener("touchend", () => {
+      const diff = startX - endX;
+      if (Math.abs(diff) > 50) {
+        // Logika swipe
+        if (diff > 0) index = (index + 1) % total; // Swipe ke kiri (slide berikutnya)
+        else index = (index - 1 + total) % total; // Swipe ke kanan (slide sebelumnya)
+        slides.style.transform = `translateX(-${index * 100}%)`;
+      }
+      // Mulai lagi auto-play setelah interaksi selesai
+      interval = setInterval(showNext, 5000); 
+    });
+  </script>
 </body>
 </html>
