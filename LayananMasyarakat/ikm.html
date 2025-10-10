@@ -14,466 +14,311 @@
       --text:#123;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      font-family:"Poppins", sans-serif;
       background:var(--bg);
       color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
     }
-
     header{
       background:var(--primary);
       color:#fff;
       padding:14px 16px;
       display:flex;
-      gap:12px;
-      align-items:center;
       justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
     }
-    .logo {display:flex; gap:12px; align-items:center}
-    .logo img{height:44px; width:auto; border-radius:6px; background:#fff; padding:4px}
-    .logo h1{font-size:18px; font-weight:700; margin:0}
-    header nav a{color:rgba(255,255,255,0.95); text-decoration:none; font-weight:600}
-
-    main{max-width:1100px; margin:20px auto; padding:0 16px 80px}
+    .logo{display:flex;gap:10px;align-items:center}
+    .logo img{height:44px;background:#fff;border-radius:6px;padding:4px}
+    .logo h1{margin:0;font-size:18px;font-weight:700}
+    header nav a{color:#fff;text-decoration:none;font-weight:600}
+    header nav a:hover{color:#ffd23f}
+    main{max-width:1100px;margin:20px auto;padding:0 16px 80px}
     .card{
       background:var(--card);
       border-radius:12px;
-      box-shadow:0 6px 24px rgba(12,40,60,0.06);
-      padding:18px;
+      box-shadow:0 6px 24px rgba(12,40,60,0.08);
+      padding:20px;
       margin-bottom:18px;
     }
-
-    .hero{
-      display:flex;
-      gap:18px;
-      align-items:center;
-      padding:18px;
-      border-radius:10px;
-      overflow:hidden;
-    }
-    .hero .left{
-      flex:1;
-      min-width:200px;
-    }
-    .hero h2{margin:0 0 8px; font-size:20px}
-    .hero p{margin:0; color:#33475b}
-
+    .hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
     .hero .thumb{
+      flex-shrink:0;
       width:220px;
       height:120px;
       border-radius:10px;
-      background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=60&auto=format&fit=crop');
-      background-size:cover;
-      background-position:center;
-      flex-shrink:0;
+      background:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=60') center/cover;
     }
-
-    form .section-title{
-      font-weight:700;
-      margin:6px 0 12px;
-      color:var(--primary);
-    }
-
-    .grid{
-      display:grid;
-      gap:12px;
-      grid-template-columns: repeat(2, 1fr);
-    }
-    label{display:block; font-size:13px; margin-bottom:6px}
-    input[type="text"], input[type="number"], select, textarea {
+    .hero h2{margin:0 0 10px;font-size:20px;color:var(--primary)}
+    form .section-title{font-weight:700;color:var(--primary);margin:16px 0 10px}
+    .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+    label{font-size:13px;margin-bottom:4px;display:block}
+    input,select,textarea{
       width:100%;
-      padding:10px 12px;
+      padding:10px;
       border-radius:8px;
-      border:1px solid #e2e8f0;
+      border:1px solid #ccc;
       font-size:14px;
-      background:#fff;
     }
-    textarea{min-height:90px; resize:vertical}
-
-    .full{grid-column:1/-1}
-    .q-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-    .radio-group{display:flex; gap:8px; align-items:center}
-    .radio-group label{font-weight:600; font-size:13px}
-
-    .services-wrap{
-      margin-top:8px;
-      display:flex; flex-wrap:wrap; gap:8px;
-    }
+    textarea{min-height:80px;resize:vertical}
+    .services-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
     .chip{
-      padding:8px 10px; border-radius:999px; background:#f0f6fb; color:var(--primary); font-weight:600; cursor:pointer;
-      border:1px solid transparent;
+      padding:8px 10px;
+      border-radius:20px;
+      background:#f0f6fb;
+      color:var(--primary);
+      font-weight:600;
+      cursor:pointer;
     }
-    .chip.selected{background:var(--primary); color:#fff; border-color:rgba(0,0,0,0.05)}
-    .hint{font-size:13px; color:#556; margin-top:6px}
-
-    .actions{display:flex; gap:10px; justify-content:flex-end; margin-top:14px}
+    .chip.selected{background:var(--primary);color:#fff}
+    .question{background:#fbfdff;padding:12px;border-radius:8px;border:1px solid #eef6ff;margin-top:10px}
+    .q-row{display:flex;gap:10px;flex-wrap:wrap}
+    .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
     button.primary{
-      background:var(--primary); color:#fff; border:none; padding:10px 16px; border-radius:10px; font-weight:700; cursor:pointer;
+      background:var(--primary);
+      color:#fff;
+      border:none;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
     }
-    button.secondary{background:transparent; border:1px solid #e2e8f0; padding:10px 14px; border-radius:10px; cursor:pointer;}
-
-    .note{font-size:13px; color:#556; margin-top:8px}
-
-    /* responsive */
-    @media (max-width:900px){
-      .grid{grid-template-columns:repeat(1,1fr)}
-      .hero{flex-direction:column; align-items:flex-start}
-      .hero .thumb{width:100%; height:160px}
-      .actions{justify-content:stretch; flex-direction:column-reverse}
-      button.primary{width:100%}
-      button.secondary{width:100%}
+    button.secondary{
+      background:transparent;
+      border:1px solid #ccc;
+      padding:10px 16px;
+      border-radius:10px;
+      cursor:pointer;
     }
-
-    /* success message */
     .toast{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      background:#063; color:#fff;
-      padding:12px 16px; border-radius:10px; box-shadow:0 6px 20px rgba(2,20,10,0.3); display:none;
+      position:fixed;right:18px;bottom:18px;
+      background:#063;color:#fff;
+      padding:12px 16px;border-radius:10px;
+      display:none;
     }
     .toast.show{display:block}
-
-    /* small visual tweaks for readability */
-    .question{background:#fbfdff; padding:12px; border-radius:8px; border:1px solid #eef6ff}
-    .question p{margin:0 0 8px; font-weight:600}
-    .small{font-size:13px; color:#4b5563}
+    @media(max-width:768px){
+      .hero{flex-direction:column}
+      .hero .thumb{width:100%;height:160px}
+      .actions{flex-direction:column-reverse}
+      button{width:100%}
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <!-- ganti src dengan file logo lokal jika perlu -->
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Logo_Kabupaten_Garut.png" alt="logo">
+<header>
+  <div class="logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Logo_Kabupaten_Garut.png" alt="logo">
+    <div>
+      <h1>UPT Puskesmas Cibatu</h1>
+      <div style="font-size:12px;opacity:.9">Dinas Kesehatan Kab. Garut</div>
+    </div>
+  </div>
+  <nav><a href="/satupintu/pengaduan.html">🏠 Beranda</a></nav>
+</header>
+
+<main>
+  <div class="card hero">
+    <div>
+      <h2>Survei Kepuasan Masyarakat (IKM)</h2>
+      <p>Terima kasih telah meluangkan waktu. Jawaban Anda membantu kami meningkatkan mutu pelayanan.</p>
+      <small>Durasi ±2–5 menit • Skala 1–4</small>
+    </div>
+    <div class="thumb" aria-hidden="true"></div>
+  </div>
+
+  <form id="ikmForm" class="card">
+    <div class="section-title">A. Data Responden</div>
+    <div class="grid">
       <div>
-        <h1>UPT Puskesmas Cibatu</h1>
-        <div style="font-size:12px; opacity:0.9">Dinas Kesehatan Kab. Garut</div>
+        <label>Nama Pasien</label>
+        <input name="res_number" required placeholder="Nama lengkap">
+      </div>
+      <div>
+        <label>Umur (Tahun)</label>
+        <input name="age" type="number" min="1" required>
+      </div>
+      <div>
+        <label>Jenis Kelamin</label>
+        <select name="gender" required>
+          <option value="">Pilih...</option>
+          <option>Laki-laki</option>
+          <option>Perempuan</option>
+        </select>
+      </div>
+      <div>
+        <label>Pendidikan Terakhir</label>
+        <select name="education" required>
+          <option value="">Pilih...</option>
+          <option>SD ke Bawah</option>
+          <option>SLTP / Sederajat</option>
+          <option>SLTA / Sederajat</option>
+          <option>D1-D4</option>
+          <option>S-1</option>
+          <option>S-2 ke Atas</option>
+        </select>
+      </div>
+      <div>
+        <label>Pekerjaan Utama</label>
+        <select name="job" required>
+          <option value="">Pilih...</option>
+          <option>Pimpinan Perusahaan</option>
+          <option>Manager/Wakil Manajemen</option>
+          <option>Wiraswasta</option>
+          <option>PNS/TNI/Polri</option>
+          <option>Karyawan Swasta</option>
+          <option>Ibu Rumah Tangga</option>
+          <option>Pelajar/Mahasiswa</option>
+          <option>Tidak Bekerja</option>
+          <option>Lainnya</option>
+        </select>
+      </div>
+      <div class="full">
+        <label>Jenis Layanan</label>
+        <div class="services-wrap" id="serviceChips">
+          <div class="chip" data-val="Pendaftaran">Pendaftaran</div>
+          <div class="chip" data-val="Kasir">Kasir</div>
+          <div class="chip" data-val="Pelayanan Usia Produktif">Usia Produktif / Dewasa</div>
+          <div class="chip" data-val="KB">KB</div>
+          <div class="chip" data-val="Gigi">Gigi dan Mulut</div>
+          <div class="chip" data-val="KIA">Kesehatan Ibu & Anak</div>
+          <div class="chip" data-val="Lansia">Lansia</div>
+          <div class="chip" data-val="Apotek">Apotek</div>
+          <div class="chip" data-val="UGD">UGD</div>
+          <div class="chip" data-val="Rawat Inap">Rawat Inap</div>
+          <div class="chip" data-val="Laboratorium">Laboratorium</div>
+          <div class="chip" data-val="PUSTU">PUSTU</div>
+        </div>
+        <input id="service_other" name="service_other" placeholder="Jika lain-lain, tulis di sini">
       </div>
     </div>
-    <nav>
-      <a href="/satupintu/pengaduan.html">🏠 Beranda</a>
-    </nav>
-  </header>
 
-  <main>
-    <div class="card hero">
-      <div class="left">
-        <h2>Survei Kepuasan Masyarakat (IKM) — UPT Puskesmas Cibatu</h2>
-        <p>Terima kasih telah meluangkan waktu. Jawaban Anda akan membantu peningkatan kualitas pelayanan. Data bersifat terbuka untuk keperluan evaluasi internal.</p>
-        <div class="hint"> Durasi pengisian: ~2–5 menit • Jawaban: skala 1 (Tidak sesuai) — 4 (Sangat sesuai)</div>
+    <hr style="margin:16px 0;border:none;border-top:1px solid #eef6ff">
+
+    <div class="section-title">B. Data Alamat</div>
+    <div class="grid">
+      <div>
+        <label>Alamat</label>
+        <input name="surveyor_name" required placeholder="Alamat lengkap">
       </div>
-      <div class="thumb" aria-hidden="true"></div>
+      <div>
+        <label>Pilih Desa</label>
+        <select name="surveyor_nip" required>
+          <option value="">Pilih Desa...</option>
+          <option>Cibatu</option>
+          <option>Kertajaya</option>
+          <option>Wanakerta</option>
+          <option>Keresek</option>
+          <option>Padasuka</option>
+          <option>Cibunar</option>
+          <option>Sindangsuka</option>
+          <option>Mekarsari</option>
+          <option>Karyamukti</option>
+          <option>Sukalilah</option>
+          <option>Girimukti</option>
+        </select>
+      </div>
+      <div>
+        <label>Tanggal Survei</label>
+        <input type="date" name="survey_date" required>
+      </div>
+      <div>
+        <label>Jam Survei</label>
+        <select name="survey_time" required>
+          <option value="">Pilih...</option>
+          <option>08.00 – 12.00</option>
+          <option>13.00 – 17.00</option>
+        </select>
+      </div>
     </div>
 
-    <!-- FORM -->
-    <form id="ikmForm" class="card" autocomplete="off">
-      <div class="section-title">A. Data Responden</div>
-      <div class="grid">
-        <div>
-          <label for="res_number">Nomor Responden (diisi petugas)</label>
-          <input id="res_number" name="res_number" type="text" placeholder="Nomor responden (opsional)">
-        </div>
+    <hr style="margin:16px 0;border:none;border-top:1px solid #eef6ff">
 
-        <div>
-          <label for="age">Umur (Tahun)</label>
-          <input id="age" name="age" type="number" min="0" placeholder="Contoh: 34">
-        </div>
+    <div class="section-title">C. Pendapat Responden</div>
+    <div id="questions"></div>
 
-        <div>
-          <label for="gender">Jenis Kelamin</label>
-          <select id="gender" name="gender">
-            <option value="">Pilih...</option>
-            <option>1 - Laki-laki</option>
-            <option>2 - Perempuan</option>
-          </select>
-        </div>
+    <div class="full" style="margin-top:12px">
+      <label>Saran / Masukan</label>
+      <textarea name="suggestion" required placeholder="Tuliskan saran Anda di sini"></textarea>
+    </div>
 
-        <div>
-          <label for="education">Pendidikan Terakhir</label>
-          <select id="education" name="education">
-            <option value="">Pilih...</option>
-            <option>1 - SD ke Bawah</option>
-            <option>2 - SLTP / Sederajat</option>
-            <option>3 - SLTA / Sederajat</option>
-            <option>4 - D1-D4</option>
-            <option>5 - S-1</option>
-            <option>6 - S-2 ke Atas</option>
-          </select>
-        </div>
+    <div class="actions">
+      <button type="button" class="secondary" id="resetBtn">Reset</button>
+      <button type="submit" class="primary" id="submitBtn">Kirim Jawaban</button>
+    </div>
+  </form>
+</main>
 
-        <div>
-          <label for="job">Pekerjaan Utama</label>
-          <select id="job" name="job">
-            <option value="">Pilih...</option>
-            <option>1 - Pimpinan Perusahaan</option>
-            <option>2 - Manager/Wakil Manajemen</option>
-            <option>3 - Wiraswasta</option>
-            <option>4 - PNS/TNI/Polri</option>
-            <option>5 - Pelajar/Mahasiswa</option>
-            <option>6 - Lainnya</option>
-          </select>
-        </div>
+<div id="toast" class="toast">Terkirim — Terima kasih!</div>
 
-        <div class="full">
-          <label>Jenis Layanan (pilih salah satu atau tulis)</label>
-          <div class="services-wrap" id="serviceChips">
-            <div class="chip" data-val="Loket Pendaftaran">Loket Pendaftaran</div>
-            <div class="chip" data-val="Pemeriksaan Umum">Pelayanan Pemeriksaan Umum</div>
-            <div class="chip" data-val="Gigi Mulut">Pelayanan Kesehatan Gigi dan Mulut</div>
-            <div class="chip" data-val="Kesehatan Keluarga">Pelayanan Kesehatan Keluarga</div>
-            <div class="chip" data-val="MTBS">Pelayanan MTBS</div>
-            <div class="chip" data-val="Lansia">Pelayanan Lansia</div>
-            <div class="chip" data-val="Apotek">Pelayanan Apotek</div>
-            <div class="chip" data-val="PONED">Pelayanan PONED</div>
-            <div class="chip" data-val="UGD">Pelayanan UGD</div>
-            <div class="chip" data-val="Rawat Inap">Pelayanan Rawat Inap</div>
-            <div class="chip" data-val="Laboratorium">Pelayanan Laboratorium</div>
-            <div class="chip" data-val="PUSTU">PUSTU</div>
-          </div>
-          <input type="text" id="service_other" name="service_other" placeholder="Jika lain-lain, sebutkan" style="margin-top:8px">
-        </div>
-      </div>
+<script>
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyEMzmJ29DD7qndZYMZ5dJmeErAMK-FAGj-Lob8qfBr5EYl7TIersNmtC0-qLg4L8t6/exec";
 
-      <hr style="margin:16px 0; border:none; border-top:1px solid #eef6ff">
+// buat daftar pertanyaan otomatis
+const pertanyaan = [
+  "Kesesuaian persyaratan pelayanan dengan jenis pelayanannya",
+  "Kemampuan petugas dalam memberikan pelayanan",
+  "Kemudahan prosedur pelayanan",
+  "Perilaku petugas (kesopanan & keramahan)",
+  "Kecepatan waktu dalam memberikan pelayanan",
+  "Penanganan pengaduan pengguna layanan",
+  "Kewajaran biaya/tarif dalam pelayanan",
+  "Kualitas sarana dan prasarana",
+  "Kesesuaian produk pelayanan dengan standar pelayanan"
+];
+const qContainer = document.getElementById('questions');
+pertanyaan.forEach((text,i)=>{
+  const div=document.createElement('div');
+  div.className='question';
+  div.innerHTML=`<p>${i+1}. ${text}</p>
+    <div class="q-row small">
+      <label><input required type="radio" name="q${i+1}" value="1"> 1</label>
+      <label><input type="radio" name="q${i+1}" value="2"> 2</label>
+      <label><input type="radio" name="q${i+1}" value="3"> 3</label>
+      <label><input type="radio" name="q${i+1}" value="4"> 4</label>
+    </div>`;
+  qContainer.appendChild(div);
+});
 
-      <div class="section-title">B. Data Pencacah / Pengumpul Data</div>
-      <div class="grid">
-        <div>
-          <label for="surveyor_name">Nama Petugas</label>
-          <input id="surveyor_name" name="surveyor_name" type="text" placeholder="Nama petugas">
-        </div>
-        <div>
-          <label for="surveyor_nip">NIP / Data Lain</label>
-          <input id="surveyor_nip" name="surveyor_nip" type="text" placeholder="NIP atau data lain">
-        </div>
-        <div>
-          <label for="survey_date">Tanggal Survei</label>
-          <input id="survey_date" name="survey_date" type="date" value="">
-        </div>
-        <div>
-          <label for="survey_time">Jam Survei</label>
-          <select id="survey_time" name="survey_time">
-            <option value="">Pilih...</option>
-            <option>08.00 – 12.00</option>
-            <option>13.00 – 17.00</option>
-          </select>
-        </div>
-      </div>
+// chip select
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>c.classList.toggle('selected'));
+});
+document.getElementById('resetBtn').onclick=()=>{
+  document.getElementById('ikmForm').reset();
+  document.querySelectorAll('.chip').forEach(ch=>ch.classList.remove('selected'));
+};
 
-      <hr style="margin:16px 0; border:none; border-top:1px solid #eef6ff">
-
-      <div class="section-title">C. Pendapat Responden tentang Pelayanan Publik</div>
-
-      <!-- We'll include the question blocks. Each question required (1-4) -->
-      <div class="question">
-        <p>1. Kesesuaian persyaratan pelayanan dengan jenis pelayanannya</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q1" value="1"> 1</label>
-          <label><input type="radio" name="q1" value="2"> 2</label>
-          <label><input type="radio" name="q1" value="3"> 3</label>
-          <label><input type="radio" name="q1" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="question" style="margin-top:10px">
-        <p>2. Kemampuan petugas dalam memberikan pelayanan</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q2" value="1"> 1</label>
-          <label><input type="radio" name="q2" value="2"> 2</label>
-          <label><input type="radio" name="q2" value="3"> 3</label>
-          <label><input type="radio" name="q2" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="question" style="margin-top:10px">
-        <p>3. Kemudahan prosedur pelayanan</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q3" value="1"> 1</label>
-          <label><input type="radio" name="q3" value="2"> 2</label>
-          <label><input type="radio" name="q3" value="3"> 3</label>
-          <label><input type="radio" name="q3" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="question" style="margin-top:10px">
-        <p>4. Perilaku petugas (kesopanan & keramahan)</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q4" value="1"> 1</label>
-          <label><input type="radio" name="q4" value="2"> 2</label>
-          <label><input type="radio" name="q4" value="3"> 3</label>
-          <label><input type="radio" name="q4" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="question" style="margin-top:10px">
-        <p>5. Kecepatan waktu dalam memberikan pelayanan</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q5" value="1"> 1</label>
-          <label><input type="radio" name="q5" value="2"> 2</label>
-          <label><input type="radio" name="q5" value="3"> 3</label>
-          <label><input type="radio" name="q5" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="question" style="margin-top:10px">
-        <p>6. Penanganan pengaduan pengguna layanan</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q6" value="1"> 1</label>
-          <label><input type="radio" name="q6" value="2"> 2</label>
-          <label><input type="radio" name="q6" value="3"> 3</label>
-          <label><input type="radio" name="q6" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="question" style="margin-top:10px">
-        <p>7. Kewajaran biaya/tarif dalam pelayanan</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q7" value="1"> 1</label>
-          <label><input type="radio" name="q7" value="2"> 2</label>
-          <label><input type="radio" name="q7" value="3"> 3</label>
-          <label><input type="radio" name="q7" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="question" style="margin-top:10px">
-        <p>8. Kualitas sarana dan prasarana</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q8" value="1"> 1</label>
-          <label><input type="radio" name="q8" value="2"> 2</label>
-          <label><input type="radio" name="q8" value="3"> 3</label>
-          <label><input type="radio" name="q8" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="question" style="margin-top:10px">
-        <p>9. Kesesuaian produk pelayanan dengan standar pelayanan</p>
-        <div class="q-row small">
-          <label><input type="radio" name="q9" value="1"> 1</label>
-          <label><input type="radio" name="q9" value="2"> 2</label>
-          <label><input type="radio" name="q9" value="3"> 3</label>
-          <label><input type="radio" name="q9" value="4"> 4</label>
-        </div>
-      </div>
-
-      <div class="full" style="margin-top:12px">
-        <label for="suggestion">Saran / Masukan</label>
-        <textarea id="suggestion" name="suggestion" placeholder="Tuliskan saran untuk perbaikan (opsional)"></textarea>
-      </div>
-
-      <div class="note">*) Nilai P = Nilai pendapat responden (diisi oleh petugas)</div>
-
-      <div class="actions">
-        <button type="button" class="secondary" id="resetBtn">Reset</button>
-        <button type="submit" class="primary" id="submitBtn">Kirim Jawaban</button>
-      </div>
-    </form>
-
-  </main>
-
-  <div id="toast" class="toast">Terkirim — Terima kasih!</div>
-
-  <script>
-    // ====== Konfigurasi: Paste Web App URL Google Apps Script di bawah ini ======
-    // Setelah deploy Apps Script, ganti nilai WEBAPP_URL dengan URL yang diberikan (https://script.google.com/....exec)
-    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyEMzmJ29DD7qndZYMZ5dJmeErAMK-FAGj-Lob8qfBr5EYl7TIersNmtC0-qLg4L8t6/exec";
-
-    // Utility: pilih banyak chip
-    (function(){
-      const chips = document.querySelectorAll('.chip');
-      chips.forEach(c=>{
-        c.addEventListener('click',()=>{
-          c.classList.toggle('selected');
-        });
-      });
-    })();
-
-    // Reset
-    document.getElementById('resetBtn').addEventListener('click', ()=>{
-      document.getElementById('ikmForm').reset();
-      document.querySelectorAll('.chip.selected').forEach(ch => ch.classList.remove('selected'));
+// submit handler
+document.getElementById('ikmForm').addEventListener('submit',async ev=>{
+  ev.preventDefault();
+  const form=ev.target;
+  const submitBtn=document.getElementById('submitBtn');
+  submitBtn.disabled=true;submitBtn.textContent='Mengirim...';
+  const data=Object.fromEntries(new FormData(form).entries());
+  data.services=Array.from(document.querySelectorAll('.chip.selected')).map(el=>el.dataset.val).join('; ')||data.service_other||'';
+  data.timestamp=new Date().toISOString();
+  try{
+    const resp=await fetch(WEBAPP_URL,{
+      method:'POST',mode:'cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
     });
-
-    // Form submit
-    document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
-      ev.preventDefault();
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Mengirim...';
-
-      // Ambil nilai
-      const form = ev.target;
-      const data = {
-        timestamp: new Date().toISOString(),
-        res_number: form.res_number.value || '',
-        age: form.age.value || '',
-        gender: form.gender.value || '',
-        education: form.education.value || '',
-        job: form.job.value || '',
-        services: Array.from(document.querySelectorAll('.chip.selected')).map(el=>el.dataset.val).join('; ') || form.service_other.value || '',
-        service_other: form.service_other.value || '',
-        surveyor_name: form.surveyor_name.value || '',
-        surveyor_nip: form.surveyor_nip.value || '',
-        survey_date: form.survey_date.value || '',
-        survey_time: form.survey_time.value || '',
-        q1: form.q1.value || '',
-        q2: form.q2.value || '',
-        q3: form.q3.value || '',
-        q4: form.q4.value || '',
-        q5: form.q5.value || '',
-        q6: form.q6.value || '',
-        q7: form.q7.value || '',
-        q8: form.q8.value || '',
-        q9: form.q9.value || '',
-        suggestion: form.suggestion.value || ''
-      };
-
-      // Simple client validation: minimal required fields (age or gender can be optional)
-      // You can adjust required rules here. We'll require at least one question answered.
-      const atLeastOneQ = ['q1','q2','q3','q4','q5','q6','q7','q8','q9'].some(k => data[k]);
-      if(!atLeastOneQ){
-        alert('Mohon isi minimal satu pertanyaan penilaian (skala 1-4).');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Kirim Jawaban';
-        return;
-      }
-
-      try{
-        if (!WEBAPP_URL || WEBAPP_URL.includes("PASTE_YOUR_WEBAPP_URL_HERE")) {
-          throw new Error("Web app URL belum di-setup. Buka instruksi deploy dan tempel URL Web App.");
-        }
-
-        const resp = await fetch(WEBAPP_URL, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(data)
-        });
-
-        const resJson = await resp.json();
-        if(resp.ok && resJson.status === 'success'){
-          // toast
-          const t = document.getElementById('toast');
-          t.textContent = 'Terkirim — Terima kasih!';
-          t.classList.add('show');
-          setTimeout(()=> t.classList.remove('show'), 3500);
-          form.reset();
-          document.querySelectorAll('.chip.selected').forEach(ch => ch.classList.remove('selected'));
-        } else {
-          alert('Gagal mengirim: ' + (resJson.message || resp.statusText));
-        }
-      }catch(err){
-        console.error(err);
-        alert('Terjadi kesalahan saat mengirim data. Pastikan WEBAPP_URL sudah benar dan script sudah dideploy.\n\n' + err.message);
-      } finally{
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Kirim Jawaban';
-      }
-    });
-  </script>
+    const resJson=await resp.json();
+    if(resp.ok && resJson.status==='success'){
+      const t=document.getElementById('toast');
+      t.classList.add('show');t.textContent='Terkirim — Terima kasih!';
+      setTimeout(()=>t.classList.remove('show'),3500);
+      form.reset();
+      document.querySelectorAll('.chip').forEach(ch=>ch.classList.remove('selected'));
+    }else alert('Gagal: '+(resJson.message||resp.statusText));
+  }catch(err){
+    alert('Kesalahan: '+err.message);
+  }finally{
+    submitBtn.disabled=false;submitBtn.textContent='Kirim Jawaban';
+  }
+});
+</script>
 </body>
 </html>
-
