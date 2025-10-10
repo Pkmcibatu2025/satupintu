@@ -56,6 +56,22 @@
   body.access-mode .chip.selected{background:#001f3f;color:#fff}
   body.access-mode .question{border:2px solid #000;background:#fff}
   body.access-mode .tts-btn{border:2px solid #000;background:#fff}
+  /* improved radio options for touch friendliness */
+  .q-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .q-row label{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:8px;
+    border:1px solid #e1e6ee;
+    margin:0;
+    cursor:pointer;
+    user-select:none;
+    font-weight:600;
+  }
+  .q-row input[type="radio"]{width:18px;height:18px;flex:0 0 auto}
+  .q-row label[aria-checked="true"]{background:rgba(0,77,128,0.08);border-color:rgba(0,77,128,0.2)}
   /* responsive */
   @media (max-width:768px){
     .hero{flex-direction:column}
@@ -68,7 +84,7 @@
 <body>
 <header>
   <div class="logo">
-    <img src="https://pkmcibatu2025.github.io/satupintu/FDGD.png" alt="logo puskesmas" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Logo_Kabupaten_Garut.png" alt="logo puskesmas" />
     <div>
       <h1>UPT Puskesmas Cibatu</h1>
       <div style="font-size:13px;opacity:.9">Dinas Kesehatan Kab. Garut</div>
@@ -80,8 +96,8 @@
     <div style="width:8px"></div>
     <div class="controls" role="region" aria-label="Kontrol aksesibilitas">
       <button id="toggleAccess" class="access-btn" aria-pressed="false" aria-label="Aktifkan mode aksesibilitas">♿ Mode Aksesibilitas</button>
-      <button id="readAll" title="Baca semua pertanyaan (Mode Aksesibilitas)" aria-hidden="true" style="display:none">🔊 Baca Semua</button>
-      <label for="langSelect" style="margin-left:4px;display:inline-block;color:#fff"> </label>
+      <button id="readAll" title="Baca semua pertanyaan" aria-hidden="true" style="display:none;margin-left:6px">🔊 Baca Semua</button>
+      <label for="langSelect" id="langLabel" style="margin-left:6px;display:none;color:#fff;font-weight:700">Bahasa:</label>
       <select id="langSelect" aria-label="Pilih bahasa TTS" style="display:none">
         <option value="id-ID">Bahasa Indonesia</option>
         <option value="en-US">English</option>
@@ -237,7 +253,9 @@
 
 <script>
 /* ------------------- konfigurasi ------------------- */
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyEMzmJ29DD7qndZYMZ5dJmeErAMK-FAGj-Lob8t6/exec";
+/* GANTI dengan Web App URL yang Anda deploy (Apps Script) */
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyoSGmING5h4ywQXvTdluDQyz6THy87ag-8ry4A1z-8OW9roxdJL-1LZ5gS2Qw_Tg/exec";
+
 /* ------------------- build questions ------------------- */
 const pertanyaan = [
   "Kesesuaian persyaratan pelayanan dengan jenis pelayanannya",
@@ -261,13 +279,13 @@ pertanyaan.forEach((text, idx) => {
     <div class="q-left">
       <p style="margin:0 0 6px;font-weight:700">${i}. ${text}</p>
       <div class="q-row" role="radiogroup" aria-label="Pertanyaan ${i}">
-        <label><input required name="q${i}" type="radio" value="1"> 1</label>
-        <label><input name="q${i}" type="radio" value="2"> 2</label>
-        <label><input name="q${i}" type="radio" value="3"> 3</label>
-        <label><input name="q${i}" type="radio" value="4"> 4</label>
+        <label aria-checked="false"><input required name="q${i}" type="radio" value="1"> 1</label>
+        <label aria-checked="false"><input name="q${i}" type="radio" value="2"> 2</label>
+        <label aria-checked="false"><input name="q${i}" type="radio" value="3"> 3</label>
+        <label aria-checked="false"><input name="q${i}" type="radio" value="4"> 4</label>
       </div>
     </div>
-    <div class="q-actions" aria-hidden="false">
+    <div class="q-actions" aria-hidden="true">
       <button type="button" class="tts-btn" data-q="${i}" title="Baca pertanyaan ${i}" aria-label="Baca pertanyaan ${i}">🔊</button>
     </div>
   `;
@@ -278,38 +296,127 @@ pertanyaan.forEach((text, idx) => {
 const toggleAccess = document.getElementById('toggleAccess');
 const readAllBtn = document.getElementById('readAll');
 const langSelect = document.getElementById('langSelect');
+const langLabel = document.getElementById('langLabel');
 
-toggleAccess.addEventListener('click', () => {
-  const active = document.body.classList.toggle('access-mode');
-  toggleAccess.setAttribute('aria-pressed', String(active));
-  toggleAccess.textContent = active ? "☀️ Mode Normal" : "♿ Mode Aksesibilitas";
-  // show readAll and language selector only in access mode
-  readAllBtn.style.display = active ? 'inline-block' : 'none';
-  langSelect.style.display = active ? 'inline-block' : 'none';
-  langSelect.setAttribute('aria-hidden', active ? 'false' : 'true');
-  readAllBtn.setAttribute('aria-hidden', active ? 'false' : 'true');
-});
-
-/* enable keyboard toggle via Enter/Space */
-toggleAccess.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleAccess.click(); } });
-
-/* TTS functions */
 let synth = window.speechSynthesis;
+let availableVoices = [];
+
+function refreshVoices(){
+  availableVoices = synth.getVoices() || [];
+}
+refreshVoices();
+if (synth.onvoiceschanged !== undefined) {
+  synth.onvoiceschanged = refreshVoices;
+}
+
+/* helper: pilih voice sesuai bahasa (fallback ke default) */
+function getVoiceForLang(langCode){
+  if(!availableVoices.length) refreshVoices();
+  const primary = langCode.toLowerCase();
+  // 1) exact match
+  let v = availableVoices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith(primary));
+  if(v) return v;
+  // 2) match language part only (e.g. en)
+  const langPart = primary.split('-')[0];
+  v = availableVoices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith(langPart));
+  if(v) return v;
+  // 3) fallback: any voice with "Google" or "Microsoft" in name, else first voice
+  v = availableVoices.find(voice => /google|microsoft/i.test(voice.name));
+  return v || availableVoices[0] || null;
+}
+
 function speak(text, lang='id-ID', onstart=null, onend=null){
   if(!synth) return;
   synth.cancel();
   const u = new SpeechSynthesisUtterance();
   u.text = text;
   u.lang = lang;
+  const voice = getVoiceForLang(lang);
+  if(voice) u.voice = voice;
   u.rate = 1;
   u.onstart = onstart;
   u.onend = onend;
-  synth.speak(u);
+  try { synth.speak(u); } catch(e) { console.warn('TTS error', e); if(onend) onend(); }
 }
+
+/* update UI when toggling access mode */
+function updateAccessUI(active){
+  document.body.classList.toggle('access-mode', active);
+  toggleAccess.setAttribute('aria-pressed', String(active));
+  toggleAccess.textContent = active ? "☀️ Mode Normal" : "♿ Mode Aksesibilitas";
+  // readAll and lang select visibility
+  readAllBtn.style.display = active ? 'inline-block' : 'none';
+  langSelect.style.display = active ? 'inline-block' : 'none';
+  langLabel.style.display = active ? 'inline-block' : 'none';
+  readAllBtn.setAttribute('aria-hidden', active ? 'false' : 'true');
+  langSelect.setAttribute('aria-hidden', active ? 'false' : 'true');
+
+  // per-question: show/hide tts buttons and manage focusability
+  document.querySelectorAll('.q-actions').forEach(qact=>{
+    const btn = qact.querySelector('.tts-btn');
+    if(active){
+      qact.setAttribute('aria-hidden','false');
+      if(btn){
+        btn.style.display = 'inline-block';
+        btn.removeAttribute('disabled');
+        btn.setAttribute('tabindex','0');
+      }
+    } else {
+      qact.setAttribute('aria-hidden','true');
+      if(btn){
+        btn.style.display = 'none';
+        btn.setAttribute('disabled','true');
+        btn.setAttribute('tabindex','-1');
+        // remove possible visual reading highlight
+        qact.closest('.question')?.classList.remove('reading');
+      }
+    }
+  });
+}
+
+/* initialize: ensure TTS controls hidden in normal mode */
+updateAccessUI(false);
+
+/* toggle */
+toggleAccess.addEventListener('click', () => {
+  const active = !document.body.classList.contains('access-mode');
+  updateAccessUI(active);
+});
+
+/* keyboard toggle via Enter/Space */
+toggleAccess.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleAccess.click(); } });
+
+/* attach per-question tts buttons (click handlers) */
+function attachTTSButtons(){
+  document.querySelectorAll('.tts-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> {
+      const idx = parseInt(btn.dataset.q,10);
+      readQuestion(idx);
+    });
+    btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); btn.click(); }});
+  });
+}
+attachTTSButtons();
+
+/* update aria-checked when radio changed for better a11y */
+document.addEventListener('change', (e)=>{
+  if(e.target && e.target.type === 'radio'){
+    const name = e.target.name;
+    const radios = document.querySelectorAll(`input[name="${name}"]`);
+    radios.forEach(r => {
+      const lbl = r.closest('label') || r.parentElement;
+      if(lbl && lbl.tagName.toLowerCase() === 'label'){
+        lbl.setAttribute('aria-checked', r.checked ? 'true' : 'false');
+      }
+    });
+  }
+});
 
 /* read single question: add visual indicator while reading */
 function readQuestion(idx) {
-  const qEl = document.querySelector(`.tts-btn[data-q="${idx}"]`).closest('.question');
+  const btn = document.querySelector(`.tts-btn[data-q="${idx}"]`);
+  if(!btn) return;
+  const qEl = btn.closest('.question');
   const lang = langSelect.value || 'id-ID';
   const text = `${idx}. ${pertanyaan[idx-1]}. Pilih nilai 1 sampai 4.`;
   qEl.classList.add('reading');
@@ -319,22 +426,16 @@ function readQuestion(idx) {
   if(firstRadio) firstRadio.focus();
 }
 
-/* attach per-question tts buttons */
-document.querySelectorAll('.tts-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=> readQuestion(btn.dataset.q));
-  btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); btn.click(); }});
-});
-
 /* Read all sequentially */
 async function readAllQuestions() {
   readAllBtn.disabled = true;
   const lang = langSelect.value || 'id-ID';
   for(let i=0;i<pertanyaan.length;i++){
     const idx = i+1;
-    const qEl = document.querySelector(`.tts-btn[data-q="${idx}"]`).closest('.question');
-    qEl.classList.add('reading');
+    const qEl = document.querySelector(`.tts-btn[data-q="${idx}"]`)?.closest('.question');
+    if(qEl) qEl.classList.add('reading');
     await new Promise(resolve=>{
-      speak(`${idx}. ${pertanyaan[i]}. Pilih nilai 1 sampai 4.`, lang, null, ()=>{ qEl.classList.remove('reading'); setTimeout(resolve, 350); });
+      speak(`${idx}. ${pertanyaan[i]}. Pilih nilai 1 sampai 4.`, lang, null, ()=>{ if(qEl) qEl.classList.remove('reading'); setTimeout(resolve, 350); });
     });
   }
   readAllBtn.disabled = false;
@@ -348,7 +449,6 @@ langSelect.addEventListener('change', ()=>{ langSelect.blur(); });
 document.querySelectorAll('.chip').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     btn.classList.toggle('selected');
-    // make button accessible: toggle aria-pressed
     const pressed = btn.classList.contains('selected');
     btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
   });
@@ -360,6 +460,8 @@ document.getElementById('resetBtn').addEventListener('click', ()=>{
   const form = document.getElementById('ikmForm');
   form.reset();
   document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+  // reset aria-checked on radio labels
+  document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
 });
 
 /* ------------------- submit handler ------------------- */
@@ -376,6 +478,13 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
   // services from selected chips
   data.services = Array.from(document.querySelectorAll('.chip.selected')).map(el=>el.dataset.val).join('; ') || data.service_other || '';
   data.timestamp = new Date().toISOString();
+
+  // collect radio answers q1..q9
+  pertanyaan.forEach((_,i)=>{
+    const qName = `q${i+1}`;
+    const el = form.querySelector(`input[name="${qName}"]:checked`);
+    data[qName] = el ? el.value : '';
+  });
 
   // simple validation: ensure all required radios answered
   const allQAnswered = pertanyaan.every((_,i) => !!form.querySelector(`input[name="q${i+1}"]:checked`));
@@ -399,6 +508,8 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
       setTimeout(()=>toast.classList.remove('show'), 3500);
       form.reset();
       document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+      // reset aria-checked
+      document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
     } else {
       alert('Gagal mengirim data: ' + (resJson.message || resp.statusText));
     }
@@ -410,7 +521,7 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
   }
 });
 
-/* keyboard shortcut: Ctrl+M toggles access mode (besar tombol untuk staff) */
+/* keyboard shortcut: Ctrl+M toggles access mode */
 document.addEventListener('keydown', (e)=>{
   if(e.ctrlKey && e.key.toLowerCase() === 'm'){
     document.getElementById('toggleAccess').click();
