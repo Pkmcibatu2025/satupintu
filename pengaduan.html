@@ -77,29 +77,27 @@
 
   .slides {
     display: flex;
+    width: 100%;
+    height: 100%;
     transition: transform 1s ease;
-    width: 300%;
   }
 
   .slide {
     flex: 0 0 100%;
-    height: 55vh;
     position: relative;
-    overflow: hidden;
+    height: 55vh;
   }
 
   .slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
 
   .overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.35);
-    z-index: 1;
+    background: rgba(0, 0, 0, 0.4);
   }
 
   .text-box {
@@ -109,7 +107,6 @@
     transform: translate(-50%, -50%);
     color: white;
     text-align: center;
-    padding: 0 15px;
     z-index: 2;
   }
 
@@ -117,7 +114,6 @@
     font-size: 26px;
     font-weight: 700;
     margin-bottom: 15px;
-    line-height: 1.4;
   }
 
   .text-box button {
@@ -230,55 +226,13 @@
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
-    header {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    nav {
-      margin-top: 10px;
-    }
-
-    .slider,
-    .slide {
-      height: 40vh;
-    }
-
-    .text-box h2 {
-      font-size: 20px;
-    }
-
-    .nav-btn {
-      width: 35px;
-      height: 35px;
-      font-size: 18px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .slider-container {
-      width: 92%;
-      margin: 20px auto;
-    }
-
-    .service-card {
-      padding: 15px;
-    }
-
-    .text-box h2 {
-      font-size: 18px;
-    }
-
-    .text-box button {
-      font-size: 13px;
-      padding: 8px 16px;
-    }
+    .slider, .slide { height: 40vh; }
+    .text-box h2 { font-size: 20px; }
   }
 </style>
 </head>
 
 <body>
-  <!-- HEADER -->
   <header>
     <div class="logo">
       <img src="FDGD.png" alt="Logo">
@@ -289,7 +243,6 @@
     </nav>
   </header>
 
-  <!-- SLIDER WRAPPER -->
   <div class="slider-container">
     <div class="slider" id="slider">
       <button class="nav-btn prev" id="prev">&#10094;</button>
@@ -297,7 +250,7 @@
 
       <div class="slides" id="slides">
         <div class="slide">
-          <img src="photo/1.jpg" alt="Slide 1">
+          <img src="photo/1.png" alt="Slide 1">
           <div class="overlay"></div>
           <div class="text-box">
             <h2>Solusi Pelayanan Kesehatan Anda</h2>
@@ -305,7 +258,7 @@
           </div>
         </div>
         <div class="slide">
-          <img src="photo/3.jpg" alt="Slide 2">
+          <img src="photo/3.png" alt="Slide 2">
           <div class="overlay"></div>
           <div class="text-box">
             <h2>Pelayanan Cepat dan Profesional</h2>
@@ -313,7 +266,7 @@
           </div>
         </div>
         <div class="slide">
-          <img src="photo/2.jpg" alt="Slide 3">
+          <img src="photo/2.png" alt="Slide 3">
           <div class="overlay"></div>
           <div class="text-box">
             <h2>Bersama Membangun Kesehatan Masyarakat</h2>
@@ -324,7 +277,6 @@
     </div>
   </div>
 
-  <!-- SERVICES -->
   <div class="services">
     <div class="service-card">
       <h3>Pengaduan Masyarakat</h3>
@@ -348,12 +300,8 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    © 2025 UPT Puskesmas Cibatu | Dinas Kesehatan Kab. Garut
-  </footer>
+  <footer>© 2025 UPT Puskesmas Cibatu | Dinas Kesehatan Kab. Garut</footer>
 
-  <!-- SCRIPT -->
   <script>
     const slides = document.getElementById("slides");
     const total = document.querySelectorAll(".slide").length;
@@ -367,47 +315,17 @@
       slides.style.transform = `translateX(-${index * 100}%)`;
     }
 
-    function nextSlide() {
-      showSlide(index + 1);
-    }
+    function nextSlide() { showSlide(index + 1); }
+    function prevSlide() { showSlide(index - 1); }
 
-    function prevSlide() {
-      showSlide(index - 1);
-    }
-
-    next.addEventListener("click", () => {
-      clearInterval(interval);
-      nextSlide();
-      startAuto();
-    });
-
-    prev.addEventListener("click", () => {
-      clearInterval(interval);
-      prevSlide();
-      startAuto();
-    });
+    next.addEventListener("click", () => { clearInterval(interval); nextSlide(); startAuto(); });
+    prev.addEventListener("click", () => { clearInterval(interval); prevSlide(); startAuto(); });
 
     function startAuto() {
       interval = setInterval(nextSlide, 6000);
     }
 
     startAuto();
-
-    // Swipe gesture support
-    let startX = 0, endX = 0;
-    const slider = document.getElementById("slider");
-
-    slider.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-    slider.addEventListener("touchmove", e => endX = e.touches[0].clientX);
-    slider.addEventListener("touchend", () => {
-      const diff = startX - endX;
-      if (Math.abs(diff) > 50) {
-        clearInterval(interval);
-        if (diff > 0) nextSlide();
-        else prevSlide();
-        startAuto();
-      }
-    });
   </script>
 </body>
 </html>
