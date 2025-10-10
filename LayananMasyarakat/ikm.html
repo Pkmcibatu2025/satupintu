@@ -1,286 +1,421 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Survey IKM - UPT Puskesmas Cibatu</title>
-  <style>
-    :root{
-      --primary: #004d80;
-      --accent: #ffb703;
-      --bg: #f5f8fa;
-      --card: #fff;
-      --text: #122;
-      --focus-color: #ffd23f;
-    }
-    body{margin:0;font-family:"Poppins",sans-serif;background:var(--bg);color:var(--text);transition:all .25s}
-    header{background:var(--primary);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .logo{display:flex;gap:12px;align-items:center}
-    .logo img{height:44px;border-radius:6px;background:#fff;padding:4px}
-    .logo h1{margin:0;font-size:18px}
-    nav{display:flex;gap:8px;align-items:center}
-    .access-btn{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
-    .access-btn:focus{outline:3px solid var(--focus-color);outline-offset:3px}
-    a.home{color:#fff;text-decoration:none;font-weight:600}
-    main{max-width:1100px;margin:18px auto;padding:0 16px 80px}
-    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(0,0,0,0.06);margin-bottom:16px}
-    .hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-    .thumb{width:220px;height:120px;border-radius:10px;background:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=60')center/cover;flex-shrink:0}
-    h2{color:var(--primary);margin:0 0 8px}
-    form .section-title{font-weight:700;color:var(--primary);margin:18px 0 10px}
-    .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-    label{display:block;margin-bottom:6px;font-weight:600}
-    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #bfc9d6;font-size:15px}
-    textarea{min-height:110px;resize:vertical}
-    input[type="number"]::-webkit-inner-spin-button {opacity: 1;}
-    .services-wrap{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{padding:8px 12px;border-radius:999px;background:#eef6ff;color:var(--primary);font-weight:700;cursor:pointer;border:1px solid transparent}
-    .chip.selected{background:var(--primary);color:#fff}
-
-    .question{background:#fbfdff;padding:14px;border-radius:8px;border:1px solid #e6f0ff;margin-top:10px}
-    .q-left{display:flex;flex-direction:column;gap:8px}
-    .q-row{display:flex;gap:20px;align-items:center;margin-top:4px}
-    .q-row label{font-weight:500;display:flex;align-items:center;gap:6px}
-    .q-actions{display:none;}
-
-    .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
-    .primary{background:var(--primary);color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700}
-    .secondary{background:#fff;border:1px solid #bfc9d6;padding:10px 14px;border-radius:10px;cursor:pointer}
-    .toast{position:fixed;right:18px;bottom:18px;background:#063;color:#fff;padding:12px 16px;border-radius:10px;display:none}
-    .toast.show{display:block}
-
-    body.access-mode{
-      --primary:#00264d;
-      --bg:#ffffff;
-      --text:#000;
-      font-size:1.1em;
-    }
-    body.access-mode input, body.access-mode select, body.access-mode textarea{
-      border:2px solid #000;
-      background:#fff;
-    }
-    body.access-mode .chip{background:#fff;border:2px solid var(--primary)}
-    body.access-mode .chip.selected{background:var(--primary);color:#fff}
-    body.access-mode .question{border:2px solid #000;background:#fff;}
-    body.access-mode .q-actions{display:flex;justify-content:flex-end;align-items:center;margin-top:6px;}
-    body.access-mode .reading {box-shadow:0 0 0 4px rgba(255,203,79,0.4);border-color:var(--focus-color);}
-    body.access-mode .tts-btn{background:#fff;border:2px solid #000;padding:8px;border-radius:8px;cursor:pointer}
-    body.access-mode .tts-btn:focus{outline:3px solid var(--focus-color);outline-offset:2px}
-
-    @media (max-width:768px){
-      .hero{flex-direction:column}
-      .thumb{width:100%;height:160px}
-      .actions{flex-direction:column-reverse}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Survei Kepuasan Masyarakat - UPT Puskesmas Cibatu (Aksesibel)</title>
+<style>
+  :root{
+    --primary: #004d80;
+    --accent: #ffb703;
+    --bg: #f5f8fa;
+    --card: #fff;
+    --text: #122;
+    --focus-color: #ffd23f;
+  }
+  body{margin:0;font-family:"Poppins",sans-serif;background:var(--bg);color:var(--text);transition:all .25s}
+  header{background:var(--primary);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .logo{display:flex;gap:12px;align-items:center}
+  .logo img{height:44px;border-radius:6px;background:#fff;padding:4px}
+  .logo h1{margin:0;font-size:18px}
+  nav{display:flex;gap:8px;align-items:center}
+  .access-btn{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+  .access-btn:focus{outline:3px solid var(--focus-color);outline-offset:3px}
+  a.home{color:#fff;text-decoration:none;font-weight:600}
+  main{max-width:1100px;margin:18px auto;padding:0 16px 80px}
+  .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(0,0,0,0.06);margin-bottom:16px}
+  .hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .thumb{width:220px;height:120px;border-radius:10px;background:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=60')center/cover;flex-shrink:0}
+  h2{color:var(--primary);margin:0 0 8px}
+  .controls {display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .controls button, .controls select {padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer}
+  .controls button:focus, button:focus, select:focus, input:focus, textarea:focus{outline:3px solid var(--focus-color);outline-offset:3px}
+  form .section-title{font-weight:700;color:var(--primary);margin:18px 0 10px}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  label{display:block;margin-bottom:6px;font-weight:600}
+  input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #bfc9d6;font-size:15px}
+  textarea{min-height:110px;resize:vertical}
+  .services-wrap{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:8px 12px;border-radius:999px;background:#eef6ff;color:var(--primary);font-weight:700;cursor:pointer;border:1px solid transparent}
+  .chip.selected{background:var(--primary);color:#fff}
+  .question{background:#fbfdff;padding:12px;border-radius:8px;border:1px solid #e6f0ff;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .q-left{flex:1}
+  .q-actions{display:flex;gap:8px;align-items:center}
+  .tts-btn{background:#fff;border:1px solid #cbd7e6;padding:8px;border-radius:8px;cursor:pointer}
+  .tts-btn:focus{outline:3px solid var(--focus-color);outline-offset:2px}
+  .reading {box-shadow:0 0 0 4px rgba(255, 203, 79, 0.18);border-color:var(--focus-color)}
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+  .primary{background:var(--primary);color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700}
+  .secondary{background:#fff;border:1px solid #bfc9d6;padding:10px 14px;border-radius:10px;cursor:pointer}
+  .toast{position:fixed;right:18px;bottom:18px;background:#063;color:#fff;padding:12px 16px;border-radius:10px;display:none}
+  .toast.show{display:block}
+  /* access mode (kontras tinggi, teks lebih besar) */
+  body.access-mode{--primary:#001f3f;--bg:#f3f4f6;--text:#000;font-size:1.15em}
+  body.access-mode input, body.access-mode select, body.access-mode textarea{border:2px solid #000}
+  body.access-mode .chip{background:#fff;border:2px solid #001f3f}
+  body.access-mode .chip.selected{background:#001f3f;color:#fff}
+  body.access-mode .question{border:2px solid #000;background:#fff}
+  body.access-mode .tts-btn{border:2px solid #000;background:#fff}
+  /* responsive */
+  @media (max-width:768px){
+    .hero{flex-direction:column}
+    .thumb{width:100%;height:160px}
+    .actions{flex-direction:column-reverse}
+    .controls{justify-content:flex-start}
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <img src="https://pkmcibatu2025.github.io/satupintu/photo/logo.png" alt="Logo Puskesmas">
-      <h1>Survey Kepuasan Masyarakat (IKM)</h1>
+<header>
+  <div class="logo">
+    <img src="https://pkmcibatu2025.github.io/satupintu/FDGD.png" alt="logo puskesmas" />
+    <div>
+      <h1>UPT Puskesmas Cibatu</h1>
+      <div style="font-size:13px;opacity:.9">Dinas Kesehatan Kab. Garut</div>
     </div>
-    <nav>
-      <a href="https://pkmcibatu2025.github.io/satupintu/" class="home">🏠 Beranda</a>
-      <button id="toggleAccess" class="access-btn">♿ Mode Aksesibilitas</button>
-      <select id="langSelect" style="display:none;">
+  </div>
+
+  <nav>
+    <a class="home" href="https://pkmcibatu2025.github.io/satupintu/pengaduan.html" aria-label="Kembali ke halaman pengaduan">🏠 Beranda</a>
+    <div style="width:8px"></div>
+    <div class="controls" role="region" aria-label="Kontrol aksesibilitas">
+      <button id="toggleAccess" class="access-btn" aria-pressed="false" aria-label="Aktifkan mode aksesibilitas">♿ Mode Aksesibilitas</button>
+      <button id="readAll" title="Baca semua pertanyaan (Mode Aksesibilitas)" aria-hidden="true" style="display:none">🔊 Baca Semua</button>
+      <label for="langSelect" style="margin-left:4px;display:inline-block;color:#fff"> </label>
+      <select id="langSelect" aria-label="Pilih bahasa TTS" style="display:none">
         <option value="id-ID">Bahasa Indonesia</option>
         <option value="en-US">English</option>
       </select>
-      <button id="readAll" class="access-btn" style="display:none;">🔊 Baca Semua</button>
-    </nav>
-  </header>
+    </div>
+  </nav>
+</header>
 
-  <main>
-    <div class="card">
-      <div class="hero">
-        <div class="thumb"></div>
-        <div>
-          <h2>Isi Formulir Survey</h2>
-          <p>Silakan isi dengan jujur agar kami dapat meningkatkan mutu pelayanan di UPT Puskesmas Cibatu.</p>
-        </div>
+<main>
+  <div class="card hero" aria-hidden="true">
+    <div>
+      <h2>Survei Kepuasan Masyarakat (IKM)</h2>
+      <p>Terima kasih telah meluangkan waktu. Jawaban Anda membantu kami meningkatkan mutu pelayanan.</p>
+      <small>Durasi ±2–5 menit • Skala 1–4</small>
+    </div>
+    <div class="thumb" aria-hidden="true"></div>
+  </div>
+
+  <form id="ikmForm" class="card" aria-label="Form Survei IKM" autocomplete="off">
+    <!-- A. Data Responden -->
+    <div class="section-title">A. Data Responden</div>
+    <div class="grid" role="group" aria-label="Data responden">
+      <div>
+        <label for="res_number">Nama Pasien</label>
+        <input id="res_number" name="res_number" required aria-required="true" aria-label="Nama pasien" placeholder="Nama lengkap">
+      </div>
+
+      <div>
+        <label for="age">Umur (Tahun)</label>
+        <input id="age" name="age" type="number" min="1" required aria-required="true" aria-label="Umur">
+      </div>
+
+      <div>
+        <label for="gender">Jenis Kelamin</label>
+        <select id="gender" name="gender" required aria-required="true" aria-label="Jenis kelamin">
+          <option value="">Pilih...</option>
+          <option>Laki-laki</option>
+          <option>Perempuan</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="education">Pendidikan Terakhir</label>
+        <select id="education" name="education" required aria-required="true" aria-label="Pendidikan terakhir">
+          <option value="">Pilih...</option>
+          <option>SD ke Bawah</option>
+          <option>SLTP / Sederajat</option>
+          <option>SLTA / Sederajat</option>
+          <option>D1-D4</option>
+          <option>S-1</option>
+          <option>S-2 ke Atas</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="job">Pekerjaan Utama</label>
+        <select id="job" name="job" required aria-required="true" aria-label="Pekerjaan utama">
+          <option value="">Pilih...</option>
+          <option>Pimpinan Perusahaan</option>
+          <option>Wiraswasta</option>
+          <option>PNS/TNI/Polri</option>
+          <option>Karyawan Swasta</option>
+          <option>Ibu Rumah Tangga</option>
+          <option>Pelajar/Mahasiswa</option>
+          <option>Tidak Bekerja</option>
+        </select>
       </div>
     </div>
 
-    <form id="ikmForm" class="card">
-      <div class="grid">
-        <div>
-          <label for="nama">Nama (Opsional)</label>
-          <input type="text" id="nama" name="nama" placeholder="Boleh dikosongkan">
-        </div>
-        <div>
-          <label for="umur">Umur</label>
-          <input type="number" id="umur" name="umur" min="1" placeholder="Contoh: 30" required>
-        </div>
-        <div>
-          <label for="jk">Jenis Kelamin</label>
-          <select id="jk" name="jk" required>
-            <option value="">-- Pilih --</option>
-            <option>Laki-laki</option>
-            <option>Perempuan</option>
-          </select>
-        </div>
+    <!-- layanan -->
+    <div style="margin-top:14px">
+      <label>Jenis Layanan (pilih satu atau lebih)</label>
+      <div class="services-wrap" role="group" aria-label="Jenis layanan">
+        <button type="button" class="chip" data-val="Pendaftaran">Pendaftaran</button>
+        <button type="button" class="chip" data-val="Kasir">Kasir</button>
+        <button type="button" class="chip" data-val="Pelayanan Usia Produktif">Usia Produktif / Dewasa</button>
+        <button type="button" class="chip" data-val="KB">KB</button>
+        <button type="button" class="chip" data-val="Gigi">Gigi dan Mulut</button>
+        <button type="button" class="chip" data-val="KIA">Kesehatan Ibu & Anak</button>
+        <button type="button" class="chip" data-val="Lansia">Lansia</button>
+        <button type="button" class="chip" data-val="Apotek">Apotek</button>
+        <button type="button" class="chip" data-val="UGD">UGD</button>
+        <button type="button" class="chip" data-val="Rawat Inap">Rawat Inap</button>
+        <button type="button" class="chip" data-val="Laboratorium">Laboratorium</button>
+        <button type="button" class="chip" data-val="PUSTU">PUSTU</button>
+      </div>
+      <input id="service_other" name="service_other" placeholder="Jika lain-lain, tulis di sini" style="margin-top:8px">
+    </div>
+
+    <hr style="margin:18px 0;border:none;border-top:1px solid #eef6ff">
+
+    <!-- B. Data Alamat -->
+    <div class="section-title">B. Data Alamat</div>
+    <div class="grid" role="group" aria-label="Data alamat">
+      <div style="grid-column:1/-1">
+        <label for="surveyor_name">Alamat Lengkap</label>
+        <textarea id="surveyor_name" name="surveyor_name" required aria-required="true" aria-label="Alamat lengkap" placeholder="Tuliskan alamat lengkap"></textarea>
       </div>
 
-      <div class="section-title">Jenis Pelayanan yang Diterima</div>
-      <div class="services-wrap">
-        <span class="chip" data-val="Pelayanan Umum">Pelayanan Umum</span>
-        <span class="chip" data-val="Pelayanan Gigi">Pelayanan Gigi</span>
-        <span class="chip" data-val="Pelayanan KIA">KIA</span>
-        <span class="chip" data-val="Laboratorium">Laboratorium</span>
-        <span class="chip" data-val="Farmasi">Farmasi</span>
-        <span class="chip" data-val="Lainnya">Lainnya</span>
+      <div>
+        <label for="surveyor_nip">Pilih Desa</label>
+        <select id="surveyor_nip" name="surveyor_nip" required aria-required="true" aria-label="Pilih desa">
+          <option value="">Pilih Desa...</option>
+          <option>Cibatu</option>
+          <option>Kertajaya</option>
+          <option>Wanakerta</option>
+          <option>Keresek</option>
+          <option>Padasuka</option>
+          <option>Cibunar</option>
+          <option>Sindangsuka</option>
+          <option>Mekarsari</option>
+          <option>Karyamukti</option>
+          <option>Sukalilah</option>
+          <option>Girimukti</option>
+        </select>
       </div>
 
-      <div class="section-title">Pertanyaan Kepuasan</div>
-      <div id="questions"></div>
-
-      <div class="actions">
-        <button type="button" id="resetBtn" class="secondary">🔄 Reset</button>
-        <button type="submit" id="submitBtn" class="primary">Kirim Jawaban</button>
+      <div>
+        <label for="survey_date">Tanggal Survei</label>
+        <input id="survey_date" name="survey_date" type="date" required aria-required="true">
       </div>
-    </form>
-  </main>
 
-  <div id="toast" class="toast">✅ Data berhasil dikirim!</div>
-
-  <script>
-  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzRVMGI1-Rci2vEY77MaUhUPY5X0grs5pIoi1_FWfUpDEr7fxYe18HtjWJOZZg0wfEX/exec";
-
-  const pertanyaan = [
-    "Kesesuaian persyaratan pelayanan dengan jenis pelayanannya",
-    "Kemampuan petugas dalam memberikan pelayanan",
-    "Kemudahan prosedur pelayanan",
-    "Perilaku petugas (kesopanan & keramahan)",
-    "Kecepatan waktu dalam memberikan pelayanan",
-    "Penanganan pengaduan pengguna layanan",
-    "Kewajaran biaya/tarif dalam pelayanan",
-    "Kualitas sarana dan prasarana",
-    "Kesesuaian produk pelayanan dengan standar pelayanan"
-  ];
-
-  const qContainer = document.getElementById('questions');
-  pertanyaan.forEach((text, idx) => {
-    const i = idx + 1;
-    const q = document.createElement('div');
-    q.className = 'question';
-    q.innerHTML = `
-      <div class="q-left">
-        <p style="margin:0;font-weight:700">${i}. ${text}</p>
-        <div class="q-row" role="radiogroup" aria-label="Pertanyaan ${i}">
-          <label><input required name="q${i}" type="radio" value="1"> 1</label>
-          <label><input name="q${i}" type="radio" value="2"> 2</label>
-          <label><input name="q${i}" type="radio" value="3"> 3</label>
-          <label><input name="q${i}" type="radio" value="4"> 4</label>
-        </div>
+      <div>
+        <label for="survey_time">Jam Survei</label>
+        <select id="survey_time" name="survey_time" required aria-required="true">
+          <option value="">Pilih...</option>
+          <option>07.30 – 14.30</option>
+          <option>14.30 – 19.30</option>
+          <option>19.30 – 07.30</option>
+        </select>
       </div>
-      <div class="q-actions">
-        <button type="button" class="tts-btn" data-q="${i}" title="Baca pertanyaan ${i}">🔊</button>
+    </div>
+
+    <hr style="margin:18px 0;border:none;border-top:1px solid #eef6ff">
+
+    <!-- C. Pertanyaan -->
+    <div class="section-title">C. Pendapat Responden</div>
+    <div id="questions" role="list"></div>
+
+    <div style="margin-top:12px">
+      <label for="suggestion">Saran / Masukan</label>
+      <textarea id="suggestion" name="suggestion" required aria-required="true" placeholder="Tuliskan saran Anda di sini"></textarea>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="secondary" id="resetBtn">Reset</button>
+      <button type="submit" class="primary" id="submitBtn">Kirim Jawaban</button>
+    </div>
+  </form>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Terkirim — Terima kasih!</div>
+
+<script>
+/* ------------------- konfigurasi ------------------- */
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyEMzmJ29DD7qndZYMZ5dJmeErAMK-FAGj-Lob8t6/exec";
+/* ------------------- build questions ------------------- */
+const pertanyaan = [
+  "Kesesuaian persyaratan pelayanan dengan jenis pelayanannya",
+  "Kemampuan petugas dalam memberikan pelayanan",
+  "Kemudahan prosedur pelayanan",
+  "Perilaku petugas (kesopanan & keramahan)",
+  "Kecepatan waktu dalam memberikan pelayanan",
+  "Penanganan pengaduan pengguna layanan",
+  "Kewajaran biaya/tarif dalam pelayanan",
+  "Kualitas sarana dan prasarana",
+  "Kesesuaian produk pelayanan dengan standar pelayanan"
+];
+
+const qContainer = document.getElementById('questions');
+pertanyaan.forEach((text, idx) => {
+  const i = idx + 1;
+  const q = document.createElement('div');
+  q.className = 'question';
+  q.setAttribute('role','listitem');
+  q.innerHTML = `
+    <div class="q-left">
+      <p style="margin:0 0 6px;font-weight:700">${i}. ${text}</p>
+      <div class="q-row" role="radiogroup" aria-label="Pertanyaan ${i}">
+        <label><input required name="q${i}" type="radio" value="1"> 1</label>
+        <label><input name="q${i}" type="radio" value="2"> 2</label>
+        <label><input name="q${i}" type="radio" value="3"> 3</label>
+        <label><input name="q${i}" type="radio" value="4"> 4</label>
       </div>
-    `;
-    qContainer.appendChild(q);
-  });
+    </div>
+    <div class="q-actions" aria-hidden="false">
+      <button type="button" class="tts-btn" data-q="${i}" title="Baca pertanyaan ${i}" aria-label="Baca pertanyaan ${i}">🔊</button>
+    </div>
+  `;
+  qContainer.appendChild(q);
+});
 
-  const toggleAccess = document.getElementById('toggleAccess');
-  const readAllBtn = document.getElementById('readAll');
-  const langSelect = document.getElementById('langSelect');
+/* ------------------- TTS & accessibility controls ------------------- */
+const toggleAccess = document.getElementById('toggleAccess');
+const readAllBtn = document.getElementById('readAll');
+const langSelect = document.getElementById('langSelect');
 
-  toggleAccess.addEventListener('click', () => {
-    const active = document.body.classList.toggle('access-mode');
-    toggleAccess.textContent = active ? "☀️ Mode Normal" : "♿ Mode Aksesibilitas";
-    readAllBtn.style.display = active ? 'inline-block' : 'none';
-    langSelect.style.display = active ? 'inline-block' : 'none';
-  });
+toggleAccess.addEventListener('click', () => {
+  const active = document.body.classList.toggle('access-mode');
+  toggleAccess.setAttribute('aria-pressed', String(active));
+  toggleAccess.textContent = active ? "☀️ Mode Normal" : "♿ Mode Aksesibilitas";
+  // show readAll and language selector only in access mode
+  readAllBtn.style.display = active ? 'inline-block' : 'none';
+  langSelect.style.display = active ? 'inline-block' : 'none';
+  langSelect.setAttribute('aria-hidden', active ? 'false' : 'true');
+  readAllBtn.setAttribute('aria-hidden', active ? 'false' : 'true');
+});
 
-  /* ====== TTS dengan voice pilihan ====== */
-  let synth = window.speechSynthesis;
-  let voices = [];
+/* enable keyboard toggle via Enter/Space */
+toggleAccess.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleAccess.click(); } });
 
-  function loadVoices() {
-    voices = synth.getVoices();
-    if (voices.length === 0) setTimeout(loadVoices, 500);
-  }
-  loadVoices();
-  if (typeof speechSynthesis !== "undefined") {
-    speechSynthesis.onvoiceschanged = loadVoices;
-  }
+/* TTS functions */
+let synth = window.speechSynthesis;
+function speak(text, lang='id-ID', onstart=null, onend=null){
+  if(!synth) return;
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance();
+  u.text = text;
+  u.lang = lang;
+  u.rate = 1;
+  u.onstart = onstart;
+  u.onend = onend;
+  synth.speak(u);
+}
 
-  function getVoiceByLang(langCode) {
-    return voices.find(v => v.lang.toLowerCase().startsWith(langCode.toLowerCase()))
-        || voices.find(v => v.lang.startsWith('en'))
-        || voices[0];
-  }
+/* read single question: add visual indicator while reading */
+function readQuestion(idx) {
+  const qEl = document.querySelector(`.tts-btn[data-q="${idx}"]`).closest('.question');
+  const lang = langSelect.value || 'id-ID';
+  const text = `${idx}. ${pertanyaan[idx-1]}. Pilih nilai 1 sampai 4.`;
+  qEl.classList.add('reading');
+  speak(text, lang, ()=>{}, ()=>{ qEl.classList.remove('reading'); });
+  // focus first radio for keyboard users
+  const firstRadio = qEl.querySelector('input[type="radio"]');
+  if(firstRadio) firstRadio.focus();
+}
 
-  function speak(text, lang='id-ID', onstart=null, onend=null){
-    if(!document.body.classList.contains('access-mode')) return;
-    synth.cancel();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = lang;
-    utter.voice = getVoiceByLang(lang);
-    utter.rate = 1;
-    utter.pitch = 1;
-    utter.onstart = onstart;
-    utter.onend = onend;
-    synth.speak(utter);
-  }
+/* attach per-question tts buttons */
+document.querySelectorAll('.tts-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> readQuestion(btn.dataset.q));
+  btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); btn.click(); }});
+});
 
-  function readQuestion(idx){
-    if(!document.body.classList.contains('access-mode')) return;
+/* Read all sequentially */
+async function readAllQuestions() {
+  readAllBtn.disabled = true;
+  const lang = langSelect.value || 'id-ID';
+  for(let i=0;i<pertanyaan.length;i++){
+    const idx = i+1;
     const qEl = document.querySelector(`.tts-btn[data-q="${idx}"]`).closest('.question');
-    const lang = langSelect.value || 'id-ID';
-    const textID = `${idx}. ${pertanyaan[idx-1]}. Pilih nilai 1 sampai 4.`;
-    const textEN = `${idx}. ${pertanyaan[idx-1]}. Please select a value from 1 to 4.`;
-    const toRead = (lang === 'en-US') ? textEN : textID;
     qEl.classList.add('reading');
-    speak(toRead, lang, null, ()=> qEl.classList.remove('reading'));
+    await new Promise(resolve=>{
+      speak(`${idx}. ${pertanyaan[i]}. Pilih nilai 1 sampai 4.`, lang, null, ()=>{ qEl.classList.remove('reading'); setTimeout(resolve, 350); });
+    });
+  }
+  readAllBtn.disabled = false;
+}
+readAllBtn.addEventListener('click', readAllQuestions);
+
+/* language selector keyboard accessibility */
+langSelect.addEventListener('change', ()=>{ langSelect.blur(); });
+
+/* ------------------- chips (service) multi-select ------------------- */
+document.querySelectorAll('.chip').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    btn.classList.toggle('selected');
+    // make button accessible: toggle aria-pressed
+    const pressed = btn.classList.contains('selected');
+    btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+  });
+  btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); btn.click(); }});
+});
+
+/* ------------------- reset handler ------------------- */
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  const form = document.getElementById('ikmForm');
+  form.reset();
+  document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+});
+
+/* ------------------- submit handler ------------------- */
+document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
+  ev.preventDefault();
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true; submitBtn.textContent = 'Mengirim...';
+
+  // collect data — match field names expected by Code.gs
+  const form = ev.target;
+  const fm = new FormData(form);
+  const data = Object.fromEntries(fm.entries());
+
+  // services from selected chips
+  data.services = Array.from(document.querySelectorAll('.chip.selected')).map(el=>el.dataset.val).join('; ') || data.service_other || '';
+  data.timestamp = new Date().toISOString();
+
+  // simple validation: ensure all required radios answered
+  const allQAnswered = pertanyaan.every((_,i) => !!form.querySelector(`input[name="q${i+1}"]:checked`));
+  if(!allQAnswered){
+    alert('Mohon isi semua pertanyaan (skala 1-4).');
+    submitBtn.disabled = false; submitBtn.textContent = 'Kirim Jawaban';
+    return;
   }
 
-  document.addEventListener('click', e=>{
-    if(e.target.classList.contains('tts-btn')){
-      readQuestion(e.target.dataset.q);
+  try{
+    const resp = await fetch(WEBAPP_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+    const resJson = await resp.json();
+    if(resp.ok && resJson.status === 'success'){
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'), 3500);
+      form.reset();
+      document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+    } else {
+      alert('Gagal mengirim data: ' + (resJson.message || resp.statusText));
     }
-  });
+  }catch(err){
+    console.error(err);
+    alert('Terjadi kesalahan saat mengirim data. Pastikan Web App sudah di-deploy dan dapat diakses.\n\n' + err.message);
+  } finally {
+    submitBtn.disabled = false; submitBtn.textContent = 'Kirim Jawaban';
+  }
+});
 
-  document.getElementById('resetBtn').addEventListener('click', ()=>{
-    const form = document.getElementById('ikmForm');
-    form.reset();
-    document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
-  });
-
-  document.querySelectorAll('.chip').forEach(btn=>{
-    btn.addEventListener('click', ()=> btn.classList.toggle('selected'));
-  });
-
-  document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
-    ev.preventDefault();
-    const form = ev.target;
-    const submitBtn = document.getElementById('submitBtn');
-    submitBtn.disabled = true; submitBtn.textContent = 'Mengirim...';
-    const fm = new FormData(form);
-    const data = Object.fromEntries(fm.entries());
-    data.services = Array.from(document.querySelectorAll('.chip.selected')).map(el=>el.dataset.val).join('; ');
-    data.timestamp = new Date().toISOString();
-
-    const allQ = pertanyaan.every((_,i)=>form.querySelector(`input[name="q${i+1}"]:checked`));
-    if(!allQ){ alert('Mohon isi semua pertanyaan.'); submitBtn.disabled=false; submitBtn.textContent='Kirim Jawaban'; return; }
-
-    try{
-      const res = await fetch(WEBAPP_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(data)
-      });
-      const j = await res.json();
-      if(j.status==='success'){
-        const toast=document.getElementById('toast');
-        toast.classList.add('show');
-        setTimeout(()=>toast.classList.remove('show'),3000);
-        form.reset();
-        document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
-      } else alert('Gagal mengirim data');
-    }catch(e){alert('Terjadi kesalahan: '+e.message);}
-    finally{submitBtn.disabled=false;submitBtn.textContent='Kirim Jawaban';}
-  });
-  </script>
+/* keyboard shortcut: Ctrl+M toggles access mode (besar tombol untuk staff) */
+document.addEventListener('keydown', (e)=>{
+  if(e.ctrlKey && e.key.toLowerCase() === 'm'){
+    document.getElementById('toggleAccess').click();
+  }
+});
+</script>
 </body>
 </html>
