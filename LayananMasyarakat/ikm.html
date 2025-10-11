@@ -36,8 +36,22 @@
   input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #bfc9d6;font-size:15px}
   textarea{min-height:110px;resize:vertical}
   .services-wrap{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{padding:8px 12px;border-radius:999px;background:#eef6ff;color:var(--primary);font-weight:700;cursor:pointer;border:1px solid transparent}
-  .chip.selected{background:var(--primary);color:#fff}
+  /* style single-select 'chip' radios to look like buttons */
+  .radio-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:999px;
+    background:#eef6ff;
+    color:var(--primary);
+    font-weight:700;
+    cursor:pointer;
+    border:1px solid transparent;
+    user-select:none;
+  }
+  .radio-chip input[type="radio"]{display:none}
+  .radio-chip[aria-checked="true"]{background:var(--primary);color:#fff;border-color:rgba(0,0,0,0.06)}
   .question{background:#fbfdff;padding:12px;border-radius:8px;border:1px solid #e6f0ff;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .q-left{flex:1}
   .q-actions{display:flex;gap:8px;align-items:center}
@@ -47,16 +61,16 @@
   .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
   .primary{background:var(--primary);color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700}
   .secondary{background:#fff;border:1px solid #bfc9d6;padding:10px 14px;border-radius:10px;cursor:pointer}
-  .toast{position:fixed;right:18px;bottom:18px;background:#063;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:9999}
-  .toast.show{display:block}
-  /* add variants for success / error */
+  .toast{position:fixed;right:18px;bottom:18px;background:#063;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:9999;min-width:220px;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+  .toast.show{display:block;animation:toastShow .36s ease}
   .toast.success{background:#28a745}
   .toast.error{background:#d9534f}
+  @keyframes toastShow{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
   /* access mode (kontras tinggi, teks lebih besar) */
   body.access-mode{--primary:#001f3f;--bg:#f3f4f6;--text:#000;font-size:1.15em}
   body.access-mode input, body.access-mode select, body.access-mode textarea{border:2px solid #000}
-  body.access-mode .chip{background:#fff;border:2px solid #001f3f}
-  body.access-mode .chip.selected{background:#001f3f;color:#fff}
+  body.access-mode .radio-chip{background:#fff;border:2px solid #001f3f}
+  body.access-mode .radio-chip[aria-checked="true"]{background:#001f3f;color:#fff}
   body.access-mode .question{border:2px solid #000;background:#fff}
   body.access-mode .tts-btn{border:2px solid #000;background:#fff}
   /* improved radio options for touch friendliness */
@@ -175,22 +189,58 @@
       </div>
     </div>
 
-    <!-- layanan -->
+    <!-- layanan (single-select styled as chips) -->
     <div style="margin-top:14px">
-      <label>Jenis Layanan (pilih satu atau lebih)</label>
-      <div class="services-wrap" role="group" aria-label="Jenis layanan">
-        <button type="button" class="chip" data-val="Pendaftaran">Pendaftaran</button>
-        <button type="button" class="chip" data-val="Kasir">Kasir</button>
-        <button type="button" class="chip" data-val="Pelayanan Usia Produktif">Usia Produktif / Dewasa</button>
-        <button type="button" class="chip" data-val="KB">KB</button>
-        <button type="button" class="chip" data-val="Gigi">Gigi dan Mulut</button>
-        <button type="button" class="chip" data-val="KIA">Kesehatan Ibu & Anak</button>
-        <button type="button" class="chip" data-val="Lansia">Lansia</button>
-        <button type="button" class="chip" data-val="Apotek">Apotek</button>
-        <button type="button" class="chip" data-val="UGD">UGD</button>
-        <button type="button" class="chip" data-val="Rawat Inap">Rawat Inap</button>
-        <button type="button" class="chip" data-val="Laboratorium">Laboratorium</button>
-        <button type="button" class="chip" data-val="PUSTU">PUSTU</button>
+      <label>Jenis Layanan (pilih satu)</label>
+      <div class="services-wrap" role="radiogroup" aria-label="Jenis layanan">
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="Pendaftaran">
+          Pendaftaran
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="Kasir">
+          Kasir
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="Pelayanan Usia Produktif">
+          Usia Produktif / Dewasa
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="KB">
+          KB
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="Gigi">
+          Gigi dan Mulut
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="KIA">
+          Kesehatan Ibu & Anak
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="Lansia">
+          Lansia
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="Apotek">
+          Apotek
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="UGD">
+          UGD
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="Rawat Inap">
+          Rawat Inap
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="Laboratorium">
+          Laboratorium
+        </label>
+        <label class="radio-chip" role="radio" aria-checked="false">
+          <input type="radio" name="service_radio" value="PUSTU">
+          PUSTU
+        </label>
       </div>
       <input id="service_other" name="service_other" placeholder="Jika lain-lain, tulis di sini" style="margin-top:8px">
     </div>
@@ -261,7 +311,7 @@
 
 <script>
 /* ------------------- konfigurasi ------------------- */
-/* GANTI dengan Web App URL yang Anda deploy (Apps Script) */
+/* Web App URL (sesuaikan jika berubah) */
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw7MkkCA6zr9tW676lrP6NxMVBjA2EyramMaFryiYOOUthdgaFbwJcyDemFHPsG0k6G/exec";
 
 /* ------------------- build questions ------------------- */
@@ -277,7 +327,7 @@ const pertanyaan = [
   "Kesesuaian produk pelayanan dengan standar pelayanan"
 ];
 
-// English translations (tidak mengganti pertanyaan asli — hanya dipakai TTS bila pilih bahasa Inggris)
+// English translations for TTS only
 const pertanyaan_en = [
   "Suitability of required documents and conditions for the service",
   "Staff capability in providing the service",
@@ -330,29 +380,22 @@ if (synth.onvoiceschanged !== undefined) {
   synth.onvoiceschanged = refreshVoices;
 }
 
-/* helper: pilih voice sesuai bahasa (fallback ke default) */
 function getVoiceForLang(langCode){
   if(!availableVoices.length) refreshVoices();
   const primary = (langCode || '').toLowerCase();
   if(!primary) return null;
-  // exact / startsWith match
   let v = availableVoices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith(primary));
   if(v) return v;
-  // match language part only (e.g. en)
   const part = primary.split('-')[0];
   v = availableVoices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith(part));
   if(v) return v;
-  // fallback: prefer Google/NT voices
   v = availableVoices.find(voice => /google|microsoft/i.test(voice.name));
   return v || availableVoices[0] || null;
 }
 
-/* speak util */
 function speak(text, lang='id-ID', onstart=null, onend=null){
   if(!synth) return;
-  try {
-    synth.cancel();
-  } catch(e){}
+  try { synth.cancel(); } catch(e){}
   const u = new SpeechSynthesisUtterance();
   u.text = text;
   u.lang = lang;
@@ -361,10 +404,9 @@ function speak(text, lang='id-ID', onstart=null, onend=null){
   u.rate = 1;
   u.onstart = onstart;
   u.onend = onend;
-  try { synth.speak(u); } catch(e) { console.warn('TTS error', e); if(onend) onend(); }
+  try { synth.speak(u); } catch(e) { if(onend) onend(); }
 }
 
-/* get read text depending on selected language */
 function getReadText(idx, langCode){
   const lang = (langCode || 'id-ID').toLowerCase();
   if(lang.startsWith('en')){
@@ -381,63 +423,37 @@ function updateAccessUI(active){
   document.body.classList.toggle('access-mode', active);
   toggleAccess.setAttribute('aria-pressed', String(active));
   toggleAccess.textContent = active ? "☀️ Mode Normal" : "♿ Mode Aksesibilitas";
-  // readAll and lang select visibility
   readAllBtn.style.display = active ? 'inline-block' : 'none';
   langSelect.style.display = active ? 'inline-block' : 'none';
   langLabel.style.display = active ? 'inline-block' : 'none';
   readAllBtn.setAttribute('aria-hidden', active ? 'false' : 'true');
   langSelect.setAttribute('aria-hidden', active ? 'false' : 'true');
 
-  // per-question: show/hide tts buttons and manage focusability
   document.querySelectorAll('.q-actions').forEach(qact=>{
     const btn = qact.querySelector('.tts-btn');
     if(active){
       qact.setAttribute('aria-hidden','false');
-      if(btn){
-        btn.style.display = 'inline-block';
-        btn.disabled = false;
-        btn.removeAttribute('aria-hidden');
-        btn.setAttribute('tabindex','0');
-        btn.style.pointerEvents = '';
-      }
+      if(btn){ btn.style.display = 'inline-block'; btn.disabled = false; btn.removeAttribute('aria-hidden'); btn.setAttribute('tabindex','0'); }
     } else {
       qact.setAttribute('aria-hidden','true');
-      if(btn){
-        btn.style.display = 'none';
-        btn.disabled = true;
-        btn.setAttribute('aria-hidden','true');
-        btn.setAttribute('tabindex','-1');
-        btn.style.pointerEvents = 'none';
-        // remove possible visual reading highlight
-        const qEl = qact.closest('.question');
-        if(qEl) qEl.classList.remove('reading');
-      }
+      if(btn){ btn.style.display = 'none'; btn.disabled = true; btn.setAttribute('aria-hidden','true'); btn.setAttribute('tabindex','-1'); btn.style.pointerEvents = 'none';
+        const qEl = qact.closest('.question'); if(qEl) qEl.classList.remove('reading'); }
     }
   });
 
-  // cancel any ongoing speech when disabling
-  if(!active && synth && synth.speaking){
-    try { synth.cancel(); } catch(e){}
-  }
+  if(!active && synth && synth.speaking){ try { synth.cancel(); } catch(e){} }
 }
-
-/* initialize: ensure TTS controls hidden in normal mode */
 updateAccessUI(false);
 
-/* toggle */
 toggleAccess.addEventListener('click', () => {
   const active = !document.body.classList.contains('access-mode');
   updateAccessUI(active);
 });
-
-/* keyboard toggle via Enter/Space */
 toggleAccess.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleAccess.click(); } });
 
-/* attach per-question tts buttons (click handlers) */
 function attachTTSButtons(){
   document.querySelectorAll('.tts-btn').forEach(btn=>{
     btn.addEventListener('click', ()=> {
-      // only allow reading if access mode active
       if(!document.body.classList.contains('access-mode')) return;
       const idx = parseInt(btn.dataset.q,10);
       readQuestion(idx);
@@ -447,7 +463,6 @@ function attachTTSButtons(){
 }
 attachTTSButtons();
 
-/* update aria-checked when radio changed for better a11y */
 document.addEventListener('change', (e)=>{
   if(e.target && e.target.type === 'radio'){
     const name = e.target.name;
@@ -461,26 +476,20 @@ document.addEventListener('change', (e)=>{
   }
 });
 
-/* read single question: add visual indicator while reading */
 function readQuestion(idx) {
   const btn = document.querySelector(`.tts-btn[data-q="${idx}"]`);
   if(!btn) return;
-  // only read when access mode is active
   if(!document.body.classList.contains('access-mode')) return;
   const qEl = btn.closest('.question');
   const lang = langSelect.value || 'id-ID';
   const text = getReadText(idx, lang);
-  // visual indicator
   qEl.classList.add('reading');
   speak(text, lang, ()=>{}, ()=>{ qEl.classList.remove('reading'); });
-  // focus first radio for keyboard users
   const firstRadio = qEl.querySelector('input[type="radio"]');
   if(firstRadio) firstRadio.focus();
 }
 
-/* Read all sequentially */
 async function readAllQuestions() {
-  // only allowed in access mode
   if(!document.body.classList.contains('access-mode')) return;
   readAllBtn.disabled = true;
   const lang = langSelect.value || 'id-ID';
@@ -496,33 +505,51 @@ async function readAllQuestions() {
 }
 readAllBtn.addEventListener('click', readAllQuestions);
 
-/* language selector keyboard accessibility */
 langSelect.addEventListener('change', ()=>{ langSelect.blur(); });
 
-/* ------------------- chips (service) multi-select ------------------- */
-document.querySelectorAll('.chip').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    btn.classList.toggle('selected');
-    const pressed = btn.classList.contains('selected');
-    btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+/* ------------------- services: make radio-chip interactive (single-select) ------------------- */
+document.querySelectorAll('.radio-chip').forEach(lbl=>{
+  const radio = lbl.querySelector('input[type="radio"]');
+  // set aria on click
+  lbl.addEventListener('click', (e)=>{
+    // toggle - for radio, selecting one only
+    if(radio.disabled) return;
+    radio.checked = true;
+    // update aria-checked for all siblings
+    document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
+    lbl.setAttribute('aria-checked','true');
+    // ensure service_other is cleared when choosing built-in option
+    document.getElementById('service_other').value = '';
   });
-  btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); btn.click(); }});
+  // keyboard support
+  lbl.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); lbl.click(); }
+  });
+});
+
+/* if user types 'service_other', uncheck radio chips */
+document.getElementById('service_other').addEventListener('input', (e)=>{
+  if(e.target.value && e.target.value.trim().length){
+    document.querySelectorAll('.radio-chip input[type="radio"]').forEach(r=> r.checked = false);
+    document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
+  }
 });
 
 /* ------------------- reset handler ------------------- */
 document.getElementById('resetBtn').addEventListener('click', ()=>{
   const form = document.getElementById('ikmForm');
   form.reset();
-  document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
-  // reset aria-checked on radio labels
+  document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
   document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
+  // hide tts buttons if not in access mode (they're already hidden by updateAccessUI)
 });
 
-/* ------------------- toast helper (keren) ------------------- */
+/* ------------------- toast helper ------------------- */
 function showToast(message, type='success'){
   const t = document.getElementById('toast');
   t.textContent = message;
   t.className = `toast ${type} show`;
+  // auto hide
   setTimeout(()=>{ t.classList.remove('show'); }, 3800);
 }
 
@@ -532,23 +559,29 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
   const submitBtn = document.getElementById('submitBtn');
   submitBtn.disabled = true; submitBtn.textContent = 'Mengirim...';
 
-  // collect data — match field names expected by Code.gs
   const form = ev.target;
   const fm = new FormData(form);
   const data = Object.fromEntries(fm.entries());
 
-  // services from selected chips (keep same key 'services')
-  data.services = Array.from(document.querySelectorAll('.chip.selected')).map(el=>el.dataset.val).join('; ') || data.service_other || '';
+  // derive services: if a radio is checked, use it; else use service_other
+  const chosenRadio = document.querySelector('.radio-chip input[type="radio"]:checked');
+  if(chosenRadio){
+    data.services = chosenRadio.value;
+  } else {
+    data.services = (data.service_other && data.service_other.trim()) ? data.service_other.trim() : '';
+  }
+
+  // timestamp
   data.timestamp = new Date().toISOString();
 
-  // collect radio answers q1..q9 (preserve keys)
+  // collect radio answers q1..q9 explicitly (ensure keys exist)
   pertanyaan.forEach((_,i)=>{
     const qName = `q${i+1}`;
     const el = form.querySelector(`input[name="${qName}"]:checked`);
     data[qName] = el ? el.value : '';
   });
 
-  // simple validation: ensure all required radios answered
+  // validation: ensure q1..q9 all answered
   const allQAnswered = pertanyaan.every((_,i) => !!form.querySelector(`input[name="q${i+1}"]:checked`));
   if(!allQAnswered){
     showToast('Mohon isi semua pertanyaan (skala 1-4).', 'error');
@@ -556,32 +589,32 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
     return;
   }
 
-  // First try normal CORS POST (we implemented doOptions/doPost with CORS headers)
+  // Now POST as JSON (CORS handled server-side in your .gs)
   try{
     const resp = await fetch(WEBAPP_URL, {
       method: 'POST',
       mode: 'cors',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(dataForm)
+      body: JSON.stringify(data)   // <<< FIX: use data (not dataForm)
     });
 
-    // Try parse JSON; if server replies with no body (some deployments) handle gracefully
+    // try parse response JSON (some deployments may return minimal body)
     let resJson = null;
     try { resJson = await resp.clone().json(); } catch(e){ resJson = null; }
 
     if(resp.ok && (resJson === null || resJson.status === 'success' || resJson.result === 'success')){
       showToast('✅ Data berhasil dikirim!', 'success');
+      // reset automatically (you asked reset otomatis)
       form.reset();
-      document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+      document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
       document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
     } else {
-      // server returned non-OK or JSON error
       const msg = resJson && (resJson.message || resJson.error) ? (resJson.message || resJson.error) : resp.statusText || 'Gagal mengirim data';
       showToast('Gagal mengirim data: ' + msg, 'error');
     }
   } catch(err){
-    // CORS / network error -> fallback to no-cors attempt (best-effort)
     console.warn('Primary POST failed (CORS/network). Attempting no-cors fallback...', err);
+    // fallback no-cors attempt (best-effort)
     try {
       await fetch(WEBAPP_URL, {
         method: 'POST',
@@ -589,10 +622,9 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify(data)
       });
-      // cannot verify response with no-cors, but assume data was sent
       showToast('✅ Data dikirim (fallback no-cors). Jika tidak muncul di sheet, periksa pengaturan Web App.', 'success');
       form.reset();
-      document.querySelectorAll('.chip.selected').forEach(c=>c.classList.remove('selected'));
+      document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
       document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
     } catch(err2){
       console.error('Fallback also failed', err2);
