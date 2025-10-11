@@ -562,7 +562,7 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
       method: 'POST',
       mode: 'cors',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(data)
+      body: JSON.stringify(dataForm)
     });
 
     // Try parse JSON; if server replies with no body (some deployments) handle gracefully
