@@ -622,13 +622,13 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify(data)
       });
-      showToast('✅ Data dikirim (fallback no-cors). Jika tidak muncul di sheet, periksa pengaturan Web App.', 'success');
+      showToast('✅ Data dikirim (fallback no-cors).', 'success');
       form.reset();
       document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
       document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
     } catch(err2){
       console.error('Fallback also failed', err2);
-      showToast('❌ Gagal mengirim data. Pastikan Web App di-deploy dan dapat diakses.', 'error');
+      showToast('❌ Gagal mengirim data. Pastikan semua terisi.', 'error');
     }
   } finally {
     submitBtn.disabled = false; submitBtn.textContent = 'Kirim Jawaban';
