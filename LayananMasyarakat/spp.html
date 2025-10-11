@@ -44,7 +44,8 @@
                 <div class="modal-body">
                     <div class="text-center mb-3">
                         <img id="modalPhoto" src="" alt="Foto Pegawai" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                        <h6 id="modalName" class="mt-2"></h6>
+                        <h5 id="modalName" class="mt-2"></h5>
+                        <h6 id="modalJabatan" class="mt-2"></h6>
                     </div>
                     
                     <div class="mb-3">
@@ -77,11 +78,11 @@
     <script>
         // Data karyawan (sample 5, tambah 102 di sini. Format: {id: 1, name: 'Nama', photo: 'URL Foto'})
         const employees = [
-            {id: 1, name: 'Dr. Dinan Bagja Nugraha', 'Kepala UPT Puskesmas Cibatu, MM.Kes', photo: 'https://drive.google.com/uc?export=view&id=12ofwiwuG0soL0SjNutw9QOWTxxyjiQPU'},
-            {id: 2, name: 'Erwin Kurniawan S.Kep','Kasubbag TU', photo: 'https://drive.google.com/uc?export=view&id=1JGtEyUaYCyRVpQMgEVbUUQia3Xaq8O7a'},
-            {id: 3, name: 'Eneng Sri Komalasari','Bidan Desa Padasuka', photo: 'https://drive.google.com/uc?export=view&id=1zaoIYeIBR5jUgsAx6SFeqiNF1FrzL2sN'},
-            {id: 4, name: 'Widia Nurani','Ahli Gizi', photo: 'https://drive.google.com/uc?export=view&id=1J4yiMd3e9aVRcD2phV0kKaR5zh04q73S'},
-            {id: 5, name: 'Nendi Yuwansah','Administrasi Kepegawaian', photo: 'https://drive.google.com/uc?export=view&id=1W90VQUghuUwnswuqaJyPR4iCd1SavRxC'}
+            {id: 1, name: 'Dr. Dinan Bagja Nugraha', jabatan: 'Kepala UPT Puskesmas Cibatu, MM.Kes', photo: 'https://drive.google.com/uc?export=view&id=12ofwiwuG0soL0SjNutw9QOWTxxyjiQPU'},
+            {id: 2, name: 'Erwin Kurniawan S.Kep', jabatan: 'Kasubbag TU', photo: 'https://drive.google.com/uc?export=view&id=1JGtEyUaYCyRVpQMgEVbUUQia3Xaq8O7a'},
+            {id: 3, name: 'Eneng Sri Komalasari', jabatan: 'Bidan Desa Padasuka', photo: 'https://drive.google.com/uc?export=view&id=1zaoIYeIBR5jUgsAx6SFeqiNF1FrzL2sN'},
+            {id: 4, name: 'Widia Nurani', jabatan: 'Ahli Gizi', photo: 'https://drive.google.com/uc?export=view&id=1J4yiMd3e9aVRcD2phV0kKaR5zh04q73S'},
+            {id: 5, name: 'Nendi Yuwansah', jabatan: 'Administrasi Kepegawaian', photo: 'https://drive.google.com/uc?export=view&id=1W90VQUghuUwnswuqaJyPR4iCd1SavRxC'}
             // Tambah lebih banyak: {id: 6, name: 'Nama Lain', photo: 'URL' }, dst. sampai 102
         ];
 
@@ -93,6 +94,7 @@
             card.innerHTML = `
                 <img src="${emp.photo}" alt="${emp.name}" class="employee-photo">
                 <div class="employee-name">${emp.name}</div>
+                <div class="employee-jabatan">${emp.jabatan}</div>
             `;
             card.onclick = () => openModal(emp);
             grid.appendChild(card);
@@ -102,6 +104,7 @@
         function openModal(emp) {
             document.getElementById('modalTitle').textContent = `Ulasan untuk ${emp.name}`;
             document.getElementById('modalName').textContent = emp.name;
+            document.getElementById('modalJabatan').textContent = emp.jabatan;
             document.getElementById('modalPhoto').src = emp.photo;
             document.getElementById('selectedRating').value = 0;
             document.getElementById('reviewText').value = '';
