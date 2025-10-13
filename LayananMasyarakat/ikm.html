@@ -36,7 +36,6 @@
   input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #bfc9d6;font-size:15px}
   textarea{min-height:110px;resize:vertical}
   .services-wrap{display:flex;flex-wrap:wrap;gap:8px}
-  /* style single-select 'chip' radios to look like buttons */
   .radio-chip{
     display:inline-flex;
     align-items:center;
@@ -66,14 +65,12 @@
   .toast.success{background:#28a745}
   .toast.error{background:#d9534f}
   @keyframes toastShow{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
-  /* access mode (kontras tinggi, teks lebih besar) */
   body.access-mode{--primary:#001f3f;--bg:#f3f4f6;--text:#000;font-size:1.15em}
   body.access-mode input, body.access-mode select, body.access-mode textarea{border:2px solid #000}
   body.access-mode .radio-chip{background:#fff;border:2px solid #001f3f}
   body.access-mode .radio-chip[aria-checked="true"]{background:#001f3f;color:#fff}
   body.access-mode .question{border:2px solid #000;background:#fff}
   body.access-mode .tts-btn{border:2px solid #000;background:#fff}
-  /* improved radio options for touch friendliness */
   .q-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
   .q-row label{
     display:inline-flex;
@@ -89,12 +86,10 @@
   }
   .q-row input[type="radio"]{width:22px;height:22px;flex:0 0 auto}
   .q-row label[aria-checked="true"]{background:rgba(0,77,128,0.08);border-color:rgba(0,77,128,0.2)}
-  /* better touch layout on small screens */
   @media (max-width:480px){
     .q-row label{flex:1;justify-content:center;padding:12px 10px}
     .q-row{gap:10px}
   }
-  /* responsive */
   @media (max-width:768px){
     .hero{flex-direction:column}
     .thumb{width:100%;height:160px}
@@ -118,7 +113,7 @@
     <div style="width:8px"></div>
     <div class="controls" role="region" aria-label="Kontrol aksesibilitas">
       <button id="toggleAccess" class="access-btn" aria-pressed="false" aria-label="Aktifkan mode aksesibilitas">♿ Mode Aksesibilitas</button>
-      <button id="readAll" title="Baca semua pertanyaan" aria-hidden="true" style="display:none;margin-left:6px">🔊 Baca Semua</button>
+      <button id="readAll" title="Baca semua pertanyaan" aria-hidden="true" style="display:none;margin-left:6px" type="button">🔊 Baca Semua</button>
       <label for="langSelect" id="langLabel" style="margin-left:6px;display:none;color:#fff;font-weight:700">Bahasa:</label>
       <select id="langSelect" aria-label="Pilih bahasa TTS" style="display:none">
         <option value="id-ID">Bahasa Indonesia</option>
@@ -139,7 +134,6 @@
   </div>
 
   <form id="ikmForm" class="card" aria-label="Form Survei IKM" autocomplete="off">
-    <!-- A. Data Responden -->
     <div class="section-title">A. Data Responden</div>
     <div class="grid" role="group" aria-label="Data responden">
       <div>
@@ -189,55 +183,54 @@
       </div>
     </div>
 
-    <!-- layanan (single-select styled as chips) -->
     <div style="margin-top:14px">
       <label>Jenis Layanan (pilih satu)</label>
       <div class="services-wrap" role="radiogroup" aria-label="Jenis layanan">
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="Pendaftaran">
           Pendaftaran
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="Kasir">
           Kasir
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="Pelayanan Usia Produktif">
           Usia Produktif / Dewasa
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="KB">
           KB
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="Gigi">
           Gigi dan Mulut
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="KIA">
           Kesehatan Ibu & Anak
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="Lansia">
           Lansia
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="Apotek">
           Apotek
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="UGD">
           UGD
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="Rawat Inap">
           Rawat Inap
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="Laboratorium">
           Laboratorium
         </label>
-        <label class="radio-chip" role="radio" aria-checked="false">
+        <label class="radio-chip" role="radio" aria-checked="false" tabindex="0">
           <input type="radio" name="service_radio" value="PUSTU">
           PUSTU
         </label>
@@ -247,7 +240,6 @@
 
     <hr style="margin:18px 0;border:none;border-top:1px solid #eef6ff">
 
-    <!-- B. Data Alamat -->
     <div class="section-title">B. Data Alamat</div>
     <div class="grid" role="group" aria-label="Data alamat">
       <div style="grid-column:1/-1">
@@ -291,7 +283,6 @@
 
     <hr style="margin:18px 0;border:none;border-top:1px solid #eef6ff">
 
-    <!-- C. Pertanyaan -->
     <div class="section-title">C. Pendapat Responden</div>
     <div id="questions" role="list"></div>
 
@@ -311,10 +302,10 @@
 
 <script>
 /* ------------------- konfigurasi ------------------- */
-/* Web App URL (sesuaikan jika berubah) */
+/* ganti WEBAPP_URL sesuai deployment Apps Script mu */
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzAmkmX6fHmG61iDUxXkVGWAKxHljb1Qo2wg0Vb-_auFGKQUTLPqkwmsONKESaf30w/exec";
 
-/* ------------------- build questions ------------------- */
+/* ------------------- pertanyaan ------------------- */
 const pertanyaan = [
   "Kesesuaian persyaratan pelayanan dengan jenis pelayanannya",
   "Kemampuan petugas dalam memberikan pelayanan",
@@ -327,7 +318,6 @@ const pertanyaan = [
   "Kesesuaian produk pelayanan dengan standar pelayanan"
 ];
 
-// English translations for TTS only
 const pertanyaan_en = [
   "Suitability of required documents and conditions for the service",
   "Staff capability in providing the service",
@@ -363,21 +353,21 @@ pertanyaan.forEach((text, idx) => {
   qContainer.appendChild(q);
 });
 
-/* ------------------- TTS & accessibility controls ------------------- */
-const toggleAccess = document.getElementById('toggleAccess');
-const readAllBtn = document.getElementById('readAll');
-const langSelect = document.getElementById('langSelect');
-const langLabel = document.getElementById('langLabel');
-
+/* ------------------- TTS (speechSynthesis) ------------------- */
 let synth = window.speechSynthesis;
 let availableVoices = [];
 
 function refreshVoices(){
+  if(!synth) return;
   availableVoices = synth.getVoices() || [];
+  // sometimes voices load asynchronously; keep simple guarantee
+  if(!availableVoices.length){
+    setTimeout(()=>{ availableVoices = synth.getVoices() || []; }, 300);
+  }
 }
-refreshVoices();
-if (synth.onvoiceschanged !== undefined) {
-  synth.onvoiceschanged = refreshVoices;
+if(typeof speechSynthesis !== 'undefined'){
+  refreshVoices();
+  speechSynthesis.onvoiceschanged = refreshVoices;
 }
 
 function getVoiceForLang(langCode){
@@ -395,21 +385,26 @@ function getVoiceForLang(langCode){
 
 function speak(text, lang='id-ID', onstart=null, onend=null){
   if(!synth) return;
+  // if no voices yet, try short delay then speak
+  if(!availableVoices.length){
+    refreshVoices();
+    setTimeout(()=> speak(text, lang, onstart, onend), 250);
+    return;
+  }
   try { synth.cancel(); } catch(e){}
-  const u = new SpeechSynthesisUtterance();
-  u.text = text;
+  const u = new SpeechSynthesisUtterance(text);
   u.lang = lang;
   const voice = getVoiceForLang(lang);
   if(voice) u.voice = voice;
   u.rate = 1;
-  u.onstart = onstart;
-  u.onend = onend;
+  if(onstart) u.onstart = onstart;
+  if(onend) u.onend = onend;
   try { synth.speak(u); } catch(e) { if(onend) onend(); }
 }
 
-function getReadText(idx, langCode){
-  const lang = (langCode || 'id-ID').toLowerCase();
-  if(lang.startsWith('en')){
+function getReadText(idx, lang){
+  const language = (lang || 'id-ID').toLowerCase();
+  if(language.startsWith('en')){
     const q = pertanyaan_en[idx-1] || pertanyaan[idx-1];
     return `${idx}. ${q}. Choose a rating from 1 to 4.`;
   } else {
@@ -418,7 +413,12 @@ function getReadText(idx, langCode){
   }
 }
 
-/* update UI when toggling access mode */
+/* ------------------- Accessibility UI ------------------- */
+const toggleAccess = document.getElementById('toggleAccess');
+const readAllBtn = document.getElementById('readAll');
+const langSelect = document.getElementById('langSelect');
+const langLabel = document.getElementById('langLabel');
+
 function updateAccessUI(active){
   document.body.classList.toggle('access-mode', active);
   toggleAccess.setAttribute('aria-pressed', String(active));
@@ -426,18 +426,30 @@ function updateAccessUI(active){
   readAllBtn.style.display = active ? 'inline-block' : 'none';
   langSelect.style.display = active ? 'inline-block' : 'none';
   langLabel.style.display = active ? 'inline-block' : 'none';
-  readAllBtn.setAttribute('aria-hidden', active ? 'false' : 'true');
-  langSelect.setAttribute('aria-hidden', active ? 'false' : 'true');
 
+  // q-actions buttons
   document.querySelectorAll('.q-actions').forEach(qact=>{
     const btn = qact.querySelector('.tts-btn');
     if(active){
       qact.setAttribute('aria-hidden','false');
-      if(btn){ btn.style.display = 'inline-block'; btn.disabled = false; btn.removeAttribute('aria-hidden'); btn.setAttribute('tabindex','0'); }
+      if(btn){
+        btn.style.display = 'inline-block';
+        btn.disabled = false;
+        btn.removeAttribute('aria-hidden');
+        btn.setAttribute('tabindex','0');
+        btn.style.pointerEvents = 'auto';
+      }
     } else {
       qact.setAttribute('aria-hidden','true');
-      if(btn){ btn.style.display = 'none'; btn.disabled = true; btn.setAttribute('aria-hidden','true'); btn.setAttribute('tabindex','-1'); btn.style.pointerEvents = 'none';
-        const qEl = qact.closest('.question'); if(qEl) qEl.classList.remove('reading'); }
+      if(btn){
+        btn.style.display = 'none';
+        btn.disabled = true;
+        btn.setAttribute('aria-hidden','true');
+        btn.setAttribute('tabindex','-1');
+        btn.style.pointerEvents = 'none';
+        const qEl = qact.closest('.question');
+        if(qEl) qEl.classList.remove('reading');
+      }
     }
   });
 
@@ -451,20 +463,77 @@ toggleAccess.addEventListener('click', () => {
 });
 toggleAccess.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleAccess.click(); } });
 
-function attachTTSButtons(){
-  document.querySelectorAll('.tts-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=> {
-      if(!document.body.classList.contains('access-mode')) return;
-      const idx = parseInt(btn.dataset.q,10);
-      readQuestion(idx);
-    });
-    btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); btn.click(); }});
-  });
-}
-attachTTSButtons();
+/* ------------------- Event delegation for per-question TTS ------------------- */
+/* Using delegation guarantees buttons always respond (even if created dynamically) */
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest && e.target.closest('.tts-btn');
+  if(!btn) return;
+  // only respond if access mode aktif
+  if(!document.body.classList.contains('access-mode')) return;
+  const idx = parseInt(btn.dataset.q, 10);
+  if(!idx) return;
+  const qEl = btn.closest('.question');
+  const lang = langSelect.value || 'id-ID';
+  const text = getReadText(idx, lang);
+  if(qEl) qEl.classList.add('reading');
+  speak(text, lang, null, ()=>{ if(qEl) qEl.classList.remove('reading'); });
+  // focus first radio so keyboard users can continue input
+  const firstRadio = qEl && qEl.querySelector('input[type="radio"]');
+  if(firstRadio) firstRadio.focus();
+});
 
+/* keyboard activation for tts buttons (space/enter) */
+document.addEventListener('keydown', (e)=>{
+  const el = document.activeElement;
+  if(!el) return;
+  if(el.classList && el.classList.contains('tts-btn') && (e.key==='Enter' || e.key===' ')){
+    e.preventDefault();
+    el.click();
+  }
+});
+
+/* read all questions sequentially */
+async function readAllQuestions(){
+  if(!document.body.classList.contains('access-mode')) return;
+  readAllBtn.disabled = true;
+  const lang = langSelect.value || 'id-ID';
+  for(let i=0;i<pertanyaan.length;i++){
+    const idx = i+1;
+    const qEl = document.querySelector(`.tts-btn[data-q="${idx}"]`)?.closest('.question');
+    if(qEl) qEl.classList.add('reading');
+    await new Promise(resolve=>{
+      speak(getReadText(idx, lang), lang, null, ()=>{ if(qEl) qEl.classList.remove('reading'); setTimeout(resolve, 300); });
+    });
+  }
+  readAllBtn.disabled = false;
+}
+readAllBtn.addEventListener('click', readAllQuestions);
+langSelect.addEventListener('change', ()=>{ langSelect.blur(); });
+
+/* ------------------- radio-chip interactions ------------------- */
+document.querySelectorAll('.radio-chip').forEach(lbl=>{
+  const radio = lbl.querySelector('input[type="radio"]');
+  lbl.addEventListener('click', ()=>{
+    if(radio.disabled) return;
+    radio.checked = true;
+    document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
+    lbl.setAttribute('aria-checked','true');
+    document.getElementById('service_other').value = '';
+  });
+  lbl.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); lbl.click(); }
+  });
+});
+document.getElementById('service_other').addEventListener('input', (e)=>{
+  if(e.target.value && e.target.value.trim().length){
+    document.querySelectorAll('.radio-chip input[type="radio"]').forEach(r=> r.checked = false);
+    document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
+  }
+});
+
+/* update aria-checked on radios for q-row */
 document.addEventListener('change', (e)=>{
-  if(e.target && e.target.type === 'radio'){
+  if(e.target && e.target.type === 'radio' && e.target.name && e.target.name.startsWith('q')){
     const name = e.target.name;
     const radios = document.querySelectorAll(`input[name="${name}"]`);
     radios.forEach(r => {
@@ -476,84 +545,23 @@ document.addEventListener('change', (e)=>{
   }
 });
 
-function readQuestion(idx) {
-  const btn = document.querySelector(`.tts-btn[data-q="${idx}"]`);
-  if(!btn) return;
-  if(!document.body.classList.contains('access-mode')) return;
-  const qEl = btn.closest('.question');
-  const lang = langSelect.value || 'id-ID';
-  const text = getReadText(idx, lang);
-  qEl.classList.add('reading');
-  speak(text, lang, ()=>{}, ()=>{ qEl.classList.remove('reading'); });
-  const firstRadio = qEl.querySelector('input[type="radio"]');
-  if(firstRadio) firstRadio.focus();
-}
-
-async function readAllQuestions() {
-  if(!document.body.classList.contains('access-mode')) return;
-  readAllBtn.disabled = true;
-  const lang = langSelect.value || 'id-ID';
-  for(let i=0;i<pertanyaan.length;i++){
-    const idx = i+1;
-    const qEl = document.querySelector(`.tts-btn[data-q="${idx}"]`)?.closest('.question');
-    if(qEl) qEl.classList.add('reading');
-    await new Promise(resolve=>{
-      speak(getReadText(idx, lang), lang, null, ()=>{ if(qEl) qEl.classList.remove('reading'); setTimeout(resolve, 350); });
-    });
-  }
-  readAllBtn.disabled = false;
-}
-readAllBtn.addEventListener('click', readAllQuestions);
-
-langSelect.addEventListener('change', ()=>{ langSelect.blur(); });
-
-/* ------------------- services: make radio-chip interactive (single-select) ------------------- */
-document.querySelectorAll('.radio-chip').forEach(lbl=>{
-  const radio = lbl.querySelector('input[type="radio"]');
-  // set aria on click
-  lbl.addEventListener('click', (e)=>{
-    // toggle - for radio, selecting one only
-    if(radio.disabled) return;
-    radio.checked = true;
-    // update aria-checked for all siblings
-    document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
-    lbl.setAttribute('aria-checked','true');
-    // ensure service_other is cleared when choosing built-in option
-    document.getElementById('service_other').value = '';
-  });
-  // keyboard support
-  lbl.addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); lbl.click(); }
-  });
-});
-
-/* if user types 'service_other', uncheck radio chips */
-document.getElementById('service_other').addEventListener('input', (e)=>{
-  if(e.target.value && e.target.value.trim().length){
-    document.querySelectorAll('.radio-chip input[type="radio"]').forEach(r=> r.checked = false);
-    document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
-  }
-});
-
-/* ------------------- reset handler ------------------- */
+/* ------------------- reset ------------------- */
 document.getElementById('resetBtn').addEventListener('click', ()=>{
   const form = document.getElementById('ikmForm');
   form.reset();
   document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
   document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
-  // hide tts buttons if not in access mode (they're already hidden by updateAccessUI)
 });
 
-/* ------------------- toast helper ------------------- */
+/* ------------------- toast ------------------- */
 function showToast(message, type='success'){
   const t = document.getElementById('toast');
   t.textContent = message;
   t.className = `toast ${type} show`;
-  // auto hide
-  setTimeout(()=>{ t.classList.remove('show'); }, 3800);
+  setTimeout(()=>{ t.classList.remove('show'); }, 3600);
 }
 
-/* ------------------- submit handler ------------------- */
+/* ------------------- submit (POST JSON) ------------------- */
 document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
   ev.preventDefault();
   const submitBtn = document.getElementById('submitBtn');
@@ -563,25 +571,21 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
   const fm = new FormData(form);
   const data = Object.fromEntries(fm.entries());
 
-  // derive services: if a radio is checked, use it; else use service_other
+  // choose service
   const chosenRadio = document.querySelector('.radio-chip input[type="radio"]:checked');
-  if(chosenRadio){
-    data.services = chosenRadio.value;
-  } else {
-    data.services = (data.service_other && data.service_other.trim()) ? data.service_other.trim() : '';
-  }
+  if(chosenRadio) data.services = chosenRadio.value;
+  else data.services = (data.service_other && data.service_other.trim()) ? data.service_other.trim() : '';
 
-  // timestamp
   data.timestamp = new Date().toISOString();
 
-  // collect radio answers q1..q9 explicitly (ensure keys exist)
+  // collect q1..q9
   pertanyaan.forEach((_,i)=>{
     const qName = `q${i+1}`;
     const el = form.querySelector(`input[name="${qName}"]:checked`);
     data[qName] = el ? el.value : '';
   });
 
-  // validation: ensure q1..q9 all answered
+  // validate answers
   const allQAnswered = pertanyaan.every((_,i) => !!form.querySelector(`input[name="q${i+1}"]:checked`));
   if(!allQAnswered){
     showToast('Mohon isi semua pertanyaan (skala 1-4).', 'error');
@@ -589,47 +593,30 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
     return;
   }
 
-  // Now POST as JSON (CORS handled server-side in your .gs)
+  // POST JSON (expect Apps Script doPost to parse JSON)
   try{
     const resp = await fetch(WEBAPP_URL, {
       method: 'POST',
-      mode: 'cors',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(data)   // <<< FIX: use data (not dataForm)
+      body: JSON.stringify(data)
     });
 
-    // try parse response JSON (some deployments may return minimal body)
     let resJson = null;
     try { resJson = await resp.clone().json(); } catch(e){ resJson = null; }
 
-    if(resp.ok && (resJson === null || resJson.status === 'success' || resJson.result === 'success')){
+    if(resp.ok && (resJson === null || resJson.status === 'success' || resJson.result === 'success' || resJson.status === 'ok')){
       showToast('✅ Data berhasil dikirim!', 'success');
-      // reset automatically (you asked reset otomatis)
       form.reset();
       document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
       document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
     } else {
       const msg = resJson && (resJson.message || resJson.error) ? (resJson.message || resJson.error) : resp.statusText || 'Gagal mengirim data';
       showToast('Gagal mengirim data: ' + msg, 'error');
+      console.warn('Response not OK', resp.status, resJson);
     }
   } catch(err){
-    console.warn('Primary POST failed (CORS/network). Attempting no-cors fallback...', err);
-    // fallback no-cors attempt (best-effort)
-    try {
-      await fetch(WEBAPP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify(data)
-      });
-      showToast('✅ Data dikirim (fallback no-cors).', 'success');
-      form.reset();
-      document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
-      document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
-    } catch(err2){
-      console.error('Fallback also failed', err2);
-      showToast('❌ Gagal mengirim data. Pastikan semua terisi.', 'error');
-    }
+    console.warn('Primary POST failed', err);
+    showToast('❌ Gagal mengirim data. Periksa koneksi atau konfigurasi Apps Script.', 'error');
   } finally {
     submitBtn.disabled = false; submitBtn.textContent = 'Kirim Jawaban';
   }
