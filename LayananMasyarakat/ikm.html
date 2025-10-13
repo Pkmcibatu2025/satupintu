@@ -597,6 +597,7 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
   try{
     const resp = await fetch(WEBAPP_URL, {
       method: 'POST',
+      mode: "cors",
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(data)
     });
