@@ -303,7 +303,7 @@
 <script>
 /* ------------------- konfigurasi ------------------- */
 /* ganti WEBAPP_URL sesuai deployment Apps Script mu */
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzAmkmX6fHmG61iDUxXkVGWAKxHljb1Qo2wg0Vb-_auFGKQUTLPqkwmsONKESaf30w/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwrS7Qhms_SfU4ny5i3AjWUGTIXtZHm3A867qbs5X6Kg86YlQWSyHoJadl9dX7LtfY9/exec";
 
 /* ------------------- pertanyaan ------------------- */
 const pertanyaan = [
@@ -597,7 +597,6 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
   try{
     const resp = await fetch(WEBAPP_URL, {
       method: 'POST',
-      mode: "no-cors",
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(data)
     });
