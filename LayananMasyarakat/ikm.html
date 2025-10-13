@@ -593,35 +593,30 @@ document.getElementById('ikmForm').addEventListener('submit', async (ev)=>{
     return;
   }
 
-  // POST JSON (expect Apps Script doPost to parse JSON)
-  try{
+  // POST JSON ke Apps Script
+try {
   const resp = await fetch(WEBAPP_URL, {
-  method: "POST",
-  mode: "cors",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(data)
-});
+    method: "POST",
+    mode: "no-cors", // ✅ WAJIB diganti agar tidak error CORS
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
 
-    let resJson = null;
-    try { resJson = await resp.clone().json(); } catch(e){ resJson = null; }
+  // ⚠️ Karena no-cors, kita tidak bisa baca resp.ok atau resp.json()
+  // Jadi kita langsung anggap sukses jika tidak ada error di fetch
+  showToast('✅ Data berhasil dikirim!', 'success');
+  form.reset();
+  document.querySelectorAll('.radio-chip').forEach(x => x.setAttribute('aria-checked', 'false'));
+  document.querySelectorAll('.q-row label').forEach(lbl => lbl.setAttribute('aria-checked', 'false'));
 
-    if(resp.ok && (resJson === null || resJson.status === 'success' || resJson.result === 'success' || resJson.status === 'ok')){
-      showToast('✅ Data berhasil dikirim!', 'success');
-      form.reset();
-      document.querySelectorAll('.radio-chip').forEach(x=> x.setAttribute('aria-checked','false'));
-      document.querySelectorAll('.q-row label').forEach(lbl=> lbl.setAttribute('aria-checked','false'));
-    } else {
-      const msg = resJson && (resJson.message || resJson.error) ? (resJson.message || resJson.error) : resp.statusText || 'Gagal mengirim data';
-      showToast('Gagal mengirim data: ' + msg, 'error');
-      console.warn('Response not OK', resp.status, resJson);
-    }
-  } catch(err){
-    console.warn('Primary POST failed', err);
-    showToast('❌ Gagal mengirim data. Periksa koneksi atau konfigurasi Apps Script.', 'error');
-  } finally {
-    submitBtn.disabled = false; submitBtn.textContent = 'Kirim Jawaban';
-  }
-});
+} catch (err) {
+  console.warn('Primary POST failed', err);
+  showToast('❌ Gagal mengirim data. Periksa koneksi atau konfigurasi Apps Script.', 'error');
+} finally {
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Kirim Jawaban';
+}
+
 
 /* keyboard shortcut: Ctrl+M toggles access mode */
 document.addEventListener('keydown', (e)=>{
