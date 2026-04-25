@@ -1,233 +1,172 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penilaian Pegawai oleh Pasien</title>
-    <!-- Bootstrap CSS untuk modal -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome untuk ikon bintang -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- SweetAlert2 untuk notifikasi keren -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; }
-        .header { text-align: center; margin-bottom: 30px; color: #333; }
-        .employee-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .employee-card { border: 1px solid #ddd; border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; transition: transform 0.2s; }
-        .employee-card:hover { transform: scale(1.05); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .employee-photo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; }
-        .employee-name { font-weight: bold; color: #333; }
-        .employee-jabatan { font-size: 0.9em; color: #666; font-style: italic; margin-top: 5px; } /* Style baru untuk jabatan */
-        /* Modal custom */
-        .modal-content { border-radius: 15px; }
-        .star { font-size: 2rem; color: #ddd; cursor: pointer; transition: color 0.2s; }
-        .star.active { color: #ffc107; }
-        .star:hover { color: #ffc107; }
-        .star:hover ~ .star { color: #ddd; } /* Hover effect untuk bintang sebelumnya */
-        /* Loading spinner di tombol */
-        .btn-loading { position: relative; }
-        .btn-loading .spinner-border { width: 1rem; height: 1rem; margin-right: 0.5rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penilaian Pegawai</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+body { background:#f5f6fa; padding:20px; }
+.employee-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:20px;
+}
+.employee-card {
+  background:white;
+  border-radius:12px;
+  padding:15px;
+  text-align:center;
+  cursor:pointer;
+  transition:.2s;
+}
+.employee-card:hover {
+  transform:translateY(-5px);
+}
+.employee-photo {
+  width:100px;height:100px;border-radius:50%;object-fit:cover;
+}
+.employee-name { font-weight:bold; }
+.employee-jabatan { font-size:13px;color:#666; }
+
+.star { font-size:2rem;color:#ddd;cursor:pointer; }
+.star.active { color:#ffc107; }
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1 class="header">Penilaian Pegawai oleh Pasien</h1>
-        <p class="header">Pilih pegawai untuk memberikan ulasan dan rating.</p>
-        
-        <div id="employeeGrid" class="employee-grid"></div>
+
+<div class="container">
+  <h2 class="text-center mb-3">Penilaian Pegawai</h2>
+
+  <!-- SEARCH -->
+  <input id="searchInput" class="form-control mb-3" placeholder="Cari nama..." style="display:none">
+
+  <!-- GRID -->
+  <div id="employeeGrid" class="employee-grid"></div>
+</div>
+
+<!-- MODAL PILIH RUANGAN -->
+<div class="modal fade" id="ruanganModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Pilih Ruangan</h5>
+      </div>
+      <div class="modal-body" id="ruanganList"></div>
     </div>
+  </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="reviewModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Berikan Ulasan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center mb-3">
-                        <img id="modalPhoto" src="" alt="Foto Pegawai" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                        <h5 id="modalName" class="mt-2"></h5>
-                        <h6 id="modalJabatan" class="mt-2" style="color: #666; font-style: italic;"></h6>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Rating (1-5 Bintang):</label>
-                        <div class="d-flex justify-content-center">
-                            <i class="star fas fa-star" data-rating="1"></i>
-                            <i class="star fas fa-star" data-rating="2"></i>
-                            <i class="star fas fa-star" data-rating="3"></i>
-                            <i class="star fas fa-star" data-rating="4"></i>
-                            <i class="star fas fa-star" data-rating="5"></i>
-                        </div>
-                        <input type="hidden" id="selectedRating" value="0">
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Ulasan:</label>
-                        <textarea class="form-control" id="reviewText" rows="4" placeholder="Ceritakan pengalaman Anda..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="submitReview">Kirim Ulasan</button>
-                </div>
-            </div>
-        </div>
+<!-- MODAL REVIEW -->
+<div class="modal fade" id="reviewModal">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <h5 id="modalName"></h5>
+      <p id="modalJabatan"></p>
+      <img id="modalPhoto" width="100">
+
+      <div class="text-center">
+        <i class="star fa fa-star" data-rating="1"></i>
+        <i class="star fa fa-star" data-rating="2"></i>
+        <i class="star fa fa-star" data-rating="3"></i>
+        <i class="star fa fa-star" data-rating="4"></i>
+        <i class="star fa fa-star" data-rating="5"></i>
+      </div>
+
+      <textarea id="reviewText" class="form-control mt-2"></textarea>
+      <button id="submitReview" class="btn btn-primary mt-2">Kirim</button>
     </div>
+  </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="karyawan/karyawan.js"></script>
-    <script>
-        // Data karyawan (sample 5, tambah 102 di sini. Format: {id: 1, name: 'Nama', jabatan: 'Jabatan', photo: 'URL Foto'})
+<script src="karyawan.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
+const grid = document.getElementById('employeeGrid');
+const searchInput = document.getElementById('searchInput');
+const ruanganList = document.getElementById('ruanganList');
 
-        // Render grid karyawan
-        const grid = document.getElementById('employeeGrid');
-        employees.forEach(emp => {
-            const card = document.createElement('div');
-            card.className = 'employee-card';
-            card.innerHTML = `
-                <img src="${emp.photo}" alt="${emp.name}" class="employee-photo">
-                <div class="employee-name">${emp.name}</div>
-                <div class="employee-jabatan">${emp.jabatan}</div>
-            `;
-            card.onclick = () => openModal(emp);
-            grid.appendChild(card);
-        });
+let currentData = [];
+let currentEmployee = null;
 
-        // Buka modal
-        function openModal(emp) {
-            document.getElementById('modalTitle').textContent = `Ulasan untuk ${emp.name}`;
-            document.getElementById('modalName').textContent = emp.name;
-            document.getElementById('modalJabatan').textContent = emp.jabatan;
-            document.getElementById('modalPhoto').src = emp.photo;
-            document.getElementById('selectedRating').value = 0;
-            document.getElementById('reviewText').value = '';
-            resetStars();
-            new bootstrap.Modal(document.getElementById('reviewModal')).show();
-            currentEmployee = emp; // Simpan data emp untuk submit
-        }
+// 🔥 ambil ruangan unik
+const ruanganUnik = [...new Set(karyawan.map(k=>k.ruangan).filter(r=>r))];
 
-        let currentEmployee = null;
+// 🔥 tampilkan modal ruangan
+function showRuanganModal(){
+  ruanganList.innerHTML='';
+  ruanganUnik.forEach(r=>{
+    const btn=document.createElement('button');
+    btn.className='btn btn-primary w-100 mb-2';
+    btn.innerText=r;
+    btn.onclick=()=>{
+      bootstrap.Modal.getInstance(document.getElementById('ruanganModal')).hide();
+      loadKaryawan(r);
+    };
+    ruanganList.appendChild(btn);
+  });
 
-        // Rating bintang interactive
-        document.querySelectorAll('.star').forEach(star => {
-            star.addEventListener('click', function() {
-                const rating = this.dataset.rating;
-                document.getElementById('selectedRating').value = rating;
-                setStars(rating);
-            });
-        });
+  new bootstrap.Modal(document.getElementById('ruanganModal')).show();
+}
 
-        function setStars(rating) {
-            document.querySelectorAll('.star').forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-        }
+// 🔥 load karyawan by ruangan
+function loadKaryawan(ruangan){
+  searchInput.style.display='block';
+  currentData = karyawan.filter(k=>k.ruangan===ruangan);
+  render(currentData);
+}
 
-        function resetStars() {
-            document.querySelectorAll('.star').forEach(star => star.classList.remove('active'));
-        }
+// 🔥 render
+function render(data){
+  grid.innerHTML='';
+  data.forEach(emp=>{
+    const div=document.createElement('div');
+    div.className='employee-card';
+    div.innerHTML=`
+      <img src="${emp.photo}" class="employee-photo" onerror="this.src='karyawan/default.png'">
+      <div class="employee-name">${emp.name}</div>
+      <div class="employee-jabatan">${emp.jabatan}</div>
+    `;
+    div.onclick=()=>openModal(emp);
+    grid.appendChild(div);
+  });
+}
 
-        // Submit ulasan ke Google Sheets
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3Y_gle3RF5VYXgaurcpo9rkw19xqnjz43WDkMAeUkt_FSNkrgBuLpJXIIqwpHtjwatA/exec';
-        const submitBtn = document.getElementById('submitReview');
+// 🔍 search
+searchInput.addEventListener('input',()=>{
+  const val=searchInput.value.toLowerCase();
+  render(currentData.filter(k=>k.name.toLowerCase().includes(val)));
+});
 
-        submitBtn.addEventListener('click', async () => {
-            const rating = document.getElementById('selectedRating').value;
-            const review = document.getElementById('reviewText').value.trim();
+// 🔥 modal review
+function openModal(emp){
+  currentEmployee=emp;
+  document.getElementById('modalName').innerText=emp.name;
+  document.getElementById('modalJabatan').innerText=emp.jabatan;
+  document.getElementById('modalPhoto').src=emp.photo;
+  new bootstrap.Modal(document.getElementById('reviewModal')).show();
+}
 
-            if (rating == 0) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Pilih Rating!',
-                    text: 'Pilih rating bintang dulu.',
-                    confirmButtonColor: '#ffc107'
-                });
-                return;
-            }
-            if (review.length < 10) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Ulasan Terlalu Pendek!',
-                    text: 'Isi ulasan minimal 10 karakter.',
-                    confirmButtonColor: '#ffc107'
-                });
-                return;
-            }
+// ⭐ rating
+document.querySelectorAll('.star').forEach(star=>{
+  star.onclick=()=>{
+    let r=star.dataset.rating;
+    document.querySelectorAll('.star').forEach((s,i)=>{
+      s.classList.toggle('active', i<r);
+    });
+    document.getElementById('selectedRating').value=r;
+  };
+});
 
-            // Mulai loading: Disable tombol + tambah spinner
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `
-                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Mengirim...
-            `;
-            submitBtn.classList.add('btn-loading');
+// 🚀 init
+showRuanganModal();
+</script>
 
-            const data = {
-                timestamp: new Date().toLocaleString('id-ID'),
-                namaKaryawan: currentEmployee.name,
-                jabatan: currentEmployee.jabatan,
-                rating: rating,
-                ulasan: review
-            };
-
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                // Notif sukses keren
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: 'Ulasan Anda telah dikirim ke Database.',
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end',
-                    background: '#d4edda',
-                    color: '#155724'
-                }).then(() => {
-                    // Reset modal setelah sukses
-                    bootstrap.Modal.getInstance(document.getElementById('reviewModal')).hide();
-                    resetForm();
-                });
-            } catch (error) {
-                console.error('Submit error:', error); // Untuk debug
-
-                // Notif error keren
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Gagal mengirim ulasan. Cek koneksi atau hubungi admin.',
-                    confirmButtonColor: '#dc3545'
-                });
-            } finally {
-                // Stop loading: Kembalikan tombol normal
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Kirim Ulasan';
-                submitBtn.classList.remove('btn-loading');
-            }
-        });
-
-        // Fungsi reset form setelah submit
-        function resetForm() {
-            document.getElementById('selectedRating').value = 0;
-            document.getElementById('reviewText').value = '';
-            resetStars();
-        }
-    </script>
 </body>
 </html>
