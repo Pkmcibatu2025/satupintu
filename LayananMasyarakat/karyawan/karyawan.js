@@ -1,4 +1,4 @@
-const karyawan = [
+const employees = [
 {id:1,name:'HJ.Yati Rohayati, S.ST',jabatan:'Bidan Desa Sindangsuka',ruangan:'Pelayanan Pemeriksaan Ibu Hamil',photo:'karyawan/yati.jpg'},
 {id:2,name:'HJ.Yanti Widayanti, S.ST',jabatan:'Koordinator Unit KESGA (UKP)',ruangan:'Pelayanan Pemeriksaan Ibu Hamil',photo:'karyawan/yanti.jpg'},
 {id:3,name:'Wari, S.ST',jabatan:'Koordinator Unit PONED',ruangan:'',photo:'karyawan/wari.jpg'},
