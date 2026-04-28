@@ -41,7 +41,7 @@ p { opacity: 0.9; }
   content: "";
   position: absolute;
   top: 65px;
-  width: 200%;
+  width: 400%;
   height: 6px;
   background: repeating-linear-gradient(
     to right,
@@ -202,7 +202,7 @@ function goBack() {
 
 // countdown
 const targetTime = new Date();
-targetTime.setMinutes(targetTime.getMinutes() + 30);
+targetTime.setMinutes(targetTime.getMinutes() + 3630);
 
 function updateCountdown() {
   const now = new Date();
@@ -228,13 +228,13 @@ const amb = document.getElementById("ambulance");
 
 function moveRight() {
   amb.style.transition = "left 6s linear";
-  amb.style.transform = "scaleX(1)";
+  amb.style.transform = "scaleX(-1)";
   amb.style.left = "110%";
 }
 
 function moveLeft() {
   amb.style.transition = "left 6s linear";
-  amb.style.transform = "scaleX(-1)";
+  amb.style.transform = "scaleX(1)";
   amb.style.left = "-100px";
 }
 
