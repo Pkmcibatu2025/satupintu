@@ -1,155 +1,184 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Maintenance - UPT Puskesmas Cibatu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Maintenance - UPT Puskesmas Cibatu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #4CAF50, #2E7D32);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  text-align: center;
+}
 
-    .container {
-      max-width: 500px;
-      padding: 20px;
-    }
+.container {
+  max-width: 500px;
+  z-index: 2;
+}
 
-    .emoji {
-      font-size: 80px;
-      animation: bounce 1.5s infinite;
-    }
+h1 {
+  font-size: 28px;
+}
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
+p {
+  opacity: 0.9;
+}
 
-    h1 {
-      font-size: 28px;
-      margin: 20px 0 10px;
-    }
+/* 🚑 Ambulance animation */
+.road {
+  position: absolute;
+  bottom: 60px;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+}
 
-    p {
-      font-size: 16px;
-      opacity: 0.9;
-    }
+.ambulance {
+  position: absolute;
+  font-size: 50px;
+  animation: drive 8s linear infinite;
+}
 
-    .loading {
-      margin-top: 20px;
-    }
+@keyframes drive {
+  0% { left: -100px; }
+  100% { left: 110%; }
+}
 
-    .dot {
-      height: 10px;
-      width: 10px;
-      margin: 0 5px;
-      background-color: white;
-      border-radius: 50%;
-      display: inline-block;
-      animation: blink 1.4s infinite both;
-    }
+/* loading dots */
+.dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 5px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 1.4s infinite both;
+}
 
-    .dot:nth-child(2) { animation-delay: 0.2s; }
-    .dot:nth-child(3) { animation-delay: 0.4s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
 
-    @keyframes blink {
-      0%, 80%, 100% { opacity: 0; }
-      40% { opacity: 1; }
-    }
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0; }
+  40% { opacity: 1; }
+}
 
-    .buttons {
-      margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+/* buttons */
+.buttons {
+  margin-top: 20px;
+}
 
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
-    }
+.btn {
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-    .btn-reload {
-      background: white;
-      color: #2E7D32;
-    }
+.reload {
+  background: white;
+  color: #2E7D32;
+}
 
-    .btn-reload:hover {
-      background: #C8E6C9;
-    }
+.back {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
 
-    .btn-back {
-      background: transparent;
-      color: white;
-      border: 2px solid white;
-    }
+/* countdown */
+.countdown {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
 
-    .btn-back:hover {
-      background: rgba(255,255,255,0.2);
-    }
-
-    .footer {
-      margin-top: 30px;
-      font-size: 12px;
-      opacity: 0.7;
-    }
-
-  </style>
+.footer {
+  margin-top: 25px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="container">
-    
-    <div class="emoji">👨‍⚕️💉</div>
+<div class="container">
+  <h1>🚧 Satu Pintu Sedang Dirawat</h1>
 
-    <h1>Satu Pintu Lagi Dirawat 🛠️</h1>
+  <p>
+    UPT Puskesmas Cibatu sedang meningkatkan layanan<br>
+    agar lebih cepat & nyaman 😊
+  </p>
 
-    <p>
-      UPT Puskesmas Cibatu sedang melakukan perbaikan sistem<br>
-      agar pelayanan makin cepat & nyaman 😊
-    </p>
-
-    <div class="loading">
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-    </div>
-
-    <div class="buttons">
-      <button class="btn btn-reload" onclick="location.reload()">🔄 Coba Lagi</button>
-      <button class="btn btn-back" onclick="goBack()">⬅️ Kembali</button>
-    </div>
-
-    <div class="footer">
-      © 2026 UPT Puskesmas Cibatu
-    </div>
-
+  <div>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
   </div>
 
-  <script>
-    function goBack() {
-      if (document.referrer !== "") {
-        history.back();
-      } else {
-        // fallback kalau tidak ada halaman sebelumnya
-        window.location.href = "/";
-      }
-    }
-  </script>
+  <div class="countdown" id="countdown">
+    ⏳ Estimasi selesai: --
+  </div>
+
+  <div class="buttons">
+    <button class="btn reload" onclick="location.reload()">🔄 Coba Lagi</button>
+    <button class="btn back" onclick="goBack()">⬅️ Kembali</button>
+  </div>
+
+  <div class="footer">
+    © 2026 UPT Puskesmas Cibatu
+  </div>
+</div>
+
+<!-- 🚑 Ambulance -->
+<div class="road">
+  <div class="ambulance">🚑</div>
+</div>
+
+<script>
+// tombol kembali
+function goBack() {
+  if (document.referrer !== "") {
+    history.back();
+  } else {
+    window.location.href = "/";
+  }
+}
+
+// ⏳ Countdown (SET WAKTU DI SINI)
+const targetTime = new Date();
+targetTime.setMinutes(targetTime.getMinutes() + 230); // ubah durasi di sini
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = targetTime - now;
+
+  if (diff <= 0) {
+    document.getElementById("countdown").innerHTML = "✅ Sudah selesai! Silakan refresh";
+    return;
+  }
+
+  const minutes = Math.floor(diff / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById("countdown").innerHTML =
+    `⏳ Estimasi selesai: ${minutes}m ${seconds}s`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
 
 </body>
 </html>
