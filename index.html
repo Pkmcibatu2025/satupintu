@@ -2,183 +2,692 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SATUPINTU - UPT Puskesmas Cibatu</title>
+
   <style>
     :root {
-      --bg: #f4f7f9;
-      --text: #111;
-      --card-bg: #fff;
-      --card-text: #111;
-      --footer: #aaa;
+      --bg: #eef7f4;
+      --bg-2: #dff4ed;
+      --text: #10201b;
+      --muted: #64748b;
+      --card-bg: rgba(255, 255, 255, 0.82);
+      --card-border: rgba(255, 255, 255, 0.65);
+      --primary: #0f9f7a;
+      --primary-dark: #08745b;
+      --secondary: #1d4ed8;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 24px 70px rgba(15, 118, 110, 0.18);
+      --shadow-card: 0 16px 35px rgba(15, 23, 42, 0.08);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #121212;
-        --text: #f4f4f4;
-        --card-bg: #1e1e1e;
-        --card-text: #fff;
-        --footer: #555;
+        --bg: #071411;
+        --bg-2: #0f2420;
+        --text: #f8fafc;
+        --muted: #a7b5c4;
+        --card-bg: rgba(15, 23, 42, 0.78);
+        --card-border: rgba(255, 255, 255, 0.1);
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+        --shadow-card: 0 16px 35px rgba(0, 0, 0, 0.26);
       }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg);
+      min-height: 100vh;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(20, 184, 166, 0.26), transparent 32%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.18), transparent 34%),
+        linear-gradient(135deg, var(--bg), var(--bg-2));
       color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-      transition: background 0.3s ease, color 0.3s ease;
+      padding: 28px 16px;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 999px;
+      filter: blur(5px);
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      width: 230px;
+      height: 230px;
+      left: -90px;
+      top: 160px;
+      background: rgba(16, 185, 129, 0.22);
+    }
+
+    body::after {
+      width: 250px;
+      height: 250px;
+      right: -110px;
+      bottom: 80px;
+      background: rgba(59, 130, 246, 0.18);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.62)),
+        linear-gradient(135deg, rgba(15, 159, 122, 0.18), rgba(37, 99, 235, 0.12));
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 32px 24px 28px;
+      backdrop-filter: blur(18px);
+      text-align: center;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .hero {
+        background:
+          linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.72)),
+          linear-gradient(135deg, rgba(15, 159, 122, 0.18), rgba(37, 99, 235, 0.12));
+      }
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background:
+        linear-gradient(120deg, transparent 10%, rgba(255, 255, 255, 0.48), transparent 40%);
+      transform: translateX(-100%);
+      animation: shine 7s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      0%, 55% {
+        transform: translateX(-100%);
+      }
+      80%, 100% {
+        transform: translateX(100%);
+      }
     }
 
     .profile {
-      text-align: center;
-      margin-bottom: 30px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .profile img {
-      width: 120px;
-      height: 120px;
+    .logo-wrap {
+      width: 132px;
+      height: 132px;
+      border-radius: 34px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.55));
+      box-shadow:
+        0 20px 35px rgba(15, 118, 110, 0.18),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.85);
+      margin-bottom: 18px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .logo-wrap {
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow:
+          0 20px 35px rgba(0, 0, 0, 0.34),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+      }
+    }
+
+    .logo-wrap img {
+      width: 104px;
+      height: 104px;
       object-fit: contain;
-      margin-bottom: 10px;
     }
 
-    .profile h1 {
-      font-size: 26px;
-      margin: 5px 0;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(15, 159, 122, 0.12);
+      color: var(--primary-dark);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      margin-bottom: 12px;
     }
 
-    .profile p {
-      color: var(--footer);
+    @media (prefers-color-scheme: dark) {
+      .badge {
+        color: #7dd3c7;
+        background: rgba(20, 184, 166, 0.12);
+      }
+    }
+
+    .badge-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.15);
+    }
+
+    h1 {
       margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: clamp(15px, 2vw, 18px);
+      font-weight: 600;
+    }
+
+    .tagline {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .queue-cta {
+      width: 100%;
+      max-width: 520px;
+      margin: 22px auto 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .queue-button {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 17px 18px;
+      border-radius: 22px;
+      text-decoration: none;
+      color: #fff;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.35), transparent 26%),
+        linear-gradient(135deg, #0f9f7a, #1d4ed8);
+      box-shadow:
+        0 22px 42px rgba(37, 99, 235, 0.24),
+        0 8px 18px rgba(15, 159, 122, 0.18);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .queue-button:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow:
+        0 26px 50px rgba(37, 99, 235, 0.32),
+        0 10px 24px rgba(15, 159, 122, 0.22);
+    }
+
+    .queue-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .queue-icon {
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.18);
+      font-size: 28px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+    }
+
+    .queue-text strong {
+      display: block;
+      font-size: 17px;
+      letter-spacing: 0.4px;
+    }
+
+    .queue-text span {
+      display: block;
+      margin-top: 3px;
+      font-size: 13px;
+      opacity: 0.88;
+    }
+
+    .queue-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+      }
+    }
+
+    .section-title {
+      margin: 30px 4px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 19px;
+      letter-spacing: -0.2px;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
     }
 
     .card-container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 16px;
-      width: 100%;
-      max-width: 600px;
-      margin-top: 20px;
     }
 
     .card {
-      background-color: var(--card-bg);
-      color: var(--card-text);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      text-align: center;
-      transition: transform 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      min-height: 152px;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
       text-decoration: none;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(16px);
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: auto -35px -55px auto;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--glow, rgba(15, 159, 122, 0.16));
+      transition: transform 0.25s ease;
     }
 
     .card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-7px);
+      box-shadow: 0 24px 45px rgba(15, 23, 42, 0.13);
+      border-color: rgba(15, 159, 122, 0.38);
+    }
+
+    .card:hover::before {
+      transform: scale(1.18);
     }
 
     .card-icon {
-      font-size: 32px;
-      margin-bottom: 10px;
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      background: rgba(15, 159, 122, 0.12);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      position: relative;
+      z-index: 1;
+      display: block;
+      font-size: 16px;
+      font-weight: 850;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      position: relative;
+      z-index: 1;
+      display: block;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .card:nth-child(1) { --glow: rgba(239, 68, 68, 0.16); }
+    .card:nth-child(2) { --glow: rgba(37, 99, 235, 0.18); }
+    .card:nth-child(3) { --glow: rgba(245, 158, 11, 0.18); }
+    .card:nth-child(4) { --glow: rgba(139, 92, 246, 0.18); }
+    .card:nth-child(5) { --glow: rgba(15, 159, 122, 0.18); }
+    .card:nth-child(6) { --glow: rgba(14, 165, 233, 0.18); }
+
+    .social-panel {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.46);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-card);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .social-panel {
+        background: rgba(15, 23, 42, 0.56);
+      }
+    }
+
+    .social-title {
+      margin: 0 0 14px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 750;
     }
 
     .social-icons {
-      margin-top: 30px;
       display: flex;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
     }
 
     .social-icons a {
-      width: 40px;
-      height: 40px;
+      width: 46px;
+      height: 46px;
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      border-radius: 50%;
+      border-radius: 16px;
       overflow: hidden;
+      text-decoration: none;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+      transition: transform 0.22s ease, opacity 0.22s ease;
+    }
+
+    .social-icons a:hover {
+      transform: translateY(-4px);
+      opacity: 0.92;
     }
 
     .social-icons img {
-      width: 100%;
-      height: auto;
+      width: 22px;
+      height: 22px;
+      filter: brightness(0) invert(1);
     }
+
+    .instagram { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+    .x-twitter { background: #111827; }
+    .facebook { background: #1877f2; }
+    .website { background: #1d4ed8; }
+    .whatsapp { background: #25d366; }
+    .youtube { background: #ff0000; }
 
     footer {
-      margin-top: 40px;
-      font-size: 14px;
-      color: var(--footer);
+      text-align: center;
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
-    @media (max-width: 500px) {
+    footer strong {
+      color: var(--text);
+    }
+
+    @media (max-width: 860px) {
+      .card-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 18px 12px;
+      }
+
+      .hero {
+        padding: 26px 16px 22px;
+        border-radius: 24px;
+      }
+
+      .logo-wrap {
+        width: 112px;
+        height: 112px;
+        border-radius: 28px;
+      }
+
+      .logo-wrap img {
+        width: 88px;
+        height: 88px;
+      }
+
+      .queue-button {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .queue-live {
+        align-self: flex-start;
+      }
+
+      .section-title {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       .card-container {
         grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: 136px;
+      }
+
+      .social-icons a {
+        width: 43px;
+        height: 43px;
+        border-radius: 14px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .queue-left {
+        align-items: flex-start;
+      }
+
+      .queue-icon {
+        width: 46px;
+        height: 46px;
+        flex-basis: 46px;
+        font-size: 24px;
       }
     }
   </style>
 </head>
+
 <body>
-  <div class="profile">
-    <img src="FDGD.png" alt="Logo Puskesmas Cibatu" />
-    <h1>UPT Puskesmas Cibatu</h1>
-    <p>Sistem Informasi SATUPINTU</p>
-  </div>
+  <main class="page">
+    <section class="hero" aria-label="Profil SATUPINTU Puskesmas Cibatu">
+      <div class="profile">
+        <div class="logo-wrap">
+          <img src="FDGD.png" alt="Logo Puskesmas Cibatu" />
+        </div>
 
-  <div class="card-container">
-    <a class="card" href="pengaduan.html">
-      <div class="card-icon">📞</div>
-      Pengaduan, Kritik & Saran
-    </a>
-    <a class="card" href="dashboard.html">
-      <div class="card-icon">📊</div>
-      Dashboard (Visualisasi Data Profil)
-    </a>
-    <a class="card" href="layananinfo.html">
-      <div class="card-icon">📝</div>
-      Layanan Informasi
-    </a>
-    <a class="card" href="announcement.html">
-      <div class="card-icon">📅</div>
-      Pengumuman & Info Terkini
-    </a>
-    <a class="card" href="https://satu-pintu-63689.web.app/aplikasim.html">
-      <div class="card-icon">🧾</div>
-      Layanan Digital Masyarakat
-    </a>
-     <a class="card" href="aplikasi.html">
-      <div class="card-icon">🌐</div>
-      Portal Website Aplikasi
-    </a>
-  </div>
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Portal Layanan Terpadu
+        </div>
 
-  <div class="social-icons">
-    <a href="https://www.instagram.com/puskesmascibatugarut?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" style="background: #E1306C; padding: 5px;">
-    </a>
-    <a href="https://x.com/upt_pkmcibatu" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="Twitter" style="background: #25D366; padding: 5px;">
-    </a>
-    <a href="https://www.facebook.com/p/UPT-Puskesmas-Cibatu-100066638072928/" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" style="background: #1877F2; padding: 5px;">
-    </a>
-    <a href="https://pkm-cibatu.garutkab.go.id/" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/internetexplorer.svg" alt="Website" style="background: #1D4ED8; padding: 5px;">
-    </a>
-    <a href="https://wa.me/62881082062498" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" style="background: #25D366; padding: 5px;">
-    </a>
-    <a href="https://www.youtube.com/@uptpuskesmascibatugarut7589" target="_blank">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" style="background: #FF0000; padding: 5px;">
-    </a>
-  </div>
+        <h1>UPT Puskesmas Cibatu</h1>
+        <p class="subtitle">Sistem Informasi SATUPINTU</p>
+        <p class="tagline">Melayani dengan Sepenuh Cinta — Cekatan, Inovatif, Netral, Teliti, Amanah</p>
 
-  <footer>
-    &copy; 2025 Puskesmas Cibatu
-  </footer>
+        <div class="queue-cta">
+          <a class="queue-button" href="https://antrianpuskesmas.id/puskesmas-cibatu/mobile/queue" aria-label="Buka Antrian Real Time">
+            <span class="queue-left">
+              <span class="queue-icon">🎫</span>
+              <span class="queue-text">
+                <strong>ANTRIAN REAL TIME</strong>
+                <span>Cek nomor antrian, status layanan, dan informasi kunjungan hari ini</span>
+              </span>
+            </span>
+
+            <span class="queue-live">
+              <span class="live-dot"></span>
+              LIVE
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <h2>Menu Layanan SATUPINTU</h2>
+      <span>Pilih layanan yang dibutuhkan</span>
+    </div>
+
+    <section class="card-container" aria-label="Menu utama SATUPINTU">
+      <a class="card" href="pengaduan.html">
+        <div class="card-icon">📞</div>
+        <span class="card-title">Pengaduan, Kritik & Saran</span>
+        <span class="card-desc">Sampaikan masukan masyarakat untuk peningkatan mutu pelayanan.</span>
+      </a>
+
+      <a class="card" href="dashboard.html">
+        <div class="card-icon">📊</div>
+        <span class="card-title">Dashboard Data Profil</span>
+        <span class="card-desc">Visualisasi data layanan, capaian, dan informasi publik Puskesmas.</span>
+      </a>
+
+      <a class="card" href="layananinfo.html">
+        <div class="card-icon">📝</div>
+        <span class="card-title">Layanan Informasi</span>
+        <span class="card-desc">Informasi pelayanan, persyaratan, jadwal, dan alur layanan.</span>
+      </a>
+
+      <a class="card" href="announcement.html">
+        <div class="card-icon">📅</div>
+        <span class="card-title">Pengumuman & Info Terkini</span>
+        <span class="card-desc">Update kegiatan, jadwal, pemberitahuan, dan informasi terbaru.</span>
+      </a>
+
+      <a class="card" href="https://satu-pintu-63689.web.app/aplikasim.html">
+        <div class="card-icon">🧾</div>
+        <span class="card-title">Layanan Digital Masyarakat</span>
+        <span class="card-desc">Akses layanan digital untuk kebutuhan administrasi masyarakat.</span>
+      </a>
+
+      <a class="card" href="aplikasi.html">
+        <div class="card-icon">🌐</div>
+        <span class="card-title">Portal Website Aplikasi</span>
+        <span class="card-desc">Kumpulan aplikasi, dashboard, dan sistem kerja internal Puskesmas.</span>
+      </a>
+    </section>
+
+    <section class="social-panel" aria-label="Media sosial Puskesmas Cibatu">
+      <p class="social-title">Terhubung dengan UPT Puskesmas Cibatu</p>
+
+      <div class="social-icons">
+        <a class="instagram" href="https://www.instagram.com/puskesmascibatugarut?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram Puskesmas Cibatu">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" />
+        </a>
+
+        <a class="x-twitter" href="https://x.com/upt_pkmcibatu" target="_blank" rel="noopener noreferrer" aria-label="X Puskesmas Cibatu">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" />
+        </a>
+
+        <a class="facebook" href="https://www.facebook.com/p/UPT-Puskesmas-Cibatu-100066638072928/" target="_blank" rel="noopener noreferrer" aria-label="Facebook Puskesmas Cibatu">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" />
+        </a>
+
+        <a class="website" href="https://pkm-cibatu.garutkab.go.id/" target="_blank" rel="noopener noreferrer" aria-label="Website resmi Puskesmas Cibatu">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/internetexplorer.svg" alt="Website" />
+        </a>
+
+        <a class="whatsapp" href="https://wa.me/62881082062498" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Puskesmas Cibatu">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" />
+        </a>
+
+        <a class="youtube" href="https://www.youtube.com/@uptpuskesmascibatugarut7589" target="_blank" rel="noopener noreferrer" aria-label="YouTube Puskesmas Cibatu">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" />
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      &copy; <span id="year"></span> <strong>UPT Puskesmas Cibatu</strong><br />
+      Sistem Informasi SATUPINTU
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
